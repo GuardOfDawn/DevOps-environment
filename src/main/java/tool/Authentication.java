@@ -11,7 +11,9 @@ import java.util.Properties;
  * Date: 3/13/17
  * Time: 8:06 PM
  */
-public class Authorization {
+public class Authentication {
+    private static final String SONAR_ADMIN = "src/main/resources/sonarAdmin.properties";
+
     /**
      * Get the login name and password of SonarQube administrator
      *
@@ -19,7 +21,7 @@ public class Authorization {
      */
     public static String[] getSonarAdmin() {
         Properties prop = new Properties();
-        try (InputStream in = new BufferedInputStream(new FileInputStream("src/main/resources/sonarAdmin.properties"))) {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(SONAR_ADMIN))) {
             prop.load(in);
             return new String[]{prop.getProperty("login"), prop.getProperty("password")};
         } catch (IOException e) {
