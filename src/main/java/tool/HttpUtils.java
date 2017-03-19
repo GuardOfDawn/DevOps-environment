@@ -4,6 +4,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -21,8 +22,8 @@ public class HttpUtils {
     /**
      * Send POST request
      *
-     * @param url   post url
-     * @param param post parameter
+     * @param url   POST url
+     * @param param POST parameter
      * @param auth  authorization. String array: [login, password]
      * @return message. Object array: [statusCode, message]
      * @throws Exception exception
@@ -33,6 +34,23 @@ public class HttpUtils {
         httpPost.setEntity(new UrlEncodedFormEntity(param));
         httpPost.addHeader(new BasicScheme().authenticate(new UsernamePasswordCredentials(auth[0], auth[1]), httpPost, null));
         CloseableHttpResponse response = httpClient.execute(httpPost);
+        Object[] msg = new Object[]{response.getStatusLine().getStatusCode(), EntityUtils.toString(response.getEntity())};
+        response.close();
+        httpClient.close();
+        return msg;
+    }
+
+    /**
+     * Send GET request
+     *
+     * @param url GET url
+     * @return message. Object array: [statusCode, message]
+     * @throws Exception exception
+     */
+    public static Object[] sendGet(String url) throws Exception {
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet(url);
+        CloseableHttpResponse response = httpClient.execute(httpGet);
         Object[] msg = new Object[]{response.getStatusLine().getStatusCode(), EntityUtils.toString(response.getEntity())};
         response.close();
         httpClient.close();

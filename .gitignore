@@ -2,4 +2,3 @@
 !.gitignore
 !/src/
 !pom.xml
-!jenkins-cli.jar
