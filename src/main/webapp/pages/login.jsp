@@ -7,14 +7,15 @@
   <title>DevOps | Login</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <%String path = request.getContextPath(); %>
   <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="<%=path %>/bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="<%=path %>/dist/css/AdminLTE.min.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,7 +33,7 @@
   <div class="login-box-body">
     <p class="login-box-msg"></p>
 
-    <form action="homepage.jsp" method="post">
+    <form action="<%=path %>/pages/homepage.jsp" method="post">
       <div class="form-group has-feedback">
         <input type="text" class="form-control" placeholder="用户名">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -44,7 +45,7 @@
       <div class="row">
         <div class="col-xs-8">
           <p></p>
-          <a href="register.jsp" class="text-center">注册新用户</a>
+          <a href="<%=path %>/pages/register.jsp" class="text-center">注册新用户</a>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
@@ -60,17 +61,8 @@
 <!-- /.login-box -->
 
 <!-- jQuery 2.2.3 -->
-<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+<script src="<%=path %>/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="../bootstrap/js/bootstrap.min.js"></script>
-<script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
-    });
-  });
-</script>
+<script src="<%=path %>/bootstrap/js/bootstrap.min.js"></script>
 </body>
 </html>
