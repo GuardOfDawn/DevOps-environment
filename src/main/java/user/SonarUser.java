@@ -38,7 +38,7 @@ public class SonarUser {
                 return true;
             }
         } catch (Exception e) {
-            System.out.println("Request Error");
+            System.out.println("Create sonar user: request error");
             e.printStackTrace();
         }
         return false;

@@ -8,7 +8,7 @@ import tool.RunShell;
  * Time: 8:45 PM
  */
 public class JenkinsUser {
-    private static final String CREATE_USER = "java -jar jenkins-cli.jar -s http://localhost:8080/jenkins groovy src/main/script/createJenkinsUser.groovy";
+    private static final String CREATE_USER = "java -jar jenkins-cli.jar -s http://127.0.0.1:8080/jenkins groovy src/main/script/createJenkinsUser.groovy";
 
     /**
      * Create Jenkins user

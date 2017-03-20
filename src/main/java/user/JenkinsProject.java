@@ -14,8 +14,13 @@ import java.util.Map;
  * Time: 8:51 PM
  */
 public class JenkinsProject {
-    private static final String ALL_JOBS = "http://localhost:8080/jenkins/api/json?pretty=true&tree=jobs[name]";
+    private static final String ALL_JOBS = "http://127.0.0.1:8080/jenkins/api/json?pretty=true&tree=jobs[name]";
 
+    /**
+     * Get all projects in Jenkins
+     *
+     * @return list of job names
+     */
     public List<String> getAllProject() {
         String json = null;
         try {
@@ -24,7 +29,7 @@ public class JenkinsProject {
                 json = response[1].toString();
             }
         } catch (Exception e) {
-            System.out.println("Request Error");
+            System.out.println("Get jenkins jobs: request error");
             e.printStackTrace();
         }
         if (json == null) {
