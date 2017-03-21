@@ -13,17 +13,30 @@ import java.util.Properties;
  */
 public class Authentication {
     private static final String SONAR_ADMIN = "src/main/resources/sonarAdmin.properties";
+    private static final String JENKINS_ADMIN = "src/main/resources/jenkinsAdmin.properties";
 
     /**
-     * Get the login name and password of SonarQube administrator
+     * Get the login name and password of specific system
      *
-     * @return form like "name:password"
+     * @param system "jenkins" or "sonar"
+     * @return name and password
      */
-    public static String[] getSonarAdmin() {
+    public static String[] getAdmin(String system) {
+        String path;
+        switch (system) {
+            case "jenkins":
+                path = JENKINS_ADMIN;
+                break;
+            case "sonar":
+                path = SONAR_ADMIN;
+                break;
+            default:
+                return null;
+        }
         Properties prop = new Properties();
-        try (InputStream in = new BufferedInputStream(new FileInputStream(SONAR_ADMIN))) {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(path))) {
             prop.load(in);
-            return new String[]{prop.getProperty("login"), prop.getProperty("password")};
+            return new String[]{prop.getProperty("name"), prop.getProperty("password")};
         } catch (IOException e) {
             System.out.println("Property file not found");
             e.printStackTrace();

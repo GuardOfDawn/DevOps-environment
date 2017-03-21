@@ -1,0 +1,14 @@
+<flow-definition plugin="workflow-job@2.10">
+    <description/>
+    <keepDependencies>false</keepDependencies>
+    <properties>
+        <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+            <triggers/>
+        </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+    </properties>
+    <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.29">
+        <script/>
+        <sandbox>true</sandbox>
+    </definition>
+    <triggers/>
+</flow-definition>

@@ -2,11 +2,12 @@ package user;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import tool.Authentication;
 import tool.HttpUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.*;
 
 /**
  * Author: stk
@@ -14,7 +15,9 @@ import java.util.Map;
  * Time: 8:51 PM
  */
 public class JenkinsProject {
-    private static final String ALL_JOBS = "http://127.0.0.1:8080/jenkins/api/json?pretty=true&tree=jobs[name]";
+    private static final String ALL_PROJECTS = "http://127.0.0.1:8080/jenkins/api/json?pretty=true&tree=jobs[name]";
+    private static final String CREATE_PROJECT = "http://127.0.0.1:8080/jenkins/createItem";
+    private static final String JOB_TEMPLATE = "src/main/resources/config.xml";
 
     /**
      * Get all projects in Jenkins
@@ -24,7 +27,7 @@ public class JenkinsProject {
     public List<String> getAllProject() {
         String json = null;
         try {
-            Object[] response = HttpUtils.sendGet(ALL_JOBS);
+            Object[] response = HttpUtils.sendGet(ALL_PROJECTS);
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
@@ -43,5 +46,46 @@ public class JenkinsProject {
             result.add(oneJob.get("name").toString());
         }
         return result;
+    }
+
+    public boolean createProject(String name) {
+        String url = CREATE_PROJECT + "?name=" + name;
+        String[] auth = Authentication.getAdmin("jenkins");
+        if (auth == null) {
+            return false;
+        }
+        Map<String, String> props = new HashMap<>();
+        props.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((auth[0] + ":" + auth[1]).getBytes()));
+        props.put("Content-Type", "application/xml");
+        try {
+            Object[] response = HttpUtils.sendPostWithString(url, getJobTemplate(), props);
+            if (Integer.parseInt(response[0].toString()) == 200) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Create jenkins project: request error");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Get job config.xml for creating project
+     *
+     * @return string format of config.xml
+     */
+    private String getJobTemplate() {
+        StringBuilder sb = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(JOB_TEMPLATE))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("\n");
+            }
+        } catch (Exception e) {
+            System.out.println("Job template not found");
+            e.printStackTrace();
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
     }
 }

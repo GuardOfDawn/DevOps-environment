@@ -5,8 +5,7 @@ import org.apache.http.message.BasicNameValuePair;
 import tool.Authentication;
 import tool.HttpUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Author: stk
@@ -28,12 +27,14 @@ public class SonarUser {
         param.add(new BasicNameValuePair("login", name));
         param.add(new BasicNameValuePair("name", name));
         param.add(new BasicNameValuePair("password", password));
-        String[] authorization = Authentication.getSonarAdmin();
-        if (authorization == null) {
+        String[] auth = Authentication.getAdmin("sonar");
+        if (auth == null) {
             return false;
         }
+        Map<String, String> props = new HashMap<>();
+        props.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((auth[0] + ":" + auth[1]).getBytes()));
         try {
-            Object[] response = HttpUtils.sendPost(CREATE_USER, param, authorization);
+            Object[] response = HttpUtils.sendPost(CREATE_USER, param, props);
             if (Integer.parseInt(response[0].toString()) == 200) {
                 return true;
             }
