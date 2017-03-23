@@ -25,8 +25,8 @@ public class HttpUtils {
      * @param url   POST url
      * @param param POST parameter
      * @param props POST properties
-     * @return message. Object array: [statusCode, message]
-     * @throws Exception exception
+     * @return Message. Object array: [statusCode, message]
+     * @throws Exception Exception
      */
     public static Object[] sendPost(String url, List<NameValuePair> param, Map<String, String> props) throws Exception {
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -48,8 +48,8 @@ public class HttpUtils {
      * @param url    POST url
      * @param entity POST entity
      * @param props  POST properties
-     * @return message. Object array: [statusCode, message]
-     * @throws Exception exception
+     * @return Message. Object array: [statusCode, message]
+     * @throws Exception Exception
      */
     public static Object[] sendPostWithString(String url, String entity, Map<String, String> props) throws Exception {
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -69,8 +69,8 @@ public class HttpUtils {
      * Send GET request
      *
      * @param url GET url
-     * @return message. Object array: [statusCode, message]
-     * @throws Exception exception
+     * @return Message. Object array: [statusCode, message]
+     * @throws Exception Exception
      */
     public static Object[] sendGet(String url) throws Exception {
         CloseableHttpClient httpClient = HttpClients.createDefault();

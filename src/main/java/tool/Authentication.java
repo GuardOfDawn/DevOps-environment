@@ -18,8 +18,8 @@ public class Authentication {
     /**
      * Get the login name and password of specific system
      *
-     * @param system "jenkins" or "sonar"
-     * @return name and password
+     * @param system Command: "jenkins" or "sonar"
+     * @return Name and password
      */
     public static String[] getAdmin(String system) {
         String path;

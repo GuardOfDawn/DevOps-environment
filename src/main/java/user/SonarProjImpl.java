@@ -1,5 +1,6 @@
 package user;
 
+import interfaces.SonarProj;
 import net.sf.json.JSONArray;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -13,14 +14,14 @@ import java.util.*;
  * Date: 3/20/17
  * Time: 8:05 PM
  */
-public class SonarProject {
+public class SonarProjImpl implements SonarProj {
     private static final String ALL_PROJECTS = "http://127.0.0.1:9000/api/projects/index";
     private static final String CREATE_PROJECT = "http://127.0.0.1:9000/api/projects/create";
 
     /**
      * Get all projects in SonarQube
      *
-     * @return list of project names
+     * @return List of project names
      */
     public List<String> getAllProject() {
         String json = null;
@@ -33,10 +34,9 @@ public class SonarProject {
             System.out.println("Get sonar projects: request error");
             e.printStackTrace();
         }
-        if (json == null) {
-            return null;
-        }
+        if (json == null) return null;
         List<Map<String, Object>> projects = JSONArray.fromObject(json);
+        if (projects.size() == 0) return null;
         List<String> result = new ArrayList<>();
         for (Map<String, Object> oneProject : projects) {
             result.add(oneProject.get("k").toString());
@@ -47,25 +47,21 @@ public class SonarProject {
     /**
      * Create a project in SonarQube
      *
-     * @param name project name
-     * @param key  project key(project identifier)
-     * @return success or fail
+     * @param name Project name
+     * @param key  Project key(project identifier)
+     * @return Success or fail
      */
     public boolean createProject(String name, String key) {
         List<NameValuePair> param = new ArrayList<>();
         param.add(new BasicNameValuePair("name", name));
         param.add(new BasicNameValuePair("key", key));
         String[] auth = Authentication.getAdmin("sonar");
-        if (auth == null) {
-            return false;
-        }
+        if (auth == null) return false;
         Map<String, String> props = new HashMap<>();
         props.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((auth[0] + ":" + auth[1]).getBytes()));
         try {
             Object[] response = HttpUtils.sendPost(CREATE_PROJECT, param, props);
-            if (Integer.parseInt(response[0].toString()) == 200) {
-                return true;
-            }
+            if (Integer.parseInt(response[0].toString()) == 200) return true;
         } catch (Exception e) {
             System.out.println("Create sonar project: request error");
             e.printStackTrace();

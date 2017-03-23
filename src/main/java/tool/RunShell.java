@@ -12,8 +12,8 @@ public class RunShell {
     /**
      * Run linux shell command
      *
-     * @param cmd command line
-     * @return execution results
+     * @param cmd Command line
+     * @return Execution results
      */
     public static String runShell(String[] cmd) {
         String result = "";
