@@ -1,5 +1,7 @@
-import interfaces.SonarProj;
-import user.SonarProjImpl;
+import interfaces.JenkinsProjStat;
+import status.JenkinsProjStatImpl;
+
+import java.util.Map;
 
 /**
  * Author: stk
@@ -8,7 +10,10 @@ import user.SonarProjImpl;
  */
 public class Test {
     public static void main(String[] args) {
-        SonarProj sonarProj = new SonarProjImpl();
-        System.out.println(sonarProj.getAllProject());
+        JenkinsProjStat jenkinsProjStat = new JenkinsProjStatImpl();
+        Map<String, String> result = jenkinsProjStat.getLastBuild("test");
+        for (Map.Entry<String, String> entry : result.entrySet()) {
+            System.out.println(entry.getKey() + " " + entry.getValue());
+        }
     }
 }
