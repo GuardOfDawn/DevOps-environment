@@ -31,21 +31,25 @@
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg"></p>
+    <p class="login-box-msg">
+	<%if(request.getAttribute("loginRes")!=null){ %>
+    	<%=request.getAttribute("loginRes") %>
+    <%} %>
+	</p>
 
-    <form action="<%=path %>/pages/homepage.jsp" method="post">
+    <form action="<%=path %>/LoginServlet" method="post">
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="用户名">
+        <input type="text" name="username" class="form-control" placeholder="用户名">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="密码">
+        <input type="password" name="password" class="form-control" placeholder="密码">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
         <div class="col-xs-8">
           <p></p>
-          <a href="<%=path %>/pages/register.jsp" class="text-center">注册新用户</a>
+          <a href="<%=path %>/register" class="text-center">注册新用户</a>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">

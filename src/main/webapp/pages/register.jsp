@@ -31,29 +31,33 @@
   </div>
 
   <div class="register-box-body">
-    <p class="login-box-msg"></p>
+    <p class="login-box-msg">
+    <%if(request.getAttribute("registerRes")!=null){ %>
+    	<%=request.getAttribute("registerRes") %>
+    <%} %>
+    </p>
 
-    <form action="#" method="post">
+    <form action="<%=path %>/RegisterServlet" method="post">
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="用户名">
+      <%if(request.getAttribute("username")!=null){ %>
+        <input id="username" name="username" type="text" class="form-control" placeholder="<%=request.getAttribute("username") %>">
+      <%}else{ %>
+        <input id="username" name="username" type="text" class="form-control" placeholder="用户名">
+      <%} %>
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="邮箱">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="密码">
+        <input id="password" name="password" type="password" class="form-control" placeholder="密码">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="密码确认">
+        <input id="password_check" type="password" class="form-control" placeholder="密码确认" onblur="passwordCheck()">
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
       </div>
       <div class="row">
         <div class="col-xs-8">
 		  <p></p>
-		  <a href="<%=path %>/pages/login.jsp" class="text-center">使用账号登录</a>
+		  <a href="<%=path %>/login" class="text-center">使用账号登录</a>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
@@ -73,4 +77,13 @@
 <!-- Bootstrap 3.3.6 -->
 <script src="<%=path %>/bootstrap/js/bootstrap.min.js"></script>
 </body>
+<script type="text/javascript">
+function passwordCheck(){
+	var pwd = document.getElementById('password').value;
+	var pwd_check = document.getElementById('password_check').value;
+	if(pwd_check!==pwd){
+		
+	}
+}
+</script>
 </html>
