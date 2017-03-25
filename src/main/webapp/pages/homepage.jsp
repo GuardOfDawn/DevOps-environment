@@ -54,11 +54,11 @@
           <li class="dropdown user">
         	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
         	  <span>Welcome </span>
-              <span><b>Zhang Yi</b></span>
+              <span><b><%=session.getAttribute("username") %></b></span>
               <span>!</span>
             </a>
             <ul class="dropdown-menu">
-              <li><div class="text-center"><a href="<%=path %>/pages/login.jsp"><b>Sign out</b></a></div></li>
+              <li><div class="text-center"><a href="<%=path %>/login"><b>登出</b></a></div></li>
             </ul>
       	  </li>
         </ul>
@@ -74,11 +74,10 @@
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
-        <li class="header">HEADER</li>
+        <li class="header">--------</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Teams</span></a></li>
-        <li><a href="#"><i class="fa fa-link"></i> <span>Projects</span></a></li>
-        <li><a href="#"><i class="fa fa-link"></i> <span>Statics</span></a></li>
+        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>项目</span></a></li>
+        <li><a href="#"><i class="fa fa-link"></i> <span>统计</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
