@@ -11,9 +11,10 @@ import java.util.Map;
 public class Test {
     public static void main(String[] args) {
         JenkinsProjStat jenkinsProjStat = new JenkinsProjStatImpl();
-        Map<String, String> result = jenkinsProjStat.getLastBuild("test");
-        for (Map.Entry<String, String> entry : result.entrySet()) {
-            System.out.println(entry.getKey() + " " + entry.getValue());
+        Map<String, String> map = jenkinsProjStat.getLastBuild("test");
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
         }
+        System.out.println(jenkinsProjStat.getFrequency("test"));
     }
 }
