@@ -31,18 +31,18 @@ public class UserServiceImpl implements UserService{
 				//register user
 				boolean res2 = userDao.register(userName, password);
 				if(res2){
-					registerRes = "注册成功";
+					registerRes = "register success";
 				}
 				else{
-					registerRes = "注册失败";
+					registerRes = "Failed to register.";
 				}
 			}
 			else{
-				registerRes = "注册失败，用户名已存在";
+				registerRes = "Failed to register,the user name has been used";
 			}
 		}
 		else{
-			registerRes = "注册失败，用户名已存在";
+			registerRes = "Failed to register,the user name has been used.";
 		}
 		return registerRes;
 	}

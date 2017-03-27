@@ -31,50 +31,50 @@
   </div>
 
   <div class="register-box-body">
-    <p class="login-box-msg">注册成功</p>
+    <p class="login-box-msg">Register successfully</p>
 
     <form action="<%=path %>/homePage" method="post" class="form-horizontal">
       <div class="box-body">
         <div class="form-group">
-          <label for="textUsername" class="col-sm-4 control-label">用户名</label>
+          <label for="textUsername" class="col-sm-4 control-label">User name</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="textUsername" placeholder="zy" disabled>
+            <input type="text" class="form-control" id="textUsername" placeholder='<%=request.getAttribute("username") %>' disabled>
           </div>
         </div>
         <div class="form-group">
-          <label for="textPassword" class="col-sm-4 control-label">密码</label>
+          <label for="textPassword" class="col-sm-4 control-label">Password</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="textPassword" placeholder="123456" disabled>
+            <input type="text" class="form-control" id="textPassword" placeholder='<%=request.getAttribute("password") %>' disabled>
           </div>
         </div>
         <div class="form-group">
-          <label for="textUsername2" class="col-sm-4 control-label">jenkins</label>
+          <label for="textUsername2" class="col-sm-4 control-label">Jenkins</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="textUsername2" placeholder="zy" disabled>
+            <input type="text" class="form-control" id="textUsername2" placeholder='<%=request.getAttribute("username") %>' disabled>
           </div>
         </div>
         <div class="form-group">
-          <label for="textPassword2" class="col-sm-4 control-label">密码</label>
+          <label for="textPassword2" class="col-sm-4 control-label">Password</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="textPassword2" placeholder="123456" disabled>
+            <input type="text" class="form-control" id="textPassword2" placeholder='<%=request.getAttribute("password") %>' disabled>
           </div>
         </div>
         <div class="form-group">
-          <label for="textUsername3" class="col-sm-4 control-label">Sonar</label>
+          <label for="textUsername3" class="col-sm-4 control-label">SonarQube</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="textUsername3" placeholder="zy" disabled>
+            <input type="text" class="form-control" id="textUsername3" placeholder='<%=request.getAttribute("username") %>' disabled>
           </div>
         </div>
         <div class="form-group">
-          <label for="textPassword3" class="col-sm-4 control-label">密码</label>
+          <label for="textPassword3" class="col-sm-4 control-label">Password</label>
           <div class="col-sm-8">
-            <input type="text" class="form-control" id="textPassword3" placeholder="123456" disabled>
+            <input type="text" class="form-control" id="textPassword3" placeholder='<%=request.getAttribute("password") %>' disabled>
           </div>
         </div>
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
-        <button type="submit" class="btn btn-info pull-right">进入主页</button>
+        <button type="submit" class="btn btn-info pull-right">Start Using</button>
       </div>
       <!-- /.box-footer -->
     </form>

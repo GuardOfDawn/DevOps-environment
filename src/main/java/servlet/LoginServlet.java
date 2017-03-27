@@ -78,7 +78,7 @@ public class LoginServlet extends HttpServlet {
 					response.sendRedirect(request.getContextPath() + "/homePage");
 				}
 				else{
-					request.setAttribute("loginRes","ÓÃ»§ÃûÃÜÂë´íÎó");
+					request.setAttribute("loginRes","You have an error with your name or password");
 					RequestDispatcher rd = request.getRequestDispatcher("/login");
 					rd.forward(request, response);
 				}

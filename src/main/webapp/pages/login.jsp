@@ -39,21 +39,21 @@
 
     <form action="<%=path %>/LoginServlet" method="post">
       <div class="form-group has-feedback">
-        <input type="text" name="username" class="form-control" placeholder="用户名">
+        <input type="text" name="username" class="form-control" placeholder="User name">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" name="password" class="form-control" placeholder="密码">
+        <input type="password" name="password" class="form-control" placeholder="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
         <div class="col-xs-8">
           <p></p>
-          <a href="<%=path %>/register" class="text-center">注册新用户</a>
+          <a href="<%=path %>/register" class="text-center">Register</a>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">登录</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
         </div>
         <!-- /.col -->
       </div>

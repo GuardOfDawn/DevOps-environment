@@ -34,23 +34,29 @@ public class RegisterServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if(session==null){
-			response.sendRedirect(request.getContextPath() + "/homePage");
+			response.sendRedirect(request.getContextPath() + "/login");
 		}
 		else{
-			String userName = request.getParameter("username");
-			String password = request.getParameter("password");
-			String registerRes = userService.register(userName, password);
-			if(registerRes.equals("×¢²á³É¹¦")){
-				request.setAttribute("username", userName);
-				request.setAttribute("password", password);
-				RequestDispatcher rd = request.getRequestDispatcher("/registerSuccess");
-				rd.forward(request, response);
+			if(session.getAttribute("username")!=null){
+				response.sendRedirect(request.getContextPath() + "/homepage");
 			}
 			else{
-				request.setAttribute("username", userName);
-				request.setAttribute("registerRes", registerRes);
-				RequestDispatcher rd = request.getRequestDispatcher("/register");
-				rd.forward(request, response);
+				String userName = request.getParameter("username");
+				String password = request.getParameter("password");
+				String registerRes = userService.register(userName, password);
+				if(registerRes.equals("register success")){
+					session.setAttribute("username", userName);
+					request.setAttribute("username", userName);
+					request.setAttribute("password", password);
+					RequestDispatcher rd = request.getRequestDispatcher("/registerSuccess");
+					rd.forward(request, response);
+				}
+				else{
+					request.setAttribute("username", userName);
+					request.setAttribute("registerRes", registerRes);
+					RequestDispatcher rd = request.getRequestDispatcher("/register");
+					rd.forward(request, response);
+				}
 			}
 		}
 	}

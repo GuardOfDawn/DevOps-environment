@@ -51,16 +51,16 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <li class="dropdown user">
-        	<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <li>
+        	<a>
         	  <span>Welcome </span>
               <span><b><%=session.getAttribute("username") %></b></span>
               <span>!</span>
             </a>
-            <ul class="dropdown-menu">
-              <li><div class="text-center"><a href="<%=path %>/login"><b>登出</b></a></div></li>
-            </ul>
       	  </li>
+          <li>
+            <a href="<%=path %>/LogoutServlet" >Sign out</a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -74,10 +74,10 @@
 
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
-        <li class="header">--------</li>
+        <li class="header">MAIN NAVIGATION</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>项目</span></a></li>
-        <li><a href="#"><i class="fa fa-link"></i> <span>统计</span></a></li>
+        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Project</span></a></li>
+        <li><a href="#"><i class="fa fa-link"></i> <span>Statistics</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -87,18 +87,39 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <section class="content-header" style="layout:center">
       <h1>
-        Page Header
-        <small>Optional description</small>
+        	Create a project
+        <small></small>
       </h1>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
-      <!-- Your Page Content Here -->
-
+	  <div class="row">
+	    <div class="col-md-8 col-md-push-2">
+	      <div class="box box-primary">
+          <!-- form start -->
+	        <form role="form">
+	          <div class="box-body">
+	            <div class="form-group">
+	              <label for="exampleInputEmail1">Project name</label>
+	              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter project name">
+	            </div>
+	            <div class="form-group">
+	              <label for="exampleInputPassword1">Project key (for SonarQube)</label>
+	              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter project key">
+	            </div>
+	          </div>
+	          <!-- /.box-body -->
+	
+	          <div class="box-footer">
+	            <button type="submit" class="btn btn-primary">Create Project</button>
+	          </div>
+	        </form>
+          </div>
+	    </div>
+	  </div>
     </section>
     <!-- /.content -->
   </div>

@@ -42,26 +42,26 @@
       <%if(request.getAttribute("username")!=null){ %>
         <input id="username" name="username" type="text" class="form-control" placeholder="<%=request.getAttribute("username") %>">
       <%}else{ %>
-        <input id="username" name="username" type="text" class="form-control" placeholder="用户名">
+        <input id="username" name="username" type="text" class="form-control" placeholder="User name">
       <%} %>
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input id="password" name="password" type="password" class="form-control" placeholder="密码">
+        <input id="password" name="password" type="password" class="form-control" placeholder="Password">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input id="password_check" type="password" class="form-control" placeholder="密码确认" onblur="passwordCheck()">
+        <input id="password_check" type="password" class="form-control" placeholder="Retype password" onblur="passwordCheck()">
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
       </div>
       <div class="row">
         <div class="col-xs-8">
 		  <p></p>
-		  <a href="<%=path %>/login" class="text-center">使用账号登录</a>
+		  <a href="<%=path %>/login" class="text-center">I have a membership</a>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">注册</button>
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
         </div>
         <!-- /.col -->
       </div>
