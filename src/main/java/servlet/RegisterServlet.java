@@ -38,7 +38,7 @@ public class RegisterServlet extends HttpServlet {
 		}
 		else{
 			if(session.getAttribute("username")!=null){
-				response.sendRedirect(request.getContextPath() + "/homepage");
+				response.sendRedirect(request.getContextPath() + "/AllProjectsServlet");
 			}
 			else{
 				String userName = request.getParameter("username");

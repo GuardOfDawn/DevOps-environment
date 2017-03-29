@@ -22,18 +22,20 @@ public class UserDaoImpl implements UserDao{
             preState.setString(1, userName);
             ResultSet rs = preState.executeQuery();
             int count = 0;
-            while (rs.next()) {  
+            while (rs.next()) {
                 count++;
             }
             if(count<=0){
             	PreparedStatement prep = conn.prepareStatement("insert into user values(?,?);");
     			prep.setString(1, userName);
     			prep.setString(2, password);
-    			prep.addBatch();
-    			conn.setAutoCommit(false);
-                prep.executeBatch();  
-                conn.setAutoCommit(true);
-            	res = true;
+    			int ret = prep.executeUpdate();
+    			if(ret>0){
+                	res = true;
+    			}
+    			else{
+    				res = false;
+    			}
             }
             else{
             	res = false;

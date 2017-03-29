@@ -75,7 +75,7 @@ public class LoginServlet extends HttpServlet {
 					session.setMaxInactiveInterval(5*60);
 					session.setAttribute("username", loginValue);
 					
-					response.sendRedirect(request.getContextPath() + "/homePage");
+					response.sendRedirect(request.getContextPath() + "/AllProjectsServlet");
 				}
 				else{
 					request.setAttribute("loginRes","You have an error with your name or password");
