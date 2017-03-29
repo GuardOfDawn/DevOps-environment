@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="<%=path %>/plugins/datatables/dataTables.bootstrap.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<%=path %>/dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -51,13 +53,19 @@
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-          <li>
-        	<a>
-        	  <span>Welcome </span>
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <span>Welcome </span>
               <span><b><%=session.getAttribute("username") %></b></span>
               <span>!</span>
             </a>
-      	  </li>
+            <ul class="dropdown-menu">
+              <li class="footer">
+                <a href="/jenkins" class="text-center">Jenkins <small>(link to Jenkins)</small></a>
+                <a href="#" class="text-center">SonarQube <small>(link to SonarQube)</small></a>
+              </li>
+            </ul>
+          </li>
           <li>
             <a href="<%=path %>/LogoutServlet" >Sign out</a>
           </li>
@@ -76,8 +84,28 @@
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Project</span></a></li>
-        <li><a href="#"><i class="fa fa-link"></i> <span>Statistics</span></a></li>
+        <li class="active treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Project</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="active"><a href="<%=path %>/AllProjectsServlet"><i class="fa fa-circle-o"></i> All projects</a></li>
+            <li><a href="<%=path %>/createProject"><i class="fa fa-circle-o"></i> Create a project</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Statistics</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i> Team</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Individual</a></li>
+          </ul>
+        </li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -87,37 +115,53 @@
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header" style="layout:center">
+    <section class="content-header text-center">
       <h1>
-        	Create a project
-        <small></small>
+      
       </h1>
     </section>
 
     <!-- Main content -->
     <section class="content">
+      <jsp:useBean id="projectList"
+			class="model.ProjectListBean"
+			scope="page"></jsp:useBean>
 	  <div class="row">
-	    <div class="col-md-8 col-md-push-2">
-	      <div class="box box-primary">
-          <!-- form start -->
-	        <form role="form">
-	          <div class="box-body">
-	            <div class="form-group">
-	              <label for="exampleInputEmail1">Project name</label>
-	              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter project name">
-	            </div>
-	            <div class="form-group">
-	              <label for="exampleInputPassword1">Project key (for SonarQube)</label>
-	              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter project key">
-	            </div>
-	          </div>
-	          <!-- /.box-body -->
-	
-	          <div class="box-footer">
-	            <button type="submit" class="btn btn-primary">Create Project</button>
-	          </div>
-	        </form>
-          </div>
+	    <div class="col-xs-12">
+	      <div class="box">
+	        <div class="box-header">
+	          <h3 class="box-title">Data Table With Full Features</h3>
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body">
+	          <table id="example1" class="table table-bordered table-striped">
+	            <thead>
+	              <tr>
+	                <th>Project name</th>
+	                <th><abbr title="The condition of last bulid">Build condition</abbr></th>
+	                <th><abbr title="The beginning time of last build">Time stamp</abbr></th>
+	                <th>Build duration</th>
+	              </tr>
+	            </thead>
+	            <tbody>
+	              <tr>
+	                <td>courseHomeworkCheckSystem</td>
+	                <td><span class="glyphicon glyphicon-certificate success"></span></td>
+	                <td>2016/02/11 20:22:22</td>
+	                <td>60s</td>
+	              </tr>
+	              <tr>
+	                <td>invoicingManagementSystem</td>
+	                <td><span class="glyphicon glyphicon-certificate danger"></span></td>
+	                <td>2014/11/11 20:22:22</td>
+	                <td>120s</td>
+	              </tr>
+	            </tbody>
+	          </table>
+	        </div>
+	        <!-- /.box-body -->
+	      </div>
+	      <!-- /.box -->
 	    </div>
 	  </div>
     </section>
