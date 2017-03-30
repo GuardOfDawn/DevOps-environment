@@ -1,6 +1,7 @@
 package user;
 
 import interfaces.JenkinsUser;
+import tool.GetPath;
 import tool.RunShell;
 
 /**
@@ -9,8 +10,6 @@ import tool.RunShell;
  * Time: 8:45 PM
  */
 public class JenkinsUserImpl implements JenkinsUser {
-    private static final String CREATE_USER = "java -jar jenkins-cli.jar -s http://127.0.0.1:8080/jenkins groovy src/main/script/createJenkinsUser.groovy";
-
     /**
      * Create one Jenkins user
      *
@@ -19,7 +18,10 @@ public class JenkinsUserImpl implements JenkinsUser {
      * @return Success or failure
      */
     public boolean createJenkinsUser(String name, String password) {
-        String realCmd = CREATE_USER + " " + name + " " + password;
+        String path = GetPath.getResourcesPath();
+        String realCmd = "java -jar " + path +
+                "jenkins-cli.jar -s http://127.0.0.1:8080/jenkins groovy " + path +
+                "createJenkinsUser.groovy" + " " + name + " " + password;
         String[] cmd = new String[]{"/bin/sh", "-c", realCmd};
         String result = RunShell.runShell(cmd);
         return result.equals("1");
