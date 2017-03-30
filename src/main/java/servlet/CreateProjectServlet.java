@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,10 +48,16 @@ public class CreateProjectServlet extends HttpServlet {
 				String userName = String.valueOf(session.getAttribute("username"));
 				boolean res = projectService.createProject(userName,projectName, projectKey);
 				if(res){
-					
+					request.setAttribute("projectName", projectName);
+					request.setAttribute("projectKey", projectKey);
+					RequestDispatcher rd = request.getRequestDispatcher("/createProjectSuccess");
+					rd.forward(request, response);
 				}
 				else{
-					
+					String createRes = "create project '"+projectName+"' failed"; 
+					request.setAttribute("createProjectRes", createRes);
+					RequestDispatcher rd = request.getRequestDispatcher("/createProject");
+					rd.forward(request, response);
 				}
 			}
 		}

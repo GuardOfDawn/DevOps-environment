@@ -42,26 +42,26 @@
       <%if(request.getAttribute("username")!=null){ %>
         <input id="username" name="username" type="text" class="form-control" placeholder="<%=request.getAttribute("username") %>">
       <%}else{ %>
-        <input id="username" name="username" type="text" class="form-control" placeholder="User name">
+        <input id="username" name="username" type="text" class="form-control" placeholder="User name" onkeyup="limitUserInput('username')" onblur="registerCheck()">
       <%} %>
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input id="password" name="password" type="password" class="form-control" placeholder="Password">
+        <input id="password" name="password" type="password" class="form-control" placeholder="Password" onkeyup="limitUserInput('password')" onblur="registerCheck()">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input id="password_check" type="password" class="form-control" placeholder="Retype password" onblur="passwordCheck()">
+        <input id="password_check" type="password" class="form-control" placeholder="Retype password" onkeyup="limitUserInput('password_check')" onblur="registerCheck()">
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
       </div>
       <div class="row">
         <div class="col-xs-8">
-		  <p></p>
+		  <p id="psw_check_info" class="text-danger"></p>
 		  <a href="<%=path %>/login" class="text-center">I have a membership</a>
         </div>
         <!-- /.col -->
         <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+          <button type="submit" id="registerButton" class="btn btn-primary btn-block btn-flat" disabled>Register</button>
         </div>
         <!-- /.col -->
       </div>
@@ -78,11 +78,32 @@
 <script src="<%=path %>/bootstrap/js/bootstrap.min.js"></script>
 </body>
 <script type="text/javascript">
-function passwordCheck(){
+function limitUserInput(elementId){
+	var element_value = document.getElementById(elementId).value;
+	document.getElementById(elementId).value = element_value.replace(/[^\w\.\/]/ig,'')
+	if(element_value.length>40){
+		document.getElementById(elementId).value = element_value.substr(0,39);
+	}
+}
+function registerCheck(){
+	var user_name = document.getElementById('username').value;
 	var pwd = document.getElementById('password').value;
 	var pwd_check = document.getElementById('password_check').value;
-	if(pwd_check!==pwd){
-		
+	if(user_name===''||pwd===''||pwd_check!==pwd){
+		if(user_name===''){
+			document.getElementById('psw_check_info').innerHTML = "username should not be empty";
+		}
+		else if(pwd===''){
+			document.getElementById('psw_check_info').innerHTML = "password should not be empty";
+		}
+		else{
+			document.getElementById('psw_check_info').innerHTML = "password not match";
+		}
+		document.getElementById('registerButton').disabled = true;
+	}
+	else{
+		document.getElementById('psw_check_info').innerHTML = "";
+		document.getElementById('registerButton').disabled = false;
 	}
 }
 </script>

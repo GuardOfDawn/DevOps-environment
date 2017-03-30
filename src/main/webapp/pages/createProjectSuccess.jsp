@@ -115,7 +115,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header text-center">
       <h1>
-        	Create a project
+        	Create project successfully
         <small></small>
       </h1>
     </section>
@@ -127,25 +127,15 @@
 	      <div class="box box-primary">
           <!-- form start -->
 	        <form action="<%=path %>/CreateProjectServlet" method="post" role="form">
-	          <p class="login-box-msg">
-			    <%if(request.getAttribute("craeteProjectRes")!=null){ %>
-			    	<%=request.getAttribute("createProjectRes") %>
-			    <%} %>
-			  </p>
 	          <div class="box-body">
 	            <div class="form-group">
-	              <label for="exampleInputEmail1">Project name</label>
-	              <input type="text" class="form-control" name="projectname" placeholder="Enter project name">
+	              <label for="projectname">Project name</label>
+	              <input type="text" class="form-control" id="projectname" name="projectname" value='<%=request.getAttribute("projectName") %>' disabled>
 	            </div>
 	            <div class="form-group">
-	              <label for="exampleInputPassword1">Project key (for SonarQube)</label>
-	              <input type="text" class="form-control" name="projectkey" placeholder="Enter project key">
+	              <label for="projectkey">Project key (for SonarQube)</label>
+	              <input type="text" class="form-control" id="projectkey" name="projectkey" value='<%=request.getAttribute("projectKey") %>' disabled>
 	            </div>
-	          </div>
-	          <!-- /.box-body -->
-	
-	          <div class="box-footer">
-	            <button type="submit" class="btn btn-primary">Create Project</button>
 	          </div>
 	        </form>
           </div>

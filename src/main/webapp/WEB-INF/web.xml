@@ -38,6 +38,10 @@
     <jsp-file>/pages/createProject.jsp</jsp-file>
   </servlet>
   <servlet>
+    <servlet-name>createProjectSuccessJSP</servlet-name>
+    <jsp-file>/pages/createProjectSuccess.jsp</jsp-file>
+  </servlet>
+  <servlet>
   	<servlet-name>TestServlet</servlet-name>
   	<display-name>TestServlet</display-name>
   	<description></description>
@@ -90,6 +94,10 @@
   <servlet-mapping>
     <servlet-name>createProjectJSP</servlet-name>
     <url-pattern>/createProject</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>createProjectSuccessJSP</servlet-name>
+    <url-pattern>/createProjectSuccess</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
   	<servlet-name>TestServlet</servlet-name>

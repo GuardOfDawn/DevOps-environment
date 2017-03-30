@@ -33,7 +33,7 @@
   <div class="register-box-body">
     <p class="login-box-msg">Register successfully</p>
 
-    <form action="<%=path %>/homePage" method="post" class="form-horizontal">
+    <form action="<%=path %>/AllProjectsServlet" method="post" class="form-horizontal">
       <div class="box-body">
         <div class="form-group">
           <label for="textUsername" class="col-sm-4 control-label">User name</label>
