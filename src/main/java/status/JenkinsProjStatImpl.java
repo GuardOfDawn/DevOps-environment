@@ -80,7 +80,7 @@ public class JenkinsProjStatImpl implements JenkinsProjStat {
         }
         Map<String, Object> map = JSONObject.fromObject(json);
         List<Map<String, Object>> builds = JSONArray.fromObject(map.get("builds"));
-        if (builds.size() == 0) {
+        if (builds.size() == 0 || builds.size() == 1) {
             logger.warn("Get jenkins job list: empty job list.");
             return null;
         }
