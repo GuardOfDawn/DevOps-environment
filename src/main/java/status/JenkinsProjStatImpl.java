@@ -3,6 +3,7 @@ package status;
 import interfaces.JenkinsProjStat;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.log4j.Logger;
 import tool.HttpUtils;
 import tool.TimeTransformer;
 
@@ -17,6 +18,7 @@ import java.util.Map;
  */
 public class JenkinsProjStatImpl implements JenkinsProjStat {
     private static final String JENKINS_HOST = "http://127.0.0.1:8080/jenkins/job/";
+    private static Logger logger = Logger.getLogger(JenkinsProjStatImpl.class);
 
     /**
      * Get the last build status
@@ -31,16 +33,22 @@ public class JenkinsProjStatImpl implements JenkinsProjStat {
         String json = null;
         try {
             Object[] response = HttpUtils.sendGet(url);
+            logger.info("Get jenkins last build: get response.");
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
         } catch (Exception e) {
-            System.out.println("Get jenkins job last build: request error");
-            e.printStackTrace();
+            logger.error("Get jenkins last build: GET request error.\n" + e.getMessage());
         }
-        if (json == null) return null;
+        if (json == null) {
+            logger.warn("Get jenkins last build: response empty.");
+            return null;
+        }
         Map<String, Object> map = JSONObject.fromObject(json);
-        if (map.size() == 0) return null;
+        if (map.size() == 0) {
+            logger.warn("Get jenkins last build: empty json.");
+            return null;
+        }
         Map<String, String> result = new HashMap<>();
         result.put("result", map.get("result").toString());
         result.put("timestamp", TimeTransformer.timestamp2Date(map.get("timestamp").toString()));
@@ -59,17 +67,23 @@ public class JenkinsProjStatImpl implements JenkinsProjStat {
         String json = null;
         try {
             Object[] response = HttpUtils.sendGet(url);
+            logger.info("Get jenkins job list: get response.");
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
         } catch (Exception e) {
-            System.out.println("Get jenkins job build frequency: request error");
-            e.printStackTrace();
+            logger.error("Get jenkins job list: GET request error.\n" + e.getMessage());
         }
-        if (json == null) return null;
+        if (json == null) {
+            logger.warn("Get jenkins job list: response empty.");
+            return null;
+        }
         Map<String, Object> map = JSONObject.fromObject(json);
         List<Map<String, Object>> builds = JSONArray.fromObject(map.get("builds"));
-        if (builds.size() == 0) return null;
+        if (builds.size() == 0) {
+            logger.warn("Get jenkins job list: empty job list.");
+            return null;
+        }
         int i = 0;
         long near = 0;
         long far = 0;

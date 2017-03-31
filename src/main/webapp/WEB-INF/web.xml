@@ -5,6 +5,15 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
+    <servlet-name>Log4JInitServlet</servlet-name>
+    <servlet-class>servlet.Log4JInitServlet</servlet-class>
+    <init-param>
+      <param-name>log4j</param-name>
+      <param-value>/WEB-INF/classes/log4j.properties</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet>
   	<servlet-name>LoginServlet</servlet-name>
   	<display-name>LoginServlet</display-name>
   	<description></description>

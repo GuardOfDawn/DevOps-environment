@@ -1,5 +1,7 @@
 package tool;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -9,6 +11,8 @@ import java.io.InputStreamReader;
  * Time: 6:28 PM
  */
 public class RunShell {
+    private static Logger logger = Logger.getLogger(RunShell.class);
+
     /**
      * Run linux shell command
      *
@@ -28,9 +32,9 @@ public class RunShell {
             }
             sb.deleteCharAt(sb.length() - 1);
             result = sb.toString();
+            logger.info("Shell execution result: " + result);
         } catch (Exception e) {
-            System.out.println("Execute shell command error");
-            e.printStackTrace();
+            logger.error("Execute shell command error.\n" + e.getMessage());
         }
         return result;
     }
