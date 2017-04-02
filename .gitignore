@@ -2,4 +2,6 @@
 !.gitignore
 !/src/
 !pom.xml
+!Jenkinsfile
+!sonar-project.properties
 jenkins-cli.jar

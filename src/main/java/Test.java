@@ -1,5 +1,7 @@
 import interfaces.JenkinsProjStat;
+import interfaces.SonarProjStat;
 import status.JenkinsProjStatImpl;
+import status.SonarProjStatImpl;
 
 import java.util.Map;
 
@@ -10,11 +12,7 @@ import java.util.Map;
  */
 public class Test {
     public static void main(String[] args) {
-        JenkinsProjStat jenkinsProjStat = new JenkinsProjStatImpl();
-        Map<String, String> map = jenkinsProjStat.getLastBuild("test");
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            System.out.println(entry.getKey() + " : " + entry.getValue());
-        }
-        System.out.println(jenkinsProjStat.getFrequency("test"));
+        SonarProjStat sonarProjStat = new SonarProjStatImpl();
+        sonarProjStat.getStatus("stk:test");
     }
 }
