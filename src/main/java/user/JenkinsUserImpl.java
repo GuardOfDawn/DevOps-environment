@@ -11,7 +11,7 @@ import tool.RunShell;
  */
 public class JenkinsUserImpl implements JenkinsUser {
     /**
-     * Create one Jenkins user
+     * Create one Jenkins user.
      *
      * @param name     User name
      * @param password Password

@@ -21,10 +21,10 @@ public class JenkinsProjStatImpl implements JenkinsProjStat {
     private static Logger logger = Logger.getLogger(JenkinsProjStatImpl.class);
 
     /**
-     * Get the last build status
+     * Get the last build status.
      *
      * @param name Project name
-     * @return Map of statuses.
+     * @return Map of statuses
      * Key: result(build succeeded of failed), timestamp(begin time), duration(build duration).
      * If there is no information then it will return null.
      */
@@ -38,7 +38,7 @@ public class JenkinsProjStatImpl implements JenkinsProjStat {
                 json = response[1].toString();
             }
         } catch (Exception e) {
-            logger.error("Get jenkins last build: GET request error.\n" + e.getMessage());
+            logger.error("Get jenkins last build: GET request error.\n", e);
         }
         if (json == null) {
             logger.warn("Get jenkins last build: response empty.");
@@ -57,10 +57,11 @@ public class JenkinsProjStatImpl implements JenkinsProjStat {
     }
 
     /**
-     * Get the build frequency of the last five builds
+     * Get the build frequency of the last five builds.
      *
      * @param name Project name
      * @return Build frequency: day HH:mm:ss
+     * If the number of build is less than two, then it will return null.
      */
     public String getFrequency(String name) {
         String url = JENKINS_HOST + name + "/api/json?tree=builds[number,timestamp]";
@@ -72,7 +73,7 @@ public class JenkinsProjStatImpl implements JenkinsProjStat {
                 json = response[1].toString();
             }
         } catch (Exception e) {
-            logger.error("Get jenkins job list: GET request error.\n" + e.getMessage());
+            logger.error("Get jenkins job list: GET request error.\n", e);
         }
         if (json == null) {
             logger.warn("Get jenkins job list: response empty.");

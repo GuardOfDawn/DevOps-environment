@@ -9,14 +9,15 @@ import java.util.List;
  */
 public interface SonarProj {
     /**
-     * Get all projects in SonarQube
+     * Get all projects in SonarQube.
      *
-     * @return List of project names.If the list is empty then it will return null.
+     * @return List of project names
+     * If the list is empty then it will return null.
      */
     List<String> getAllProject();
 
     /**
-     * Create a project in SonarQube
+     * Create a project in SonarQube.
      *
      * @param name Project name
      * @param key  Project key(project identifier)

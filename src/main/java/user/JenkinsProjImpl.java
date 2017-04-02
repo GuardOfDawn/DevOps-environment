@@ -5,6 +5,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import tool.Authentication;
+import tool.GetPath;
 import tool.HttpUtils;
 
 import java.io.BufferedReader;
@@ -19,13 +20,13 @@ import java.util.*;
 public class JenkinsProjImpl implements JenkinsProj {
     private static final String ALL_PROJECTS = "http://127.0.0.1:8080/jenkins/api/json?tree=jobs[name]";
     private static final String CREATE_PROJECT = "http://127.0.0.1:8080/jenkins/createItem";
-    private static final String JOB_TEMPLATE = "src/main/resources/config.xml";
     private static Logger logger = Logger.getLogger(JenkinsProjImpl.class);
 
     /**
-     * Get all projects in Jenkins
+     * Get all projects in Jenkins(homepage list).
      *
      * @return List of job names
+     * If the list is empty then it will return null.
      */
     public List<String> getAllProject() {
         String json = null;
@@ -36,7 +37,7 @@ public class JenkinsProjImpl implements JenkinsProj {
                 json = response[1].toString();
             }
         } catch (Exception e) {
-            logger.error("Get jenkins project list: GET request error.\n" + e.getMessage());
+            logger.error("Get jenkins project list: GET request error.\n", e);
         }
         if (json == null) {
             logger.warn("Get jenkins project list: response empty");
@@ -57,7 +58,7 @@ public class JenkinsProjImpl implements JenkinsProj {
     }
 
     /**
-     * Create a project in Jenkins
+     * Create a project in Jenkins.
      *
      * @param name Project name
      * @return Success or failure
@@ -73,25 +74,25 @@ public class JenkinsProjImpl implements JenkinsProj {
             logger.info("Create jenkins project: get response.");
             if (Integer.parseInt(response[0].toString()) == 200) return true;
         } catch (Exception e) {
-            logger.error("Create jenkins project: POST request error.\n" + e.getMessage());
+            logger.error("Create jenkins project: POST request error.\n", e);
         }
         return false;
     }
 
     /**
-     * Get job config.xml for creating project
+     * Get job config.xml for creating project.
      *
      * @return String format of config.xml
      */
     private String getJobTemplate() {
         StringBuilder sb = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(JOB_TEMPLATE))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(GetPath.getResourcesPath() + "config.xml"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line).append("\n");
             }
         } catch (Exception e) {
-            logger.error("Create jenkins project: job template not found.\n" + e.getMessage());
+            logger.error("Create jenkins project: job template not found.\n", e);
         }
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();

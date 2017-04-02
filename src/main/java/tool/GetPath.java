@@ -9,7 +9,7 @@ import user.SonarUserImpl;
  */
 public class GetPath {
     /**
-     * Get path of resources directory
+     * Get path of resources directory.
      *
      * @return path
      */

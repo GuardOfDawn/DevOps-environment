@@ -1,9 +1,4 @@
-import interfaces.JenkinsProjStat;
-import interfaces.SonarProjStat;
-import status.JenkinsProjStatImpl;
-import status.SonarProjStatImpl;
-
-import java.util.Map;
+import tool.GetPath;
 
 /**
  * Author: stk
@@ -12,7 +7,6 @@ import java.util.Map;
  */
 public class Test {
     public static void main(String[] args) {
-        SonarProjStat sonarProjStat = new SonarProjStatImpl();
-        sonarProjStat.getStatus("stk:test");
+        System.out.println(GetPath.getResourcesPath());
     }
 }

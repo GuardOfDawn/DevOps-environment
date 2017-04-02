@@ -19,7 +19,7 @@ public class SonarUserImpl implements SonarUser {
     private static Logger logger = Logger.getLogger(SonarUserImpl.class);
 
     /**
-     * Create one SonarQube user
+     * Create one SonarQube user.
      *
      * @param name     User name
      * @param password Password
@@ -38,7 +38,7 @@ public class SonarUserImpl implements SonarUser {
             logger.info("Create sonar user: get response.");
             if (Integer.parseInt(response[0].toString()) == 200) return true;
         } catch (Exception e) {
-            logger.error("Create sonar user: POST request error.\n" + e.getMessage());
+            logger.error("Create sonar user: POST request error.\n", e);
         }
         return false;
     }

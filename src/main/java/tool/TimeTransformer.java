@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
  */
 public class TimeTransformer {
     /**
-     * Transform timestamp(millisecond) to date
+     * Transform timestamp(millisecond) to date.
      *
      * @param time Millisecond
      * @return Date: yyyy-MM-dd HH:mm:ss
@@ -20,7 +20,7 @@ public class TimeTransformer {
     }
 
     /**
-     * Transform time span(millisecond) to formatted string
+     * Transform time span(millisecond) to formatted string.
      *
      * @param time Millisecond
      * @return Time: d HH:mm:ss
@@ -38,7 +38,7 @@ public class TimeTransformer {
     }
 
     /**
-     * Transform time span(millisecond) to formatted string
+     * Transform time span(millisecond) to formatted string.
      *
      * @param time Millisecond
      * @return Time: d HH:mm:ss

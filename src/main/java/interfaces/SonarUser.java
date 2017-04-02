@@ -7,7 +7,7 @@ package interfaces;
  */
 public interface SonarUser {
     /**
-     * Create one SonarQube user
+     * Create one SonarQube user.
      *
      * @param name     User name
      * @param password Password

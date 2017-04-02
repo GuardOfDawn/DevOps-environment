@@ -21,9 +21,10 @@ public class SonarProjImpl implements SonarProj {
     private static Logger logger = Logger.getLogger(SonarProjImpl.class);
 
     /**
-     * Get all projects in SonarQube
+     * Get all projects in SonarQube.
      *
      * @return List of project names
+     * If the list is empty then it will return null.
      */
     public List<String> getAllProject() {
         String json = null;
@@ -34,7 +35,7 @@ public class SonarProjImpl implements SonarProj {
                 json = response[1].toString();
             }
         } catch (Exception e) {
-            logger.error("Get sonar project list: GET request error.\n" + e.getMessage());
+            logger.error("Get sonar project list: GET request error.\n", e);
         }
         if (json == null) {
             logger.warn("Get sonar project list: response empty");
@@ -53,7 +54,7 @@ public class SonarProjImpl implements SonarProj {
     }
 
     /**
-     * Create a project in SonarQube
+     * Create a project in SonarQube.
      *
      * @param name Project name
      * @param key  Project key(project identifier)
@@ -71,7 +72,7 @@ public class SonarProjImpl implements SonarProj {
             logger.info("Create sonar project: get response.");
             if (Integer.parseInt(response[0].toString()) == 200) return true;
         } catch (Exception e) {
-            logger.error("Create sonar project: POST request error.\n" + e.getMessage());
+            logger.error("Create sonar project: POST request error.\n", e);
         }
         return false;
     }

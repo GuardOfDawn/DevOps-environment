@@ -20,12 +20,12 @@ import java.util.Map;
  */
 public class HttpUtils {
     /**
-     * Send POST request
+     * Send POST request.
      *
      * @param url   POST url
      * @param param POST parameter
      * @param props POST properties
-     * @return Message. Object array: [statusCode, message]
+     * @return Object array: [statusCode, message]
      * @throws Exception Exception
      */
     public static Object[] sendPost(String url, List<NameValuePair> param, Map<String, String> props) throws Exception {
@@ -43,12 +43,12 @@ public class HttpUtils {
     }
 
     /**
-     * Send POST request with string entity
+     * Send POST request with string entity.
      *
      * @param url    POST url
      * @param entity POST entity
      * @param props  POST properties
-     * @return Message. Object array: [statusCode, message]
+     * @return Object array: [statusCode, message]
      * @throws Exception Exception
      */
     public static Object[] sendPostWithString(String url, String entity, Map<String, String> props) throws Exception {
@@ -66,10 +66,10 @@ public class HttpUtils {
     }
 
     /**
-     * Send GET request
+     * Send GET request.
      *
      * @param url GET url
-     * @return Message. Object array: [statusCode, message]
+     * @return Object array: [statusCode, message]
      * @throws Exception Exception
      */
     public static Object[] sendGet(String url) throws Exception {

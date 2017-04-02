@@ -14,7 +14,7 @@ public class RunShell {
     private static Logger logger = Logger.getLogger(RunShell.class);
 
     /**
-     * Run linux shell command
+     * Run linux shell command.
      *
      * @param cmd Command line
      * @return Execution results
@@ -34,7 +34,7 @@ public class RunShell {
             result = sb.toString();
             logger.info("Shell execution result: " + result);
         } catch (Exception e) {
-            logger.error("Execute shell command error.\n" + e.getMessage());
+            logger.error("Execute shell command error.\n", e);
         }
         return result;
     }

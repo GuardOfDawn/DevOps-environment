@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
  */
 public class Authentication {
     /**
-     * Get the login name and password of specific system
+     * Get the login name and password of specific system.
      *
      * @param system Command: "jenkins" or "sonar"
      * @return Name and password
