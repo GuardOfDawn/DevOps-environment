@@ -11,6 +11,6 @@ import java.util.Map;
 public class Test {
     public static void main(String[] args) {
         SonarProjStat sonarProjStat = new SonarProjStatImpl();
-        System.out.println(sonarProjStat.getQualityGates("devops-system"));
+        System.out.println(sonarProjStat.getAnalysisTime("devops-system"));
     }
 }

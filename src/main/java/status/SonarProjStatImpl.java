@@ -9,6 +9,8 @@ import tool.HttpUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Author: stk
@@ -106,6 +108,13 @@ public class SonarProjStatImpl implements SonarProjStat {
         return status.get("status").toString();
     }
 
+    /**
+     * Get last analysis time.
+     *
+     * @param key Project key
+     * @return time: yyyy-MM-dd HH:mm:ss
+     * If there is no information then it will return null.
+     */
     public String getAnalysisTime(String key) {
         String url = SONAR_HOST + "api/projects?versions=true&key=" + key;
         String json = null;
@@ -121,8 +130,13 @@ public class SonarProjStatImpl implements SonarProjStat {
             logger.warn("Get last analysis time: response empty.");
             return null;
         }
-        List<Map<String, Object>> map = JSONArray.fromObject(json);
-        Map<String, Object> version = JSONObject.fromObject(map.get(0).get("v"));
-        return "";
+        System.out.println(json);
+        Pattern pattern = Pattern.compile("\"d\":\"(.*?)\"");
+        Matcher matcher = pattern.matcher(json);
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        logger.warn("Get last analysis time: cannot get time.");
+        return null;
     }
 }

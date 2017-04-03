@@ -27,4 +27,13 @@ public interface SonarProjStat {
      * If there is no information then it will return null.
      */
     String getQualityGates(String key);
+
+    /**
+     * Get last analysis time.
+     *
+     * @param key Project key
+     * @return time: yyyy-MM-dd HH:mm:ss
+     * If there is no information then it will return null.
+     */
+    String getAnalysisTime(String key);
 }
