@@ -1,4 +1,7 @@
-import tool.GetPath;
+import interfaces.SonarProjStat;
+import status.SonarProjStatImpl;
+
+import java.util.Map;
 
 /**
  * Author: stk
@@ -7,6 +10,7 @@ import tool.GetPath;
  */
 public class Test {
     public static void main(String[] args) {
-        System.out.println(GetPath.getResourcesPath());
+        SonarProjStat sonarProjStat = new SonarProjStatImpl();
+        System.out.println(sonarProjStat.getQualityGates("devops-system"));
     }
 }

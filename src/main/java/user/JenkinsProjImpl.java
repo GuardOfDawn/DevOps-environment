@@ -32,15 +32,14 @@ public class JenkinsProjImpl implements JenkinsProj {
         String json = null;
         try {
             Object[] response = HttpUtils.sendGet(ALL_PROJECTS);
-            logger.info("Get jenkins project list: get response.");
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
         } catch (Exception e) {
-            logger.error("Get jenkins project list: GET request error.\n", e);
+            logger.error("Get jenkins project list: GET request error.", e);
         }
         if (json == null) {
-            logger.warn("Get jenkins project list: response empty");
+            logger.warn("Get jenkins project list: response empty.");
             return null;
         }
         Map<String, Object> map = JSONObject.fromObject(json);
@@ -71,10 +70,9 @@ public class JenkinsProjImpl implements JenkinsProj {
         props.put("Content-Type", "application/xml");
         try {
             Object[] response = HttpUtils.sendPostWithString(url, getJobTemplate(), props);
-            logger.info("Create jenkins project: get response.");
             if (Integer.parseInt(response[0].toString()) == 200) return true;
         } catch (Exception e) {
-            logger.error("Create jenkins project: POST request error.\n", e);
+            logger.error("Create jenkins project: POST request error.", e);
         }
         return false;
     }
@@ -92,7 +90,7 @@ public class JenkinsProjImpl implements JenkinsProj {
                 sb.append(line).append("\n");
             }
         } catch (Exception e) {
-            logger.error("Create jenkins project: job template not found.\n", e);
+            logger.error("Create jenkins project: job template not found.", e);
         }
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();

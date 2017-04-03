@@ -30,15 +30,14 @@ public class SonarProjImpl implements SonarProj {
         String json = null;
         try {
             Object[] response = HttpUtils.sendGet(ALL_PROJECTS);
-            logger.info("Get sonar project list: get response.");
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
         } catch (Exception e) {
-            logger.error("Get sonar project list: GET request error.\n", e);
+            logger.error("Get sonar project list: GET request error.", e);
         }
         if (json == null) {
-            logger.warn("Get sonar project list: response empty");
+            logger.warn("Get sonar project list: response empty.");
             return null;
         }
         List<Map<String, Object>> projects = JSONArray.fromObject(json);
@@ -69,10 +68,9 @@ public class SonarProjImpl implements SonarProj {
         props.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((auth[0] + ":" + auth[1]).getBytes()));
         try {
             Object[] response = HttpUtils.sendPost(CREATE_PROJECT, param, props);
-            logger.info("Create sonar project: get response.");
             if (Integer.parseInt(response[0].toString()) == 200) return true;
         } catch (Exception e) {
-            logger.error("Create sonar project: POST request error.\n", e);
+            logger.error("Create sonar project: POST request error.", e);
         }
         return false;
     }

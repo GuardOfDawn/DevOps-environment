@@ -34,7 +34,7 @@ public class RunShell {
             result = sb.toString();
             logger.info("Shell execution result: " + result);
         } catch (Exception e) {
-            logger.error("Execute shell command error.\n", e);
+            logger.error("Execute shell command error.", e);
         }
         return result;
     }

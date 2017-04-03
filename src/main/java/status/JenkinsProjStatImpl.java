@@ -33,12 +33,11 @@ public class JenkinsProjStatImpl implements JenkinsProjStat {
         String json = null;
         try {
             Object[] response = HttpUtils.sendGet(url);
-            logger.info("Get jenkins last build: get response.");
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
         } catch (Exception e) {
-            logger.error("Get jenkins last build: GET request error.\n", e);
+            logger.error("Get jenkins last build: GET request error.", e);
         }
         if (json == null) {
             logger.warn("Get jenkins last build: response empty.");
@@ -68,12 +67,11 @@ public class JenkinsProjStatImpl implements JenkinsProjStat {
         String json = null;
         try {
             Object[] response = HttpUtils.sendGet(url);
-            logger.info("Get jenkins job list: get response.");
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
         } catch (Exception e) {
-            logger.error("Get jenkins job list: GET request error.\n", e);
+            logger.error("Get jenkins job list: GET request error.", e);
         }
         if (json == null) {
             logger.warn("Get jenkins job list: response empty.");
