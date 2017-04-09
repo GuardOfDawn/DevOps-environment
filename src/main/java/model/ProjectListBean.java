@@ -7,17 +7,17 @@ public class ProjectListBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private List<String> projectList;
+	private List<SimpleProject> projectList;
 	
-	public List<String> getProjectList() {
+	public List<SimpleProject> getProjectList() {
 		return projectList;
 	}
 
-	public void setProjectList(List<String> projectList) {
+	public void setProjectList(List<SimpleProject> projectList) {
 		this.projectList = projectList;
 	}
 
-	public String getProject(int index){
+	public SimpleProject getProject(int index){
 		return projectList.get(index);
 	}
 	

@@ -19,7 +19,13 @@ public class DaoHelperImpl implements DaoHelper{
 	
 	private static final String CREATE_TABLE_JOIN = "CREATE TABLE if not exists `join`("
 			+ "`projectname` varchar(50) NOT NULL,"
-			+ "`username` varchar(50) NOT NULL);";
+			+ "`username` varchar(50) NOT NULL,"
+			+ "`jointime` varchar(20) NOT NULL);";
+	
+	private static final String CREATE_TABLE_PROJECT = "CREATE TABLE if not exists `project`("
+			+ "`projectname` varchar(50) NOT NULL,"
+			+ "`projectkey` varchar(100) NOT NULL,"
+			+ "`createtime` varchar(20) NOT NULL);";
 	
 	private DaoHelperImpl(){
 //		this.path = System.getProperty("user.dir").replace("\\", "/").concat("/");
@@ -61,6 +67,7 @@ public class DaoHelperImpl implements DaoHelper{
 			Statement stat = connection.createStatement();
 			stat.executeUpdate(CREATE_TABLE_USER);
 			stat.executeUpdate(CREATE_TABLE_JOIN);
+			stat.executeUpdate(CREATE_TABLE_PROJECT);
 			closeConnection(connection);
 		}
 		catch(Exception e){

@@ -60,7 +60,7 @@
             <ul class="dropdown-menu">
               <li class="footer">
                 <a href="/jenkins" class="text-center">Jenkins <small>(link to Jenkins)</small></a>
-                <a href="#" class="text-center">SonarQube <small>(link to SonarQube)</small></a>
+                <a href="http://127.0.0.1:9000" class="text-center">SonarQube <small>(link to SonarQube)</small></a>
               </li>
             </ul>
           </li>
@@ -127,8 +127,8 @@
 	      <div class="box box-primary">
           <!-- form start -->
 	        <form action="<%=path %>/CreateProjectServlet" method="post" role="form">
-	          <p class="login-box-msg">
-			    <%if(request.getAttribute("craeteProjectRes")!=null){ %>
+	          <p class="text-danger">
+			    <%if(request.getAttribute("createProjectRes")!=null){ %>
 			    	<%=request.getAttribute("createProjectRes") %>
 			    <%} %>
 			  </p>
@@ -166,5 +166,9 @@
 <script src="<%=path %>/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<%=path %>/dist/js/app.min.js"></script>
+<!-- Slimscroll -->
+<script src="<%=path %>/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="<%=path %>/plugins/fastclick/fastclick.js"></script>
 </body>
 </html>

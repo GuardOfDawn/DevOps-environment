@@ -8,6 +8,7 @@ public class Join implements Serializable {
 	
 	private String projectName;
 	private String userName;
+	private String joinTime;
 	
 	public String getProjectName() {
 		return projectName;
@@ -20,6 +21,12 @@ public class Join implements Serializable {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public String getJoinTime() {
+		return joinTime;
+	}
+	public void setJoinTime(String joinTime) {
+		this.joinTime = joinTime;
 	}
 
 }

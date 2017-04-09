@@ -9,22 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.ProjectListBean;
 import service.ProjectService;
 import service.ProjectServiceImpl;
 
 /**
- * Servlet implementation class AllProjectServlet
+ * Servlet implementation class QuitProjectServlet
  */
-public class AllProjectsServlet extends HttpServlet {
+public class QuitProjectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private ProjectService projectService;
        
+	private ProjectService projectService;
+    
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AllProjectsServlet() {
+    public QuitProjectServlet() {
         super();
         projectService = new ProjectServiceImpl();
     }
@@ -45,9 +44,10 @@ public class AllProjectsServlet extends HttpServlet {
 			}
 			else{
 				String userName = String.valueOf(session.getAttribute("username"));
-				ProjectListBean projectBean = projectService.getProjectList(userName);
-				request.setAttribute("projectList", projectBean);
-				RequestDispatcher rd = request.getRequestDispatcher("/allProjects");
+				String projectToJoin = request.getParameter("project");
+				String page = request.getParameter("page");
+				projectService.quitProject(userName, projectToJoin);
+				RequestDispatcher rd = request.getRequestDispatcher("/"+page);
 				rd.forward(request, response);
 			}
 		}

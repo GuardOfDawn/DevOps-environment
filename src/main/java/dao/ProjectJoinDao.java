@@ -6,7 +6,7 @@ import model.Join;
 
 public interface ProjectJoinDao {
 
-	public boolean addJoin(String userName,String projectName);
+	public boolean addJoin(String userName,String projectName,String time);
 	
 	public boolean deleteJoin(String userName,String projectName);
 	

@@ -6,24 +6,22 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Join;
+public class ProjectDaoImpl implements ProjectDao{
 
-public class ProjectJoinDaoImpl implements ProjectJoinDao{
-	
 	private DaoHelper daoHelper;
 	
-	public ProjectJoinDaoImpl(){
+	public ProjectDaoImpl(){
 		this.daoHelper = DaoHelperImpl.getBaseDaoInstance();
 	}
 
 	@Override
-	public boolean addJoin(String userName, String projectName, String time) {
+	public boolean addProject(String projectName, String projectKey, String time) {
 		boolean res = false;
 		try{
 			Connection conn = daoHelper.getConnection();
-        	PreparedStatement prep = conn.prepareStatement("insert into `join` values(?,?,?);");
+        	PreparedStatement prep = conn.prepareStatement("insert into project values(?,?,?);");
 			prep.setString(1, projectName);
-			prep.setString(2, userName);
+			prep.setString(2, projectKey);
 			prep.setString(3, time);
 			int ret = prep.executeUpdate();
 			if(ret>0){
@@ -41,13 +39,12 @@ public class ProjectJoinDaoImpl implements ProjectJoinDao{
 	}
 
 	@Override
-	public boolean deleteJoin(String userName, String projectName) {
+	public boolean deleteProject(String projectName) {
 		boolean res = false;
 		try{
 			Connection conn = daoHelper.getConnection();
-        	PreparedStatement prep = conn.prepareStatement("delete from `join` where projectname=? and username=?;");
+        	PreparedStatement prep = conn.prepareStatement("delete from project where projectname=?;");
 			prep.setString(1, projectName);
-			prep.setString(2, userName);
 			int ret = prep.executeUpdate();
 			if(ret>0){
             	res = true;
@@ -64,20 +61,22 @@ public class ProjectJoinDaoImpl implements ProjectJoinDao{
 	}
 
 	@Override
-	public List<Join> getList(String column, String value) {
-		List<Join> res = new ArrayList<Join>();
+	public List<String> getList(String column, String value, String retColumn) {
+		List<String> res = new ArrayList<String>();
 		try{
 			Connection conn = daoHelper.getConnection();
-			String sql = "select * from `join` where "+column+"=? order by jointime;";
+			String condition = "";
+			if(column!=null){
+				condition = " where "+column+"=?";
+			}
+			String sql = "select "+retColumn+" from project"+condition+" order by createtime;";
             PreparedStatement preState = conn.prepareStatement(sql);
-            preState.setString(1, value);
+            if(column!=null){
+                preState.setString(1, value);
+            }
             ResultSet rs = preState.executeQuery();
             while (rs.next()) {  
-            	Join j = new Join();
-            	j.setProjectName(rs.getString("projectname"));
-            	j.setUserName(rs.getString("username"));
-            	j.setJoinTime(rs.getString("jointime"));
-            	res.add(j);
+            	res.add(rs.getString(retColumn));
             }
             rs.close(); 
 			daoHelper.closeConnection(conn);

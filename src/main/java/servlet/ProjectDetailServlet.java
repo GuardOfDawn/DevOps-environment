@@ -14,9 +14,9 @@ import service.ProjectService;
 import service.ProjectServiceImpl;
 
 /**
- * Servlet implementation class AllProjectServlet
+ * Servlet implementation class ProjectDetailServlet
  */
-public class AllProjectsServlet extends HttpServlet {
+public class ProjectDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private ProjectService projectService;
@@ -24,7 +24,7 @@ public class AllProjectsServlet extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AllProjectsServlet() {
+    public ProjectDetailServlet() {
         super();
         projectService = new ProjectServiceImpl();
     }
@@ -45,9 +45,8 @@ public class AllProjectsServlet extends HttpServlet {
 			}
 			else{
 				String userName = String.valueOf(session.getAttribute("username"));
-				ProjectListBean projectBean = projectService.getProjectList(userName);
-				request.setAttribute("projectList", projectBean);
-				RequestDispatcher rd = request.getRequestDispatcher("/allProjects");
+				
+				RequestDispatcher rd = request.getRequestDispatcher("/projectDetail");
 				rd.forward(request, response);
 			}
 		}

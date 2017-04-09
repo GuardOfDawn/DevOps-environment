@@ -51,6 +51,10 @@
     <jsp-file>/pages/createProjectSuccess.jsp</jsp-file>
   </servlet>
   <servlet>
+    <servlet-name>projectDetailJSP</servlet-name>
+    <jsp-file>/pages/projectDetail.jsp</jsp-file>
+  </servlet>
+  <servlet>
   	<servlet-name>TestServlet</servlet-name>
   	<display-name>TestServlet</display-name>
   	<description></description>
@@ -73,6 +77,24 @@
   	<display-name>AllProjectsServlet</display-name>
   	<description></description>
   	<servlet-class>servlet.AllProjectsServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>JoinProjectServlet</servlet-name>
+  	<display-name>JoinProjectServlet</display-name>
+  	<description></description>
+  	<servlet-class>servlet.JoinProjectServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>QuitProjectServlet</servlet-name>
+  	<display-name>QuitProjectServlet</display-name>
+  	<description></description>
+  	<servlet-class>servlet.QuitProjectServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>ProjectDetailServlet</servlet-name>
+  	<display-name>ProjectDetailServlet</display-name>
+  	<description></description>
+  	<servlet-class>servlet.ProjectDetailServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
@@ -109,6 +131,10 @@
     <url-pattern>/createProjectSuccess</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>projectDetailJSP</servlet-name>
+    <url-pattern>/projectDetail</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
   	<servlet-name>TestServlet</servlet-name>
   	<url-pattern>/TestServlet</url-pattern>
   </servlet-mapping>
@@ -123,6 +149,18 @@
   <servlet-mapping>
   	<servlet-name>AllProjectsServlet</servlet-name>
   	<url-pattern>/AllProjectsServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>JoinProjectServlet</servlet-name>
+  	<url-pattern>/JoinProjectServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>QuitProjectServlet</servlet-name>
+  	<url-pattern>/QuitProjectServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ProjectDetailServlet</servlet-name>
+  	<url-pattern>/ProjectDetailServlet</url-pattern>
   </servlet-mapping>
 
   <welcome-file-list>

@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
-    <%@page import="model.ProjectListBean"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>DevOps | Home page</title>
+  <title>DevOps | Project detail</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <%String path = request.getContextPath(); %>
@@ -92,7 +91,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="<%=path %>/AllProjectsServlet"><i class="fa fa-circle-o"></i> All projects</a></li>
+            <li><a href="<%=path %>/AllProjectsServlet"><i class="fa fa-circle-o"></i> All projects</a></li>
             <li><a href="<%=path %>/createProject"><i class="fa fa-circle-o"></i> Create a project</a></li>
           </ul>
         </li>
@@ -124,64 +123,8 @@
 
     <!-- Main content -->
     <section class="content">
-      <jsp:useBean id="projectList"
-			class="model.ProjectListBean"
-			scope="page"></jsp:useBean>
-	  <jsp:useBean id="project"
-			class="model.SimpleProject"
-			scope="page"></jsp:useBean>
-	  <div class="row">
-	    <div class="col-xs-12">
-	      <div class="box">
-	        <div class="box-header">
-	          <h3 class="box-title">All projects</h3>
-	        </div>
-	        <!-- /.box-header -->
-	        <div class="box-body">
-	          <table id="allProjectsTable" class="table table-bordered table-striped">
-	            <thead>
-	              <tr>
-	                <th>Project Index</th>
-	                <th><abbr title="Click to view the detail of the project">Project name</abbr></th>
-	                <th>Join condition</th>
-	                <th><abbr title="If you have not joined the project,click to join.If you have joined,click to quit">Operation</abbr></th>
-	              </tr>
-	            </thead>
-	            <tbody>
-	            <%int n = 0;
-	              projectList = (ProjectListBean)request.getAttribute("projectList");
-	              if(projectList.getProjectList()!=null){
-		          	for(int i=0;i<projectList.getSize();i++){ 
-		          	pageContext.setAttribute("project",projectList.getProject(i));
-		          	project = projectList.getProject(i);
-		          	n++;
-		          	request.setAttribute("num", n);
-	            %>
-	              <tr>
-	                <td><%=request.getAttribute("num") %></td>
-	                <td><a href="#"><jsp:getProperty name="project" property="projectName" /></a></td>
-	              <%if(project.isMember()){ %>
-	                <td><span class="label bg-green">You are a member</span></td>
-	                <td><button type="button" class="btn btn-block btn-success btn-sm" onclick="quitProject('<jsp:getProperty name="project" property="projectName" />')">Quit</button></td>
-	              <%}else{ %>
-	                <td><span class="label bg-blue">You are not a member</span></td>
-	                <td><button type="button" class="btn btn-block btn-primary btn-sm" onclick="joinProject('<jsp:getProperty name="project" property="projectName" />')">Join</button></td>
-	              <%} %>
-	              </tr>
-	              <!-- 
-	                <abbr title="Build success">
-	                  <span class="glyphicon glyphicon-certificate text-success"></span>
-	                </abbr> -->
-	            <%	}
-	              }%>
-	            </tbody>
-	          </table>
-	        </div>
-	        <!-- /.box-body -->
-	      </div>
-	      <!-- /.box -->
-	    </div>
-	  </div>
+      
+      
     </section>
     <!-- /.content -->
   </div>
@@ -195,20 +138,18 @@
 <script src="<%=path %>/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="<%=path %>/bootstrap/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="<%=path %>/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<%=path %>/plugins/datatables/dataTables.bootstrap.min.js"></script>
 <!-- SlimScroll -->
 <script src="<%=path %>/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<%=path %>/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="<%=path %>/dist/js/app.min.js"></script>
+<!-- Slimscroll -->
+<script src="<%=path %>/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="<%=path %>/plugins/fastclick/fastclick.js"></script>
 <!-- page script -->
 <script>
-  $(function () {
-    $("#allProjectsTable").DataTable();
-  });
   function joinProject(project){
 	  var page = "AllProjectsServlet";
 	  window.location.href='<%=path%>/JoinProjectServlet?project='+project+'&page='+page;

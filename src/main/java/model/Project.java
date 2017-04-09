@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Project implements Serializable {
 	
@@ -10,6 +11,7 @@ public class Project implements Serializable {
 	private String result;
 	private String timeStamp;
 	private String duration;
+	private List<String> members;
 	
 	public String getProjectName() {
 		return projectName;
@@ -34,6 +36,12 @@ public class Project implements Serializable {
 	}
 	public void setDuration(String duration) {
 		this.duration = duration;
+	}
+	public List<String> getMembers() {
+		return members;
+	}
+	public void setMembers(List<String> members) {
+		this.members = members;
 	}
 	
 }
