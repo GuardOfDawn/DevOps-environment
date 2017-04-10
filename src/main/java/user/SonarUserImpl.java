@@ -35,10 +35,14 @@ public class SonarUserImpl implements SonarUser {
         props.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((auth[0] + ":" + auth[1]).getBytes()));
         try {
             Object[] response = HttpUtils.sendPost(CREATE_USER, param, props);
-            if (Integer.parseInt(response[0].toString()) == 200) return true;
+            if (Integer.parseInt(response[0].toString()) == 200) {
+                logger.info("Create sonar user: return true. Message: " + response[1].toString());
+                return true;
+            }
         } catch (Exception e) {
             logger.error("Create sonar user: POST request error.", e);
         }
+        logger.info("Create sonar user: return false.");
         return false;
     }
 }
