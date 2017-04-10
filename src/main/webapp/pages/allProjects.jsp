@@ -159,7 +159,7 @@
 	            %>
 	              <tr>
 	                <td><%=request.getAttribute("num") %></td>
-	                <td><a href="#"><jsp:getProperty name="project" property="projectName" /></a></td>
+	                <td><a href="<%=path %>/ProjectDetailServlet?projectName=<jsp:getProperty name="project" property="projectName" />"><jsp:getProperty name="project" property="projectName" /></a></td>
 	              <%if(project.isMember()){ %>
 	                <td><span class="label bg-green">You are a member</span></td>
 	                <td><button type="button" class="btn btn-block btn-success btn-sm" onclick="quitProject('<jsp:getProperty name="project" property="projectName" />')">Quit</button></td>

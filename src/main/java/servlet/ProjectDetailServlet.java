@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.ProjectListBean;
+import model.Project;
 import service.ProjectService;
 import service.ProjectServiceImpl;
 
@@ -44,8 +44,9 @@ public class ProjectDetailServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/login");
 			}
 			else{
-				String userName = String.valueOf(session.getAttribute("username"));
-				
+				String projectName = request.getParameter("projectName");
+				Project project = projectService.getProjectDetail(projectName);
+				request.setAttribute("project", project);
 				RequestDispatcher rd = request.getRequestDispatcher("/projectDetail");
 				rd.forward(request, response);
 			}

@@ -47,7 +47,7 @@ public class JoinProjectServlet extends HttpServlet {
 				String projectToJoin = request.getParameter("project");
 				String page = request.getParameter("page");
 				projectService.joinProject(userName, projectToJoin);
-				RequestDispatcher rd = request.getRequestDispatcher("/"+page);
+				RequestDispatcher rd = request.getRequestDispatcher("/"+page+"?projectName="+projectToJoin);
 				rd.forward(request, response);
 			}
 		}

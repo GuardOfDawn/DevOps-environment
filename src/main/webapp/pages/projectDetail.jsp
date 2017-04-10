@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+    <%@page import="model.Project"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -114,16 +115,88 @@
   
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+    <jsp:useBean id="project"
+		class="model.Project"
+		scope="page"></jsp:useBean>
+        <%project = (Project)request.getAttribute("project");
+        pageContext.setAttribute("project",project);%>
     <!-- Content Header (Page header) -->
     <section class="content-header text-center">
       <h1>
-      
+        <%=project.getProjectName() %>
       </h1>
     </section>
 
     <!-- Main content -->
     <section class="content">
       
+      <div class="row">
+        <div class="col-md-5 col-md-push-2">
+          <div class="box box-success box-solid">
+            <div class="box-header with-border">
+	          <h3 class="box-title">Basic Info</h3>
+	          <!--<div class="box-tools pull-right">
+	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+	            </button>
+	          </div>-->
+	          <!-- /.box-tools -->
+	        </div>
+	        <!-- /.box-header -->
+	        <div class="box-body">
+	          <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                  <b>Build result</b> <a class="pull-right"><jsp:getProperty name="project" property="result" /></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Build timeStamp</b> <a class="pull-right"><jsp:getProperty name="project" property="timeStamp" /></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Build duration</b> <a class="pull-right"><jsp:getProperty name="project" property="duration" /></a>
+                </li>
+              </ul>
+	        </div>
+	        <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        
+        <div class="col-md-3 col-md-push-2">
+	      <div class="box box-warning box-solid">
+	        <div class="box-header with-border">
+	          <h3 class="box-title">Members</h3>
+	          <div class="box-tools pull-right">
+                <%if(project.isMember(String.valueOf(session.getAttribute("username")))){ %>
+                <button type="button" class="btn btn-box-tool" onclick="quitProject('<jsp:getProperty name="project" property="projectName" />')">
+                  <b>Quit</b>
+	            </button>
+	            <%}else{ %>
+	            <button type="button" class="btn btn-box-tool" onclick="joinProject('<jsp:getProperty name="project" property="projectName" />')">
+	              <b>Join</b>
+	            </button>
+	              <%} %>
+	          </div>
+	          <!-- /.box-tools -->
+	        </div>
+	        <!-- /.box-header -->
+	        <%if(project.getMembers().size()==0){ %>
+	          <div class="box-body">There is no member.</div>
+	        <%}else{
+	          for(int i=0;i<project.getMembers().size();i++){ %>
+	        <div class="box-body">
+	          <%if(session.getAttribute("username").equals(project.getMembers().get(i))){ %>
+	          <%=project.getMembers().get(i) %><a class="pull-right">you</a>
+	          <%}else{ %>
+	          <%=project.getMembers().get(i) %>
+	          <%} %>
+	        </div>
+	        <%}
+	        }%>
+	        <!-- /.box-body -->
+	      </div>
+	      <!-- /.box -->
+        </div>
+        
+      </div>
       
     </section>
     <!-- /.content -->
@@ -151,11 +224,11 @@
 <!-- page script -->
 <script>
   function joinProject(project){
-	  var page = "AllProjectsServlet";
+	  var page = "ProjectDetailServlet";
 	  window.location.href='<%=path%>/JoinProjectServlet?project='+project+'&page='+page;
   }
   function quitProject(project){
-	  var page = "AllProjectsServlet";
+	  var page = "ProjectDetailServlet";
 	  window.location.href='<%=path%>/QuitProjectServlet?project='+project+'&page='+page;
   }
 </script>

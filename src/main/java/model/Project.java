@@ -44,4 +44,15 @@ public class Project implements Serializable {
 		this.members = members;
 	}
 	
+	public boolean isMember(String userName){
+		boolean res = false;
+		for(int i=0;i<members.size();i++){
+			if(userName.equals(members.get(i))){
+				res = true;
+				break;
+			}
+		}
+		return res;
+	}
+	
 }

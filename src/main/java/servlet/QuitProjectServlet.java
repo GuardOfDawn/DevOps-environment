@@ -44,10 +44,10 @@ public class QuitProjectServlet extends HttpServlet {
 			}
 			else{
 				String userName = String.valueOf(session.getAttribute("username"));
-				String projectToJoin = request.getParameter("project");
+				String projectToQuit = request.getParameter("project");
 				String page = request.getParameter("page");
-				projectService.quitProject(userName, projectToJoin);
-				RequestDispatcher rd = request.getRequestDispatcher("/"+page);
+				projectService.quitProject(userName, projectToQuit);
+				RequestDispatcher rd = request.getRequestDispatcher("/"+page+"?projectName="+projectToQuit);
 				rd.forward(request, response);
 			}
 		}
