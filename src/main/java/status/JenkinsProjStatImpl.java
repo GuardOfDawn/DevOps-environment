@@ -4,6 +4,7 @@ import interfaces.JenkinsProjStat;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
+import tool.Host;
 import tool.HttpUtils;
 import tool.TimeTransformer;
 
@@ -17,7 +18,6 @@ import java.util.Map;
  * Time: 8:49 PM
  */
 public class JenkinsProjStatImpl implements JenkinsProjStat {
-    private static final String JENKINS_HOST = "http://127.0.0.1:8080/jenkins/job/";
     private static Logger logger = Logger.getLogger(JenkinsProjStatImpl.class);
 
     /**
@@ -29,7 +29,7 @@ public class JenkinsProjStatImpl implements JenkinsProjStat {
      * If there is no information then it will return null.
      */
     public Map<String, String> getLastBuild(String name) {
-        String url = JENKINS_HOST + name + "/lastBuild/api/json";
+        String url = Host.getJenkins() + "job/" + name + "/lastBuild/api/json";
         String json = null;
         try {
             Object[] response = HttpUtils.sendGet(url);
@@ -63,7 +63,7 @@ public class JenkinsProjStatImpl implements JenkinsProjStat {
      * If the number of build is less than two, then it will return null.
      */
     public String getFrequency(String name) {
-        String url = JENKINS_HOST + name + "/api/json?tree=builds[number,timestamp]";
+        String url = Host.getJenkins() + "job/" + name + "/api/json?tree=builds[number,timestamp]";
         String json = null;
         try {
             Object[] response = HttpUtils.sendGet(url);

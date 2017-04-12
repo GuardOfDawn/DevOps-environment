@@ -6,6 +6,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import tool.Authentication;
+import tool.Host;
 import tool.HttpUtils;
 
 import java.util.*;
@@ -16,8 +17,6 @@ import java.util.*;
  * Time: 8:05 PM
  */
 public class SonarProjImpl implements SonarProj {
-    private static final String ALL_PROJECTS = "http://127.0.0.1:9000/api/projects/index";
-    private static final String CREATE_PROJECT = "http://127.0.0.1:9000/api/projects/create";
     private static Logger logger = Logger.getLogger(SonarProjImpl.class);
 
     /**
@@ -27,9 +26,10 @@ public class SonarProjImpl implements SonarProj {
      * If the list is empty then it will return null.
      */
     public List<String> getAllProject() {
+        String url = Host.getSonar() + "api/projects/index";
         String json = null;
         try {
-            Object[] response = HttpUtils.sendGet(ALL_PROJECTS);
+            Object[] response = HttpUtils.sendGet(url);
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
@@ -66,8 +66,9 @@ public class SonarProjImpl implements SonarProj {
         String[] auth = Authentication.getAdmin("sonar");
         Map<String, String> props = new HashMap<>();
         props.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((auth[0] + ":" + auth[1]).getBytes()));
+        String url = Host.getSonar() + "api/projects/create";
         try {
-            Object[] response = HttpUtils.sendPost(CREATE_PROJECT, param, props);
+            Object[] response = HttpUtils.sendPost(url, param, props);
             if (Integer.parseInt(response[0].toString()) == 200) return true;
         } catch (Exception e) {
             logger.error("Create sonar project: POST request error.", e);

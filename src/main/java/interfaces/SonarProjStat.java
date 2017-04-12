@@ -23,7 +23,7 @@ public interface SonarProjStat {
      * Get project quality gate status.
      *
      * @param key Project key
-     * @return Status.
+     * @return Status
      * If there is no information then it will return null.
      */
     String getQualityGates(String key);

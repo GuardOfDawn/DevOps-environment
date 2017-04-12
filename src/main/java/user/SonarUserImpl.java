@@ -5,6 +5,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import tool.Authentication;
+import tool.Host;
 import tool.HttpUtils;
 
 import java.util.*;
@@ -15,7 +16,6 @@ import java.util.*;
  * Time: 2:06 PM
  */
 public class SonarUserImpl implements SonarUser {
-    private static final String CREATE_USER = "http://127.0.0.1:9000/api/users/create";
     private static Logger logger = Logger.getLogger(SonarUserImpl.class);
 
     /**
@@ -33,8 +33,9 @@ public class SonarUserImpl implements SonarUser {
         String[] auth = Authentication.getAdmin("sonar");
         Map<String, String> props = new HashMap<>();
         props.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((auth[0] + ":" + auth[1]).getBytes()));
+        String url = Host.getSonar() + "api/users/create";
         try {
-            Object[] response = HttpUtils.sendPost(CREATE_USER, param, props);
+            Object[] response = HttpUtils.sendPost(url, param, props);
             if (Integer.parseInt(response[0].toString()) == 200) {
                 logger.info("Create sonar user: return true. Message: " + response[1].toString());
                 return true;

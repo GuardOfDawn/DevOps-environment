@@ -4,6 +4,7 @@ import interfaces.SonarProjStat;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
+import tool.Host;
 import tool.HttpUtils;
 
 import java.util.HashMap;
@@ -18,7 +19,6 @@ import java.util.regex.Pattern;
  * Time: 9:02 PM
  */
 public class SonarProjStatImpl implements SonarProjStat {
-    private static final String SONAR_HOST = "http://127.0.0.1:9000/";
     private static Logger logger = Logger.getLogger(SonarProjStatImpl.class);
     private String[] metrics = new String[]{
             "ncloc",
@@ -44,7 +44,7 @@ public class SonarProjStatImpl implements SonarProjStat {
      * If there is no information then it will return null.
      */
     public Map<String, String[]> getStatus(String key) {
-        StringBuilder url = new StringBuilder(SONAR_HOST + "api/measures/component?metricKeys=");
+        StringBuilder url = new StringBuilder(Host.getSonar() + "api/measures/component?metricKeys=");
         for (String metric : metrics) {
             url.append(metric).append(",");
         }
@@ -85,11 +85,11 @@ public class SonarProjStatImpl implements SonarProjStat {
      * Get project quality gate status.
      *
      * @param key Project key
-     * @return Status.
+     * @return Status
      * If there is no information then it will return null.
      */
     public String getQualityGates(String key) {
-        String url = SONAR_HOST + "api/qualitygates/project_status?projectKey=" + key;
+        String url = Host.getSonar() + "api/qualitygates/project_status?projectKey=" + key;
         String json = null;
         try {
             Object[] response = HttpUtils.sendGet(url);
@@ -116,7 +116,7 @@ public class SonarProjStatImpl implements SonarProjStat {
      * If there is no information then it will return null.
      */
     public String getAnalysisTime(String key) {
-        String url = SONAR_HOST + "api/projects?versions=true&key=" + key;
+        String url = Host.getSonar() + "api/projects?versions=true&key=" + key;
         String json = null;
         try {
             Object[] response = HttpUtils.sendGet(url);

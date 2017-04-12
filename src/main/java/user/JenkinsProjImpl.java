@@ -6,6 +6,7 @@ import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
 import tool.Authentication;
 import tool.GetPath;
+import tool.Host;
 import tool.HttpUtils;
 
 import java.io.BufferedReader;
@@ -18,8 +19,6 @@ import java.util.*;
  * Time: 8:51 PM
  */
 public class JenkinsProjImpl implements JenkinsProj {
-    private static final String ALL_PROJECTS = "http://127.0.0.1:8080/jenkins/api/json?tree=jobs[name]";
-    private static final String CREATE_PROJECT = "http://127.0.0.1:8080/jenkins/createItem";
     private static Logger logger = Logger.getLogger(JenkinsProjImpl.class);
 
     /**
@@ -29,9 +28,10 @@ public class JenkinsProjImpl implements JenkinsProj {
      * If the list is empty then it will return null.
      */
     public List<String> getAllProject() {
+        String url = Host.getJenkins() + "api/json?tree=jobs[name]";
         String json = null;
         try {
-            Object[] response = HttpUtils.sendGet(ALL_PROJECTS);
+            Object[] response = HttpUtils.sendGet(url);
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
@@ -63,7 +63,7 @@ public class JenkinsProjImpl implements JenkinsProj {
      * @return Success or failure
      */
     public boolean createProject(String name) {
-        String url = CREATE_PROJECT + "?name=" + name;
+        String url = Host.getJenkins() + "createItem?name=" + name;
         String[] auth = Authentication.getAdmin("jenkins");
         Map<String, String> props = new HashMap<>();
         props.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((auth[0] + ":" + auth[1]).getBytes()));

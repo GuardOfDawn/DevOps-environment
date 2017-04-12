@@ -1,5 +1,7 @@
 import interfaces.SonarProjStat;
+import interfaces.SonarUserStat;
 import status.SonarProjStatImpl;
+import status.SonarUserStatImpl;
 
 import java.util.Map;
 
@@ -10,7 +12,8 @@ import java.util.Map;
  */
 public class Test {
     public static void main(String[] args) {
-        SonarProjStat sonarProjStat = new SonarProjStatImpl();
-        System.out.println(sonarProjStat.getAnalysisTime("devops-system"));
+        System.setProperty("WORK_DIR", "/home/stk/Projects/DevOps-environment/");
+        SonarUserStat sonarUserStat = new SonarUserStatImpl();
+        System.out.println(sonarUserStat.getTotal("admin"));
     }
 }
