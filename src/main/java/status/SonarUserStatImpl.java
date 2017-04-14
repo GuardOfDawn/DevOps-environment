@@ -4,6 +4,7 @@ import interfaces.SonarUserStat;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
+import tool.Authentication;
 import tool.Host;
 import tool.HttpUtils;
 
@@ -23,12 +24,13 @@ public class SonarUserStatImpl implements SonarUserStat {
      *
      * @param param Search parameter
      * @return Number of issues
+     * If error then return -1.
      */
     private int search(String param) {
         String url = Host.getSonar() + "api/issues/search?" + param;
         String json = null;
         try {
-            Object[] response = HttpUtils.sendGet(url);
+            Object[] response = HttpUtils.sendGet(url, Authentication.getBasicAuth("sonar"));
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
@@ -37,14 +39,14 @@ public class SonarUserStatImpl implements SonarUserStat {
         }
         if (json == null) {
             logger.warn("Sonar issue search: response empty.");
-            return 0;
+            return -1;
         }
         Map<String, Object> map = JSONObject.fromObject(json);
         List<Map<String, Object>> issues = JSONArray.fromObject(map.get("issues"));
         int num = issues.size();
         if (num == 0) {
             logger.warn("Sonar issue search: empty json.");
-            return 0;
+            return -1;
         }
         return num;
     }
@@ -54,6 +56,7 @@ public class SonarUserStatImpl implements SonarUserStat {
      *
      * @param name User name
      * @return Number of issues
+     * If error then return -1.
      */
     public int getTotal(String name) {
         String param = "assignees=" + name;
@@ -66,6 +69,7 @@ public class SonarUserStatImpl implements SonarUserStat {
      * @param name     User name
      * @param severity Severity: INFO, MINOR, MAJOR, CRITICAL, BLOCKER
      * @return Number of issues
+     * If error then return -1.
      */
     public int getBySeverity(String name, String severity) {
         String param = "assignees=" + name + "&severities=" + severity;
@@ -78,6 +82,7 @@ public class SonarUserStatImpl implements SonarUserStat {
      * @param name User name
      * @param type Type: CODE_SMELL, BUG, VULNERABILITY
      * @return Number of issues
+     * If error then return -1.
      */
     public int getByType(String name, String type) {
         String param = "assignees=" + name + "&types=" + type;
@@ -90,6 +95,7 @@ public class SonarUserStatImpl implements SonarUserStat {
      * @param name    User name
      * @param project Project key
      * @return Number of issues
+     * If error then return -1.
      */
     public int getByProject(String name, String project) {
         String param = "assignees=" + name + "&projectKeys=" + project;
@@ -101,6 +107,7 @@ public class SonarUserStatImpl implements SonarUserStat {
      *
      * @param name User name
      * @return Number of issues
+     * If error then return -1.
      */
     public int getUnresolved(String name) {
         String param = "resolved=false&assignees=" + name;

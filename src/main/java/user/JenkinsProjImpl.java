@@ -31,7 +31,7 @@ public class JenkinsProjImpl implements JenkinsProj {
         String url = Host.getJenkins() + "api/json?tree=jobs[name]";
         String json = null;
         try {
-            Object[] response = HttpUtils.sendGet(url);
+            Object[] response = HttpUtils.sendGet(url, Authentication.getBasicAuth("jenkins"));
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
@@ -64,9 +64,8 @@ public class JenkinsProjImpl implements JenkinsProj {
      */
     public boolean createProject(String name) {
         String url = Host.getJenkins() + "createItem?name=" + name;
-        String[] auth = Authentication.getAdmin("jenkins");
         Map<String, String> props = new HashMap<>();
-        props.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((auth[0] + ":" + auth[1]).getBytes()));
+        props.put("Authorization", Authentication.getBasicAuth("jenkins"));
         props.put("Content-Type", "application/xml");
         try {
             Object[] response = HttpUtils.sendPostWithString(url, getJobTemplate(), props);

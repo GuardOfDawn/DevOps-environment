@@ -26,4 +26,22 @@ public interface JenkinsProjStat {
      * If the number of build is less than two, then it will return null.
      */
     String getFrequency(String name);
+
+    /**
+     * Get the build success rate of the last ten builds.
+     *
+     * @param name Project name
+     * @return Success rate
+     * If the number of build is less than two, then it will return -1.
+     */
+    double getSuccessRate(String name);
+
+    /**
+     * Get build result of the last ten builds.
+     *
+     * @param name Project name
+     * @return Map: <time, result>
+     * If no build then return null.
+     */
+    Map<String, String> getBuildResult(String name);
 }

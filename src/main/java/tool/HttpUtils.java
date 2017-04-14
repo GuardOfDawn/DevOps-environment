@@ -68,13 +68,17 @@ public class HttpUtils {
     /**
      * Send GET request.
      *
-     * @param url GET url
+     * @param url            GET url
+     * @param authentication Base64 authentication string
      * @return Object array: [statusCode, message]
      * @throws Exception Exception
      */
-    public static Object[] sendGet(String url) throws Exception {
+    public static Object[] sendGet(String url, String authentication) throws Exception {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(url);
+        if (authentication != null) {
+            httpGet.addHeader("Authorization", authentication);
+        }
         CloseableHttpResponse response = httpClient.execute(httpGet);
         Object[] msg = new Object[]{response.getStatusLine().getStatusCode(), EntityUtils.toString(response.getEntity())};
         response.close();

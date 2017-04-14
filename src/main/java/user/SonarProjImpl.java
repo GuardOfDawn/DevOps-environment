@@ -29,7 +29,7 @@ public class SonarProjImpl implements SonarProj {
         String url = Host.getSonar() + "api/projects/index";
         String json = null;
         try {
-            Object[] response = HttpUtils.sendGet(url);
+            Object[] response = HttpUtils.sendGet(url, Authentication.getBasicAuth("sonar"));
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
@@ -63,9 +63,8 @@ public class SonarProjImpl implements SonarProj {
         List<NameValuePair> param = new ArrayList<>();
         param.add(new BasicNameValuePair("name", name));
         param.add(new BasicNameValuePair("key", key));
-        String[] auth = Authentication.getAdmin("sonar");
         Map<String, String> props = new HashMap<>();
-        props.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((auth[0] + ":" + auth[1]).getBytes()));
+        props.put("Authorization", Authentication.getBasicAuth("sonar"));
         String url = Host.getSonar() + "api/projects/create";
         try {
             Object[] response = HttpUtils.sendPost(url, param, props);

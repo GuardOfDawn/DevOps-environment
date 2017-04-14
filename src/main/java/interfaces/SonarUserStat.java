@@ -11,6 +11,7 @@ public interface SonarUserStat {
      *
      * @param name User name
      * @return Number of issues
+     * If error then return -1.
      */
     int getTotal(String name);
 
@@ -20,6 +21,7 @@ public interface SonarUserStat {
      * @param name     User name
      * @param severity Severity: INFO, MINOR, MAJOR, CRITICAL, BLOCKER
      * @return Number of issues
+     * If error then return -1.
      */
     int getBySeverity(String name, String severity);
 
@@ -29,6 +31,7 @@ public interface SonarUserStat {
      * @param name User name
      * @param type Type: CODE_SMELL, BUG, VULNERABILITY
      * @return Number of issues
+     * If error then return -1.
      */
     int getByType(String name, String type);
 
@@ -38,6 +41,7 @@ public interface SonarUserStat {
      * @param name    User name
      * @param project Project key
      * @return Number of issues
+     * If error then return -1.
      */
     int getByProject(String name, String project);
 
@@ -46,6 +50,7 @@ public interface SonarUserStat {
      *
      * @param name User name
      * @return Number of issues
+     * If error then return -1.
      */
     int getUnresolved(String name);
 }

@@ -4,6 +4,7 @@ import interfaces.SonarProjStat;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.log4j.Logger;
+import tool.Authentication;
 import tool.Host;
 import tool.HttpUtils;
 
@@ -52,7 +53,7 @@ public class SonarProjStatImpl implements SonarProjStat {
         url.append("&componentKey=").append(key);
         String json = null;
         try {
-            Object[] response = HttpUtils.sendGet(url.toString());
+            Object[] response = HttpUtils.sendGet(url.toString(), Authentication.getBasicAuth("sonar"));
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
@@ -92,7 +93,7 @@ public class SonarProjStatImpl implements SonarProjStat {
         String url = Host.getSonar() + "api/qualitygates/project_status?projectKey=" + key;
         String json = null;
         try {
-            Object[] response = HttpUtils.sendGet(url);
+            Object[] response = HttpUtils.sendGet(url, Authentication.getBasicAuth("sonar"));
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }
@@ -119,7 +120,7 @@ public class SonarProjStatImpl implements SonarProjStat {
         String url = Host.getSonar() + "api/projects?versions=true&key=" + key;
         String json = null;
         try {
-            Object[] response = HttpUtils.sendGet(url);
+            Object[] response = HttpUtils.sendGet(url, Authentication.getBasicAuth("sonar"));
             if (Integer.parseInt(response[0].toString()) == 200) {
                 json = response[1].toString();
             }

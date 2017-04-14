@@ -30,9 +30,8 @@ public class SonarUserImpl implements SonarUser {
         param.add(new BasicNameValuePair("login", name));
         param.add(new BasicNameValuePair("name", name));
         param.add(new BasicNameValuePair("password", password));
-        String[] auth = Authentication.getAdmin("sonar");
         Map<String, String> props = new HashMap<>();
-        props.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((auth[0] + ":" + auth[1]).getBytes()));
+        props.put("Authorization", Authentication.getBasicAuth("sonar"));
         String url = Host.getSonar() + "api/users/create";
         try {
             Object[] response = HttpUtils.sendPost(url, param, props);
