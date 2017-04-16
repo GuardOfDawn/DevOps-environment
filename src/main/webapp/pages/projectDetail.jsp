@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
     <%@page import="model.Project"%>
+    <%@page import="java.util.List" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -121,81 +122,105 @@
         <%project = (Project)request.getAttribute("project");
         pageContext.setAttribute("project",project);%>
     <!-- Content Header (Page header) -->
-    <section class="content-header text-center">
+    <section class="content-header">
       <h1>
-        <%=project.getProjectName() %>
+        Detail view of project
       </h1>
     </section>
 
     <!-- Main content -->
     <section class="content">
-      
-      <div class="row">
-        <div class="col-md-5 col-md-push-2">
-          <div class="box box-success box-solid">
-            <div class="box-header with-border">
-	          <h3 class="box-title">Basic Info</h3>
-	          <!--<div class="box-tools pull-right">
-	            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-	            </button>
-	          </div>-->
-	          <!-- /.box-tools -->
-	        </div>
-	        <!-- /.box-header -->
-	        <div class="box-body">
-	          <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  <b>Build result</b> <a class="pull-right"><jsp:getProperty name="project" property="result" /></a>
-                </li>
-                <li class="list-group-item">
-                  <b>Build timeStamp</b> <a class="pull-right"><jsp:getProperty name="project" property="timeStamp" /></a>
-                </li>
-                <li class="list-group-item">
-                  <b>Build duration</b> <a class="pull-right"><jsp:getProperty name="project" property="duration" /></a>
-                </li>
-              </ul>
-	        </div>
-	        <!-- /.box-body -->
+      <div class="box box-default">
+        <div class="box-header with-border">
+          <h3 class="box-title"><%=project.getProjectName() %></h3>
+		  <%List<String> projectList = (List<String>) request.getAttribute("projectList");
+            if(projectList!=null){%>
+          <div class="box-tools pull-right form-group">
+            <select id="projectSelection" class="form-control select2" onchange="projectChange()">
+            <%for(int i=0;i<projectList.size();i++){ 
+                if(project.getProjectName().equals(projectList.get(i))){%>
+              <option selected="selected"><%=projectList.get(i) %></option>
+              <%}else{ %>
+              <option><%=projectList.get(i) %></option>
+              <%}
+			  }%>
+            </select>
           </div>
-          <!-- /.box -->
+          <%} %>
         </div>
+        <!-- /.box-header -->
+        <div class="box-body">
         
-        <div class="col-md-3 col-md-push-2">
-	      <div class="box box-warning box-solid">
-	        <div class="box-header with-border">
-	          <h3 class="box-title">Members</h3>
-	          <div class="box-tools pull-right">
-                <%if(project.isMember(String.valueOf(session.getAttribute("username")))){ %>
-                <button type="button" class="btn btn-box-tool" onclick="quitProject('<jsp:getProperty name="project" property="projectName" />')">
-                  <b>Quit</b>
-	            </button>
-	            <%}else{ %>
-	            <button type="button" class="btn btn-box-tool" onclick="joinProject('<jsp:getProperty name="project" property="projectName" />')">
-	              <b>Join</b>
-	            </button>
-	              <%} %>
+          <div class="row">
+	        <div class="col-md-5 col-md-push-2">
+	          <div class="box box-success box-solid">
+	            <div class="box-header with-border">
+		          <h3 class="box-title">Basic Info</h3>
+		          <!--<div class="box-tools pull-right">
+		            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+		            </button>
+		          </div>-->
+		          <!-- /.box-tools -->
+		        </div>
+		        <!-- /.box-header -->
+		        <div class="box-body">
+		          <ul class="list-group list-group-unbordered">
+	                <li class="list-group-item">
+	                  <b>Build result</b> <a class="pull-right"><jsp:getProperty name="project" property="result" /></a>
+	                </li>
+	                <li class="list-group-item">
+	                  <b>Build timeStamp</b> <a class="pull-right"><jsp:getProperty name="project" property="timeStamp" /></a>
+	                </li>
+	                <li class="list-group-item">
+	                  <b>Build duration</b> <a class="pull-right"><jsp:getProperty name="project" property="duration" /></a>
+	                </li>
+	              </ul>
+		        </div>
+		        <!-- /.box-body -->
 	          </div>
-	          <!-- /.box-tools -->
+	          <!-- /.box -->
 	        </div>
-	        <!-- /.box-header -->
-	        <%if(project.getMembers().size()==0){ %>
-	          <div class="box-body">There is no member.</div>
-	        <%}else{
-	          for(int i=0;i<project.getMembers().size();i++){ %>
-	        <div class="box-body">
-	          <%if(session.getAttribute("username").equals(project.getMembers().get(i))){ %>
-	          <%=project.getMembers().get(i) %><a class="pull-right">you</a>
-	          <%}else{ %>
-	          <%=project.getMembers().get(i) %>
-	          <%} %>
+	        
+	        <div class="col-md-3 col-md-push-2">
+		      <div class="box box-warning box-solid">
+		        <div class="box-header with-border">
+		          <h3 class="box-title">Members</h3>
+		          <div class="box-tools pull-right">
+	                <%if(project.isMember(String.valueOf(session.getAttribute("username")))){ %>
+	                <button type="button" class="btn btn-box-tool" onclick="quitProject('<jsp:getProperty name="project" property="projectName" />')">
+	                  <b>Quit</b>
+		            </button>
+		            <%}else{ %>
+		            <button type="button" class="btn btn-box-tool" onclick="joinProject('<jsp:getProperty name="project" property="projectName" />')">
+		              <b>Join</b>
+		            </button>
+		              <%} %>
+		          </div>
+		          <!-- /.box-tools -->
+		        </div>
+		        <!-- /.box-header -->
+		        <%if(project.getMembers().size()==0){ %>
+		          <div class="box-body">There is no member.</div>
+		        <%}else{
+		          for(int i=0;i<project.getMembers().size();i++){ %>
+		        <div class="box-body">
+		          <%if(session.getAttribute("username").equals(project.getMembers().get(i))){ %>
+		          <%=project.getMembers().get(i) %><a class="pull-right">you</a>
+		          <%}else{ %>
+		          <%=project.getMembers().get(i) %>
+		          <%} %>
+		        </div>
+		        <%}
+		        }%>
+		        <!-- /.box-body -->
+		      </div>
+		      <!-- /.box -->
 	        </div>
-	        <%}
-	        }%>
-	        <!-- /.box-body -->
+	        
 	      </div>
-	      <!-- /.box -->
-        </div>
         
+        
+        </div>
       </div>
       
     </section>
@@ -230,6 +255,12 @@
   function quitProject(project){
 	  var page = "ProjectDetailServlet";
 	  window.location.href='<%=path%>/QuitProjectServlet?project='+project+'&page='+page;
+  }
+  function projectChange(){
+	  var myselect = document.getElementById("projectSelection");
+	  var index = myselect.selectedIndex;
+	  var projectSelected = myselect.options[index].text;
+	  window.location.href='<%=path%>/ProjectDetailServlet?projectName='+projectSelected;
   }
 </script>
 </body>

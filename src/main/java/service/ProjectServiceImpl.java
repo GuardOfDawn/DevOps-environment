@@ -51,24 +51,18 @@ public class ProjectServiceImpl implements ProjectService{
 					if(sonarProjectList.get(i).equals(jenkinsProjectList.get(j))){
 						SimpleProject project = new SimpleProject();
 						project.setProjectName(sonarProjectList.get(i));
+						List<String> members = getProjectMember(sonarProjectList.get(i));
+						project.setMembers(members);
 						project.setMember(false);
+						for(int k=0;k<members.size();k++){
+							if(userName.equals(members.get(k))){
+								project.setMember(true);
+								break;
+							}
+						}
 						projectList.add(project);
 						break;
 					}
-				}
-			}
-		}
-		List<String> projectJoinList = getUserJoinList(userName);
-		int projectJoinCount = projectJoinList.size();
-		for(int i=0;i<projectList.size();i++){
-			if(projectJoinCount<=0){
-				break;
-			}
-			for(int j=0;j<projectJoinList.size();j++){
-				if(projectList.get(i).getProjectName().equals(projectJoinList.get(j))){
-					projectList.get(i).setMember(true);
-					projectJoinCount--;
-					break;
 				}
 			}
 		}
@@ -76,25 +70,19 @@ public class ProjectServiceImpl implements ProjectService{
 //		ArrayList<SimpleProject> projectList = new ArrayList<SimpleProject>();
 //		String retColumn = "projectname";
 //		List<String> projectNameList = projectDao.getList(null, null, retColumn);
-//		List<String> projectJoinList = getUserJoinList(userName);
-//		int projectJoinCount = projectJoinList.size();
 //		for(int i=0;i<projectNameList.size();i++){
 //			SimpleProject project = new SimpleProject();
 //			project.setProjectName(projectNameList.get(i));
+//			List<String> members = getProjectMember(projectNameList.get(i));
+//			project.setMembers(members);
 //			project.setMember(false);
-//			if(projectJoinCount<=0){
-//				projectList.add(project);
-//			}
-//			else{
-//				for(int j=0;j<projectJoinList.size();j++){
-//					if(project.getProjectName().equals(projectJoinList.get(j))){
-//						project.setMember(true);
-//						projectJoinCount--;
-//						break;
-//					}
+//			for(int j=0;j<members.size();j++){
+//				if(userName.equals(members.get(j))){
+//					project.setMember(true);
+//					break;
 //				}
-//				projectList.add(project);
 //			}
+//			projectList.add(project);
 //		}
 		
 		ProjectListBean res = new ProjectListBean();
@@ -144,6 +132,8 @@ public class ProjectServiceImpl implements ProjectService{
 		p.setResult(map.get("result"));
 		p.setTimeStamp(map.get("timestamp"));
 		p.setDuration(map.get("duration"));
+//		Project p = new Project();
+//		p.setProjectName(projectName);
 		p.setMembers(getProjectMember(projectName));
 		return p;
 	}

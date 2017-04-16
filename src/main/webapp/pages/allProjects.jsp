@@ -141,31 +141,41 @@
 	          <table id="allProjectsTable" class="table table-bordered table-striped">
 	            <thead>
 	              <tr>
-	                <th>Project Index</th>
 	                <th><abbr title="Click to view the detail of the project">Project name</abbr></th>
-	                <th>Join condition</th>
+	                <th>Members</th>
 	                <th><abbr title="If you have not joined the project,click to join.If you have joined,click to quit">Operation</abbr></th>
 	              </tr>
 	            </thead>
 	            <tbody>
-	            <%int n = 0;
-	              projectList = (ProjectListBean)request.getAttribute("projectList");
+	            <%projectList = (ProjectListBean)request.getAttribute("projectList");
 	              if(projectList.getProjectList()!=null){
 		          	for(int i=0;i<projectList.getSize();i++){ 
 		          	pageContext.setAttribute("project",projectList.getProject(i));
 		          	project = projectList.getProject(i);
-		          	n++;
-		          	request.setAttribute("num", n);
 	            %>
 	              <tr>
-	                <td><%=request.getAttribute("num") %></td>
-	                <td><a href="<%=path %>/ProjectDetailServlet?projectName=<jsp:getProperty name="project" property="projectName" />"><jsp:getProperty name="project" property="projectName" /></a></td>
 	              <%if(project.isMember()){ %>
-	                <td><span class="label bg-green">You are a member</span></td>
-	                <td><button type="button" class="btn btn-block btn-success btn-sm" onclick="quitProject('<jsp:getProperty name="project" property="projectName" />')">Quit</button></td>
+	                <td><a href="<%=path %>/ProjectDetailServlet?projectName=<jsp:getProperty name="project" property="projectName" />"><jsp:getProperty name="project" property="projectName" /></a></td>
 	              <%}else{ %>
-	                <td><span class="label bg-blue">You are not a member</span></td>
-	                <td><button type="button" class="btn btn-block btn-primary btn-sm" onclick="joinProject('<jsp:getProperty name="project" property="projectName" />')">Join</button></td>
+	                <td><jsp:getProperty name="project" property="projectName" /></td>
+	              <%} %>
+	                <td>
+	              <%for(int j=0;j<project.getMembers().size();j++){ %>
+	                  <span class="label bg-blue"><%=project.getMembers().get(j) %></span>
+	              <%} %>
+	                </td>
+	              <%if(project.isMember()){ %>
+	                <td>
+	                  <abbr title="You are a member">
+	                    <button type="button" class="btn btn-block btn-success btn-sm" onclick="quitProject('<jsp:getProperty name="project" property="projectName" />')">Quit</button>
+	                  </abbr>
+	                </td>
+	              <%}else{ %>
+	                <td>
+	                  <abbr title="You are not a member">
+	                    <button type="button" class="btn btn-block btn-primary btn-sm" onclick="joinProject('<jsp:getProperty name="project" property="projectName" />')">Join</button>
+	                  </abbr>
+	                </td>
 	              <%} %>
 	              </tr>
 	              <!-- 

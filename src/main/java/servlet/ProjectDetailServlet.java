@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -44,9 +45,12 @@ public class ProjectDetailServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/login");
 			}
 			else{
+				String userName = String.valueOf(session.getAttribute("username"));
 				String projectName = request.getParameter("projectName");
 				Project project = projectService.getProjectDetail(projectName);
 				request.setAttribute("project", project);
+				List<String> projectList = projectService.getUserJoinList(userName);
+				request.setAttribute("projectList", projectList);
 				RequestDispatcher rd = request.getRequestDispatcher("/projectDetail");
 				rd.forward(request, response);
 			}
