@@ -14,6 +14,7 @@ import dao.ProjectJoinDaoImpl;
 import interfaces.JenkinsProj;
 import interfaces.JenkinsProjStat;
 import interfaces.SonarProj;
+import model.BuildStatus;
 import model.Join;
 import model.Project;
 import model.ProjectDetailListBean;
@@ -127,11 +128,27 @@ public class ProjectServiceImpl implements ProjectService{
 	@Override
 	public Project getProjectDetail(String projectName) {
 		Map<String,String> map = jenkinsProjStat.getLastBuild(projectName);
+		String frequency = jenkinsProjStat.getFrequency(projectName);
+		double successRate = jenkinsProjStat.getSuccessRate(projectName);
 		Project p = new Project();
 		p.setProjectName(projectName);
 		p.setResult(map.get("result"));
 		p.setTimeStamp(map.get("timestamp"));
 		p.setDuration(map.get("duration"));
+		p.setFrequency(frequency);
+		p.setSuccessRate(successRate);
+		Map<String,String> buildResult = jenkinsProjStat.getBuildResult(projectName);
+		ArrayList<BuildStatus> lastTenBuilds = new ArrayList<BuildStatus>();
+		if(buildResult!=null){
+			for(Map.Entry<String,String> entry:buildResult.entrySet()){
+				BuildStatus build = new BuildStatus();
+				build.setTime(entry.getKey());
+				build.setResult(entry.getValue());
+				lastTenBuilds.add(build);
+			}
+		}
+		p.setLastTenBuilds(lastTenBuilds);
+		
 //		Project p = new Project();
 //		p.setProjectName(projectName);
 		p.setMembers(getProjectMember(projectName));

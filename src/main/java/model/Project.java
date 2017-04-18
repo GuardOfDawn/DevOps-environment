@@ -11,6 +11,9 @@ public class Project implements Serializable {
 	private String result;
 	private String timeStamp;
 	private String duration;
+	private String frequency;
+	private double successRate;
+	private List<BuildStatus> lastTenBuilds;
 	private List<String> members;
 	
 	public String getProjectName() {
@@ -37,11 +40,29 @@ public class Project implements Serializable {
 	public void setDuration(String duration) {
 		this.duration = duration;
 	}
+	public String getFrequency() {
+		return frequency;
+	}
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
+	}
+	public double getSuccessRate() {
+		return successRate;
+	}
+	public void setSuccessRate(double successRate) {
+		this.successRate = successRate;
+	}
 	public List<String> getMembers() {
 		return members;
 	}
 	public void setMembers(List<String> members) {
 		this.members = members;
+	}
+	public List<BuildStatus> getLastTenBuilds() {
+		return lastTenBuilds;
+	}
+	public void setLastTenBuilds(List<BuildStatus> lastTenBuilds) {
+		this.lastTenBuilds = lastTenBuilds;
 	}
 	
 	public boolean isMember(String userName){

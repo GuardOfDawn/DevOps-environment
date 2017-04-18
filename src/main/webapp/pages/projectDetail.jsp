@@ -159,24 +159,193 @@
 	          <!-- Custom Tabs -->
 	          <div class="nav-tabs-custom">
 	            <ul class="nav nav-tabs">
-	              <li class="active"><a href="#tab_jenkins" data-toggle="tab">Jenkins Statistics</a></li>
-	              <li><a href="#tab_sonar" data-toggle="tab">Sonar Statistics</a></li>
+	              <li class="active"><a href="#tab_jenkins" data-toggle="tab">Jenkins Status</a></li>
+	              <li><a href="#tab_sonar" data-toggle="tab">Sonar Status</a></li>
+	              <li><a href="#tab_jenkins_demo" data-toggle="tab">Jenkins Status Demo</a></li>
 	            </ul>
 	            <div class="tab-content">
 	              <div class="tab-pane active" id="tab_jenkins">
-	                
-	
-	                
+	                <div class="row">
+	                  <div class="col-md-3">
+	                    <div class="box box-warning">
+				          <div class="box-header with-border">
+				            <h3 class="box-title">Last build status</h3>
+				          </div>
+				          <!-- /.box-header -->
+				          <div class="box-body">
+				            <ul class="list-group list-group-unbordered">
+				            <%if(project.getLastTenBuilds()!=null){
+				                for(int i=0;i<project.getLastTenBuilds().size();i++){ %>
+				              <li class="list-group-item">
+				                <b><%=project.getLastTenBuilds().get(i).getTime() %></b> <a class="pull-right"><%=project.getLastTenBuilds().get(i).getResult() %></a>
+				              </li>
+				            <%  }
+				              }%>
+				           </ul>
+				         </div>
+				       </div>
+	                 </div>
+	                 <div class="col-md-9">
+			            <div class="box box-warning">
+				            <div class="box-header with-border">
+				              <h3 class="box-title">Last build status</h3>
+				            </div>
+				            <!-- /.box-header -->
+				            <div class="box-body">
+				              <ul class="list-group list-group-unbordered">
+				                <li class="list-group-item">
+					              <b>Build result</b> <a class="pull-right"><%=project.getResult() %></a>
+					            </li>
+					            <li class="list-group-item">
+					              <b>Timestamp</b> <a class="pull-right"><%=project.getTimeStamp() %></a>
+					            </li>
+					            <li class="list-group-item">
+					              <b>Duration</b> <a class="pull-right"><%=project.getDuration() %></a>
+					            </li>
+				              </ul>
+				            </div>
+				            <!-- /.box-body -->
+			            </div>
+			            <!-- /.box -->
+			            <div class="box box-warning">
+				          <div class="box-header with-border">
+				            <h3 class="box-title">Build frequency</h3>
+				          </div>
+				          <!-- /.box-header -->
+				          <div class="box-body">
+				            <ul class="list-group list-group-unbordered">
+				              <li class="list-group-item">
+					            <b>Last five builds</b> <a class="pull-right"><%=project.getFrequency() %></a>
+					          </li>
+				            </ul>
+				          </div>
+				          <!-- /.box-body -->
+			            </div>
+			            <!-- /.box -->
+			            <div class="box box-warning">
+			              <div class="box-header with-border">
+			                <h3 class="box-title">Build success rate</h3>
+			              </div>
+			              <!-- /.box-header -->
+			              <div class="box-body">
+			                <ul class="list-group list-group-unbordered">
+			                  <li class="list-group-item">
+				                <b>Last ten builds</b> <a class="pull-right"><%=project.getSuccessRate() %></a>
+				              </li>
+			                </ul>
+			              </div>
+			              <!-- /.box-body -->
+			            </div>
+			            <!-- /.box -->
+			          </div>
+			          <!-- /.col -->
+	               </div>
+	               <!-- /.tab-pane -->
+	              <div class="tab-pane" id="tab_sonar">
+	                <div class="row">
+	                  
+	                </div>
 	              </div>
 	              <!-- /.tab-pane -->
-	              <div class="tab-pane" id="tab_sonar">
-	                The European languages are members of the same family. Their separate existence is a myth.
-	                For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
-	                in their grammar, their pronunciation and their most common words. Everyone realizes why a
-	                new common language would be desirable: one could refuse to pay expensive translators. To
-	                achieve this, it would be necessary to have uniform grammar, pronunciation and more common
-	                words. If several languages coalesce, the grammar of the resulting language is more simple
-	                and regular than that of the individual languages.
+	              <div class="tab-pane" id="tab_jenkins_demo">
+	                <div class="row">
+	                  <div class="col-md-3">
+	                    <div class="box box-warning">
+				            <div class="box-header with-border">
+				              <h3 class="box-title">Last build status</h3>
+				            </div>
+				            <!-- /.box-header -->
+				            <div class="box-body">
+				              <ul class="list-group list-group-unbordered">
+				               <li class="list-group-item">
+				                 <b>2017/01/22</b> <a class="pull-right">success</a>
+				               </li>
+				               <li class="list-group-item">
+				                 <b>2017/01/22</b> <a class="pull-right">success</a>
+				               </li>
+				               <li class="list-group-item">
+				                 <b>2017/01/22</b> <a class="pull-right">success</a>
+				               </li>
+				               <li class="list-group-item">
+				                 <b>2017/01/22</b> <a class="pull-right">success</a>
+				               </li>
+				               <li class="list-group-item">
+				                 <b>2017/01/22</b> <a class="pull-right">success</a>
+				               </li>
+				               <li class="list-group-item">
+				                 <b>2017/01/22</b> <a class="pull-right">success</a>
+				               </li>
+				               <li class="list-group-item">
+				                 <b>2017/01/22</b> <a class="pull-right">success</a>
+				               </li>
+				               <li class="list-group-item">
+				                 <b>2017/01/22</b> <a class="pull-right">success</a>
+				               </li>
+				               <li class="list-group-item">
+				                 <b>2017/01/22</b> <a class="pull-right">success</a>
+				               </li>
+				               <li class="list-group-item">
+				                 <b>2017/01/22</b> <a class="pull-right">success</a>
+				               </li>
+				             </ul>
+				            </div>
+				        </div>
+	                  </div>
+	                  <div class="col-md-9">
+			            <div class="box box-warning">
+				            <div class="box-header with-border">
+				              <h3 class="box-title">Last build status</h3>
+				            </div>
+				            <!-- /.box-header -->
+				            <div class="box-body">
+				              <ul class="list-group list-group-unbordered">
+				                <li class="list-group-item">
+					              <b>Build result</b> <a class="pull-right">success</a>
+					            </li>
+					            <li class="list-group-item">
+					              <b>Timestamp</b> <a class="pull-right">2017-04-12 22:33:33</a>
+					            </li>
+					            <li class="list-group-item">
+					              <b>Duration</b> <a class="pull-right">1min 34second</a>
+					            </li>
+				              </ul>
+				            </div>
+				            <!-- /.box-body -->
+			            </div>
+			            <!-- /.box -->
+			            <div class="box box-warning">
+				            <div class="box-header with-border">
+				              <h3 class="box-title">Build frequency</h3>
+				            </div>
+				            <!-- /.box-header -->
+				            <div class="box-body">
+				              <ul class="list-group list-group-unbordered">
+				                <li class="list-group-item">
+					              <b>Last five builds</b> <a class="pull-right">day HH:mm:ss</a>
+					            </li>
+				              </ul>
+				            </div>
+				            <!-- /.box-body -->
+			            </div>
+			            <!-- /.box -->
+			            <div class="box box-warning">
+				            <div class="box-header with-border">
+				              <h3 class="box-title">Build success rate</h3>
+				            </div>
+				            <!-- /.box-header -->
+				            <div class="box-body">
+				              <ul class="list-group list-group-unbordered">
+				                <li class="list-group-item">
+					              <b>Last ten builds</b> <a class="pull-right">80%</a>
+					            </li>
+				              </ul>
+				            </div>
+				            <!-- /.box-body -->
+			            </div>
+			            <!-- /.box -->
+			          </div>
+			          <!-- /.col -->
+		            </div>
 	              </div>
 	              <!-- /.tab-pane -->
 	            </div>
@@ -193,7 +362,7 @@
 		        </div>
 		        <!-- /.box-header -->
 		        <%if(project.getMembers().size()==0){ %>
-		          <div class="box-body">There is no member.</div>
+		        <div class="box-body">There is no member.</div>
 		        <%}else{
 		          for(int i=0;i<project.getMembers().size();i++){ %>
 		        <div class="box-body">
