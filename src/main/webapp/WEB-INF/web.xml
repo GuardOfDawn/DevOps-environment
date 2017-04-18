@@ -75,6 +75,10 @@
     <jsp-file>/pages/projectDetail.jsp</jsp-file>
   </servlet>
   <servlet>
+    <servlet-name>ChartjsDemoJSP</servlet-name>
+    <jsp-file>/pages/chartjsDemo.jsp</jsp-file>
+  </servlet>
+  <servlet>
   	<servlet-name>TestServlet</servlet-name>
   	<display-name>TestServlet</display-name>
   	<description></description>
@@ -116,6 +120,12 @@
   	<description></description>
   	<servlet-class>servlet.ProjectDetailServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>ChartjsDemoServlet</servlet-name>
+  	<display-name>ChartjsDemoServlet</display-name>
+  	<description></description>
+  	<servlet-class>servlet.ChartjsDemoServlet</servlet-class>
+  </servlet>
   
   <servlet-mapping>
   	<servlet-name>LoginServlet</servlet-name>
@@ -155,6 +165,10 @@
     <url-pattern>/projectDetail</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+    <servlet-name>ChartjsDemoJSP</servlet-name>
+    <url-pattern>/chartjsDemo</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
   	<servlet-name>TestServlet</servlet-name>
   	<url-pattern>/TestServlet</url-pattern>
   </servlet-mapping>
@@ -181,6 +195,10 @@
   <servlet-mapping>
   	<servlet-name>ProjectDetailServlet</servlet-name>
   	<url-pattern>/ProjectDetailServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ChartjsDemoServlet</servlet-name>
+  	<url-pattern>/ChartjsDemoServlet</url-pattern>
   </servlet-mapping>
 
   <welcome-file-list>

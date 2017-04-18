@@ -135,16 +135,18 @@
           <h3 class="box-title"><%=project.getProjectName() %></h3>
 		  <%List<String> projectList = (List<String>) request.getAttribute("projectList");
             if(projectList!=null){%>
-          <div class="box-tools pull-right form-group">
-            <select id="projectSelection" class="form-control select2" onchange="projectChange()">
-            <%for(int i=0;i<projectList.size();i++){ 
-                if(project.getProjectName().equals(projectList.get(i))){%>
-              <option selected="selected"><%=projectList.get(i) %></option>
-              <%}else{ %>
-              <option><%=projectList.get(i) %></option>
-              <%}
-			  }%>
-            </select>
+          <div class="box-tools pull-right">
+            <abbr title="select to switch view of project which you have joined">
+	            <select id="projectSelection" class="form-control select2" onchange="projectChange()">
+		          <%for(int i=0;i<projectList.size();i++){ 
+		            if(project.getProjectName().equals(projectList.get(i))){%>
+		          <option selected="selected"><%=projectList.get(i) %></option>
+		          <%}else{ %>
+		          <option><%=projectList.get(i) %></option>
+		          <%}
+		          }%>
+		        </select>
+	        </abbr>
           </div>
           <%} %>
         </div>
@@ -152,51 +154,42 @@
         <div class="box-body">
         
           <div class="row">
-	        <div class="col-md-5 col-md-push-2">
-	          <div class="box box-success box-solid">
-	            <div class="box-header with-border">
-		          <h3 class="box-title">Basic Info</h3>
-		          <!--<div class="box-tools pull-right">
-		            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-		            </button>
-		          </div>-->
-		          <!-- /.box-tools -->
-		        </div>
-		        <!-- /.box-header -->
-		        <div class="box-body">
-		          <ul class="list-group list-group-unbordered">
-	                <li class="list-group-item">
-	                  <b>Build result</b> <a class="pull-right"><jsp:getProperty name="project" property="result" /></a>
-	                </li>
-	                <li class="list-group-item">
-	                  <b>Build timeStamp</b> <a class="pull-right"><jsp:getProperty name="project" property="timeStamp" /></a>
-	                </li>
-	                <li class="list-group-item">
-	                  <b>Build duration</b> <a class="pull-right"><jsp:getProperty name="project" property="duration" /></a>
-	                </li>
-	              </ul>
-		        </div>
-		        <!-- /.box-body -->
+          
+	        <div class="col-md-9">
+	          <!-- Custom Tabs -->
+	          <div class="nav-tabs-custom">
+	            <ul class="nav nav-tabs">
+	              <li class="active"><a href="#tab_jenkins" data-toggle="tab">Jenkins Statistics</a></li>
+	              <li><a href="#tab_sonar" data-toggle="tab">Sonar Statistics</a></li>
+	            </ul>
+	            <div class="tab-content">
+	              <div class="tab-pane active" id="tab_jenkins">
+	                
+	
+	                
+	              </div>
+	              <!-- /.tab-pane -->
+	              <div class="tab-pane" id="tab_sonar">
+	                The European languages are members of the same family. Their separate existence is a myth.
+	                For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ
+	                in their grammar, their pronunciation and their most common words. Everyone realizes why a
+	                new common language would be desirable: one could refuse to pay expensive translators. To
+	                achieve this, it would be necessary to have uniform grammar, pronunciation and more common
+	                words. If several languages coalesce, the grammar of the resulting language is more simple
+	                and regular than that of the individual languages.
+	              </div>
+	              <!-- /.tab-pane -->
+	            </div>
+	            <!-- /.tab-content -->
 	          </div>
-	          <!-- /.box -->
+	          <!-- nav-tabs-custom -->
+	        
 	        </div>
 	        
-	        <div class="col-md-3 col-md-push-2">
+	        <div class="col-md-3">
 		      <div class="box box-warning box-solid">
 		        <div class="box-header with-border">
 		          <h3 class="box-title">Members</h3>
-		          <div class="box-tools pull-right">
-	                <%if(project.isMember(String.valueOf(session.getAttribute("username")))){ %>
-	                <button type="button" class="btn btn-box-tool" onclick="quitProject('<jsp:getProperty name="project" property="projectName" />')">
-	                  <b>Quit</b>
-		            </button>
-		            <%}else{ %>
-		            <button type="button" class="btn btn-box-tool" onclick="joinProject('<jsp:getProperty name="project" property="projectName" />')">
-		              <b>Join</b>
-		            </button>
-		              <%} %>
-		          </div>
-		          <!-- /.box-tools -->
 		        </div>
 		        <!-- /.box-header -->
 		        <%if(project.getMembers().size()==0){ %>
@@ -218,7 +211,6 @@
 	        </div>
 	        
 	      </div>
-        
         
         </div>
       </div>
@@ -242,20 +234,8 @@
 <script src="<%=path %>/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="<%=path %>/dist/js/app.min.js"></script>
-<!-- Slimscroll -->
-<script src="<%=path %>/plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="<%=path %>/plugins/fastclick/fastclick.js"></script>
 <!-- page script -->
 <script>
-  function joinProject(project){
-	  var page = "ProjectDetailServlet";
-	  window.location.href='<%=path%>/JoinProjectServlet?project='+project+'&page='+page;
-  }
-  function quitProject(project){
-	  var page = "ProjectDetailServlet";
-	  window.location.href='<%=path%>/QuitProjectServlet?project='+project+'&page='+page;
-  }
   function projectChange(){
 	  var myselect = document.getElementById("projectSelection");
 	  var index = myselect.selectedIndex;
