@@ -9,7 +9,10 @@ import tool.Authentication;
 import tool.Host;
 import tool.HttpUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Author: stk
@@ -22,10 +25,10 @@ public class SonarProjImpl implements SonarProj {
     /**
      * Get all projects in SonarQube.
      *
-     * @return List of project names
+     * @return List of project names and keys: [name, key]
      * If the list is empty then it will return null.
      */
-    public List<String> getAllProject() {
+    public List<String[]> getAllProject() {
         String url = Host.getSonar() + "api/projects/index";
         String json = null;
         try {
@@ -45,9 +48,9 @@ public class SonarProjImpl implements SonarProj {
             logger.warn("Get sonar project list: empty list.");
             return null;
         }
-        List<String> result = new ArrayList<>();
+        List<String[]> result = new ArrayList<>();
         for (Map<String, Object> oneProject : projects) {
-            result.add(oneProject.get("k").toString());
+            result.add(new String[]{oneProject.get("nm").toString(), oneProject.get("k").toString()});
         }
         return result;
     }

@@ -11,10 +11,10 @@ public interface SonarProj {
     /**
      * Get all projects in SonarQube.
      *
-     * @return List of project names
+     * @return List of project names and keys: [name, key]
      * If the list is empty then it will return null.
      */
-    List<String> getAllProject();
+    List<String[]> getAllProject();
 
     /**
      * Create a project in SonarQube.
