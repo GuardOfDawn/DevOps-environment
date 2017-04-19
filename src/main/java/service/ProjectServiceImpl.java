@@ -43,16 +43,16 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public ProjectListBean getProjectList(String userName) {
-		List<String> sonarProjectList = sonarProject.getAllProject();
+		List<String[]> sonarProjectList = sonarProject.getAllProject();
 		List<String> jenkinsProjectList = jenkinsProject.getAllProject();
 		ArrayList<SimpleProject> projectList = new ArrayList<SimpleProject>();
 		if(sonarProjectList!=null&&jenkinsProjectList!=null){
 			for(int i=0;i<sonarProjectList.size();i++){
 				for(int j=0;j<jenkinsProjectList.size();j++){
-					if(sonarProjectList.get(i).equals(jenkinsProjectList.get(j))){
+					if(sonarProjectList.get(i)[0].equals(jenkinsProjectList.get(j))){
 						SimpleProject project = new SimpleProject();
-						project.setProjectName(sonarProjectList.get(i));
-						List<String> members = getProjectMember(sonarProjectList.get(i));
+						project.setProjectName(sonarProjectList.get(i)[0]);
+						List<String> members = getProjectMember(sonarProjectList.get(i)[0]);
 						project.setMembers(members);
 						project.setMember(false);
 						for(int k=0;k<members.size();k++){
@@ -93,14 +93,14 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public ProjectDetailListBean getProjectDetailList(){
-		List<String> sonarProjectList = sonarProject.getAllProject();
+		List<String[]> sonarProjectList = sonarProject.getAllProject();
 		List<String> jenkinsProjectList = jenkinsProject.getAllProject();
 		ArrayList<String> projectList = new ArrayList<String>();
 		if(sonarProjectList!=null&&jenkinsProjectList!=null){
 			for(int i=0;i<sonarProjectList.size();i++){
 				for(int j=0;j<jenkinsProjectList.size();j++){
-					if(sonarProjectList.get(i).equals(jenkinsProjectList.get(j))){
-						projectList.add(sonarProjectList.get(i));
+					if(sonarProjectList.get(i)[0].equals(jenkinsProjectList.get(j))){
+						projectList.add(sonarProjectList.get(i)[0]);
 						break;
 					}
 				}
@@ -137,20 +137,51 @@ public class ProjectServiceImpl implements ProjectService{
 		p.setDuration(map.get("duration"));
 		p.setFrequency(frequency);
 		p.setSuccessRate(successRate);
-		Map<String,String> buildResult = jenkinsProjStat.getBuildResult(projectName);
 		ArrayList<BuildStatus> lastTenBuilds = new ArrayList<BuildStatus>();
-		if(buildResult!=null){
-			for(Map.Entry<String,String> entry:buildResult.entrySet()){
-				BuildStatus build = new BuildStatus();
-				build.setTime(entry.getKey());
-				build.setResult(entry.getValue());
-				lastTenBuilds.add(build);
-			}
-		}
 		p.setLastTenBuilds(lastTenBuilds);
 		
 //		Project p = new Project();
 //		p.setProjectName(projectName);
+//		p.setResult("SUCCESS");
+//		p.setTimeStamp("2017-04-12 22:33:33");
+//		p.setDuration("1min 34second");
+//		p.setFrequency("day HH:mm:ss");
+//		p.setSuccessRate(0.8);
+//		p.setAnalysisTime("2017-4-19");
+//		p.setQualityGates("secure");
+//		p.setLines(new String[]{"1300","+100"});
+//		p.setComplexity(new String[]{"1288","+43"});
+//		p.setDuplicatedDensity(new String[]{"4.6","+0.4"});
+//		p.setCommentDensity(new String[]{"23","-4"});
+//		p.setViolations(new String[]{"66","-15"});
+//		p.setBlocker(new String[]{"2","-1"});
+//		p.setCritical(new String[]{"10","+2"});
+//		p.setMajor(new String[]{"15","-10"});
+//		p.setMinor(new String[]{"26","+6"});
+//		p.setInfo(new String[]{"13","+3"});
+//		ArrayList<BuildStatus> lastTenBuilds = new ArrayList<BuildStatus>();
+//		BuildStatus s1 = new BuildStatus();
+//		s1.setTime("2016-11-11");
+//		s1.setTotalBuild(2);
+//		s1.setSuccessBuild(2);
+//		BuildStatus s2 = new BuildStatus();
+//		s2.setTime("2016-11-13");
+//		s2.setTotalBuild(3);
+//		s2.setSuccessBuild(2);
+//		BuildStatus s3 = new BuildStatus();
+//		s3.setTime("2016-11-15");
+//		s3.setTotalBuild(4);
+//		s3.setSuccessBuild(3);
+//		BuildStatus s4 = new BuildStatus();
+//		s4.setTime("2016-11-17");
+//		s4.setTotalBuild(1);
+//		s4.setSuccessBuild(1);
+//		lastTenBuilds.add(s1);
+//		lastTenBuilds.add(s2);
+//		lastTenBuilds.add(s3);
+//		lastTenBuilds.add(s4);
+//		p.setLastTenBuilds(lastTenBuilds);
+		
 		p.setMembers(getProjectMember(projectName));
 		return p;
 	}

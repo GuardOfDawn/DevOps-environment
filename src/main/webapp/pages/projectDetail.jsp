@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
     <%@page import="model.Project"%>
+    <%@page import="model.BuildStatus"%>
     <%@page import="java.util.List" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -161,31 +162,11 @@
 	            <ul class="nav nav-tabs">
 	              <li class="active"><a href="#tab_jenkins" data-toggle="tab">Jenkins Status</a></li>
 	              <li><a href="#tab_sonar" data-toggle="tab">Sonar Status</a></li>
-	              <li><a href="#tab_jenkins_demo" data-toggle="tab">Jenkins Status Demo</a></li>
 	            </ul>
 	            <div class="tab-content">
 	              <div class="tab-pane active" id="tab_jenkins">
 	                <div class="row">
-	                  <div class="col-md-3">
-	                    <div class="box box-warning">
-				          <div class="box-header with-border">
-				            <h3 class="box-title">Last build status</h3>
-				          </div>
-				          <!-- /.box-header -->
-				          <div class="box-body">
-				            <ul class="list-group list-group-unbordered">
-				            <%if(project.getLastTenBuilds()!=null){
-				                for(int i=0;i<project.getLastTenBuilds().size();i++){ %>
-				              <li class="list-group-item">
-				                <b><%=project.getLastTenBuilds().get(i).getTime() %></b> <a class="pull-right"><%=project.getLastTenBuilds().get(i).getResult() %></a>
-				              </li>
-				            <%  }
-				              }%>
-				           </ul>
-				         </div>
-				       </div>
-	                 </div>
-	                 <div class="col-md-9">
+	                  <div class="col-md-6">
 			            <div class="box box-warning">
 				            <div class="box-header with-border">
 				              <h3 class="box-title">Last build status</h3>
@@ -207,6 +188,9 @@
 				            <!-- /.box-body -->
 			            </div>
 			            <!-- /.box -->
+			          </div>
+			          <!-- /.col -->
+			          <div class="col-md-6">
 			            <div class="box box-warning">
 				          <div class="box-header with-border">
 				            <h3 class="box-title">Build frequency</h3>
@@ -222,121 +206,62 @@
 				          <!-- /.box-body -->
 			            </div>
 			            <!-- /.box -->
-			            <div class="box box-warning">
-			              <div class="box-header with-border">
-			                <h3 class="box-title">Build success rate</h3>
-			              </div>
-			              <!-- /.box-header -->
-			              <div class="box-body">
-			                <ul class="list-group list-group-unbordered">
-			                  <li class="list-group-item">
-				                <b>Last ten builds</b> <a class="pull-right"><%=project.getSuccessRate() %></a>
-				              </li>
-			                </ul>
-			              </div>
-			              <!-- /.box-body -->
-			            </div>
-			            <!-- /.box -->
 			          </div>
 			          <!-- /.col -->
-	               </div>
-	               <!-- /.tab-pane -->
-	              <div class="tab-pane" id="tab_sonar">
-	                <div class="row">
-	                  
-	                </div>
-	              </div>
-	              <!-- /.tab-pane -->
-	              <div class="tab-pane" id="tab_jenkins_demo">
-	                <div class="row">
-	                  <div class="col-md-3">
-	                    <div class="box box-warning">
-				            <div class="box-header with-border">
-				              <h3 class="box-title">Last build status</h3>
-				            </div>
-				            <!-- /.box-header -->
-				            <div class="box-body">
-				              <ul class="list-group list-group-unbordered">
-				               <li class="list-group-item">
-				                 <b>2017/01/22</b> <a class="pull-right">success</a>
-				               </li>
-				               <li class="list-group-item">
-				                 <b>2017/01/22</b> <a class="pull-right">success</a>
-				               </li>
-				               <li class="list-group-item">
-				                 <b>2017/01/22</b> <a class="pull-right">success</a>
-				               </li>
-				               <li class="list-group-item">
-				                 <b>2017/01/22</b> <a class="pull-right">success</a>
-				               </li>
-				               <li class="list-group-item">
-				                 <b>2017/01/22</b> <a class="pull-right">success</a>
-				               </li>
-				               <li class="list-group-item">
-				                 <b>2017/01/22</b> <a class="pull-right">success</a>
-				               </li>
-				               <li class="list-group-item">
-				                 <b>2017/01/22</b> <a class="pull-right">success</a>
-				               </li>
-				               <li class="list-group-item">
-				                 <b>2017/01/22</b> <a class="pull-right">success</a>
-				               </li>
-				               <li class="list-group-item">
-				                 <b>2017/01/22</b> <a class="pull-right">success</a>
-				               </li>
-				               <li class="list-group-item">
-				                 <b>2017/01/22</b> <a class="pull-right">success</a>
-				               </li>
-				             </ul>
-				            </div>
-				        </div>
-	                  </div>
-	                  <div class="col-md-9">
-			            <div class="box box-warning">
-				            <div class="box-header with-border">
-				              <h3 class="box-title">Last build status</h3>
-				            </div>
-				            <!-- /.box-header -->
-				            <div class="box-body">
-				              <ul class="list-group list-group-unbordered">
-				                <li class="list-group-item">
-					              <b>Build result</b> <a class="pull-right">success</a>
-					            </li>
-					            <li class="list-group-item">
-					              <b>Timestamp</b> <a class="pull-right">2017-04-12 22:33:33</a>
-					            </li>
-					            <li class="list-group-item">
-					              <b>Duration</b> <a class="pull-right">1min 34second</a>
-					            </li>
-				              </ul>
-				            </div>
-				            <!-- /.box-body -->
-			            </div>
-			            <!-- /.box -->
-			            <div class="box box-warning">
-				            <div class="box-header with-border">
-				              <h3 class="box-title">Build frequency</h3>
-				            </div>
-				            <!-- /.box-header -->
-				            <div class="box-body">
-				              <ul class="list-group list-group-unbordered">
-				                <li class="list-group-item">
-					              <b>Last five builds</b> <a class="pull-right">day HH:mm:ss</a>
-					            </li>
-				              </ul>
-				            </div>
-				            <!-- /.box-body -->
-			            </div>
-			            <!-- /.box -->
+			        </div>
+			        <div class="row">
+			        <!-- .row2 -->
+			          <div class="col-md-5">
 			            <div class="box box-warning">
 				            <div class="box-header with-border">
 				              <h3 class="box-title">Build success rate</h3>
 				            </div>
 				            <!-- /.box-header -->
 				            <div class="box-body">
+				              <canvas id="pieChartOfJenkins" style="height:250px"></canvas>
+				            </div>
+				            <!-- /.box-body -->
+			            </div>
+			          </div>
+			          <!-- /.col -->
+			          <div class="col-md-7">
+			            <div class="box box-warning">
+				            <div class="box-header with-border">
+				              <h3 class="box-title">Build condition</h3>
+				            </div>
+				            <!-- /.box-header -->
+				            <div class="box-body">
+				              <canvas id="barChartOfJenkins" style="height:230px"></canvas>
+				            </div>
+				            <!-- /.box-body -->
+			            </div>
+			          </div>
+			          <!-- /.col -->
+			        </div>
+			        <!-- /.row2 -->
+	              </div>
+	              <!-- /.tab-pane -->
+	              <div class="tab-pane" id="tab_sonar">
+	                <div class="row">
+	                  <div class="col-md-6">
+			            <div class="box box-warning">
+				            <div class="box-header with-border">
+				              <h3 class="box-title"><abbr>Last build status</abbr></h3>
+				            </div>
+				            <!-- /.box-header -->
+				            <div class="box-body">
 				              <ul class="list-group list-group-unbordered">
 				                <li class="list-group-item">
-					              <b>Last ten builds</b> <a class="pull-right">80%</a>
+					              <b>Quality gates</b> <a class="pull-right"><%=project.getQualityGates() %></a>
+					            </li>
+					            <li class="list-group-item">
+					              <b>Analysis time</b> <a class="pull-right"><%=project.getAnalysisTime() %></a>
+					            </li>
+					            <li class="list-group-item">
+					              <b>Lines</b> <a class="pull-right text-danger"><%=project.getLines()[1]%></a><a class="pull-right"><%=project.getLines()[0]%></a>
+					            </li>
+					            <li class="list-group-item">
+					              <b>Complexity</b> <a class="pull-right text-danger"><%=project.getComplexity()[1]%></a><a class="pull-right"><%=project.getComplexity()[0]%></a>
 					            </li>
 				              </ul>
 				            </div>
@@ -345,7 +270,41 @@
 			            <!-- /.box -->
 			          </div>
 			          <!-- /.col -->
-		            </div>
+			          <div class="col-md-6">
+			            <div class="box box-warning">
+				          <div class="box-header with-border">
+				            <h3 class="box-title">Density</h3>
+				          </div>
+				          <!-- /.box-header -->
+				          <div class="box-body">
+				            <ul class="list-group list-group-unbordered">
+				              <li class="list-group-item">
+					            <b>Duplicated lines</b> <a class="pull-right"><%=project.getDuplicatedDensity()[1] %>%</a><a class="pull-right"><%=project.getDuplicatedDensity()[0] %>%</a>
+					          </li>
+					          <li class="list-group-item">
+					            <b>Comment lines</b> <a class="pull-right"><%=project.getCommentDensity()[1] %>%</a><a class="pull-right"><%=project.getCommentDensity()[0] %>%</a>
+					          </li>
+				            </ul>
+				          </div>
+				          <!-- /.box-body -->
+			            </div>
+			            <!-- /.box -->
+			          </div>
+			          <!-- /.col -->
+	                </div>
+	                <!-- /.row -->
+	                <div class="row">
+	                  <div class="box box-warning">
+			            <div class="box-header with-border">
+			              <h3 class="box-title">Issues</h3>
+			            </div>
+			            <!-- /.box-header -->
+			            <div class="box-body">
+			              <canvas id="barChartOfSonar" style="height:230px"></canvas>
+			            </div>
+			            <!-- /.box-body -->
+			            </div>
+	                </div>
 	              </div>
 	              <!-- /.tab-pane -->
 	            </div>
@@ -397,6 +356,8 @@
 <script src="<%=path %>/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="<%=path %>/bootstrap/js/bootstrap.min.js"></script>
+<!-- ChartJS 1.0.1 -->
+<script src="<%=path %>/plugins/chartjs/Chart.min.js"></script>
 <!-- SlimScroll -->
 <script src="<%=path %>/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -405,6 +366,234 @@
 <script src="<%=path %>/dist/js/app.min.js"></script>
 <!-- page script -->
 <script>
+  $(function () {
+	    //-------------
+	    //- PIE CHART -
+	    //-------------
+	    // Get context with jQuery - using jQuery's .get() method.
+	    var pieChartCanvas = $("#pieChartOfJenkins").get(0).getContext("2d");
+	    var pieChart = new Chart(pieChartCanvas);
+	    //get data
+	    var successRate = <%=project.getSuccessRate()%>;
+	    var failureRate = 1-successRate;
+	    var PieData = [
+	      {
+	        value: successRate.toFixed(2),
+	        color: "#00a65a",
+	        highlight: "#00a65a",
+	        label: "SUCCESS"
+	      },
+	      {
+	        value: failureRate.toFixed(2),
+	        color: "#f56954",
+	        highlight: "#f56954",
+	        label: "FAILURE"
+	      }
+	    ];
+	    var pieOptions = {
+	      //Boolean - Whether we should show a stroke on each segment
+	      segmentShowStroke: true,
+	      //String - The colour of each segment stroke
+	      segmentStrokeColor: "#fff",
+	      //Number - The width of each segment stroke
+	      segmentStrokeWidth: 2,
+	      //Number - The percentage of the chart that we cut out of the middle
+	      percentageInnerCutout: 50, // This is 0 for Pie charts
+	      //Number - Amount of animation steps
+	      animationSteps: 100,
+	      //String - Animation easing effect
+	      animationEasing: "easeOutBounce",
+	      //Boolean - Whether we animate the rotation of the Doughnut
+	      animateRotate: true,
+	      //Boolean - Whether we animate scaling the Doughnut from the centre
+	      animateScale: false,
+	      //Boolean - whether to make the chart responsive to window resizing
+	      responsive: true,
+	      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+	      maintainAspectRatio: true,
+	    };
+	    //Create pie or douhnut chart
+	    // You can switch between pie and douhnut using the method below.
+	    pieChart.Doughnut(PieData, pieOptions);
+	    
+	    //-------------
+	    //- BAR CHART -
+	    //-------------
+	    var barChartCanvas = $("#barChartOfJenkins").get(0).getContext("2d");
+	    var barChart = new Chart(barChartCanvas);
+	    //get data
+	    var labelsOfBarChart = new Array(); 
+	    var dataOfBarChartTotal = new Array();
+	    var dataOfBarChartSuccess = new Array();
+	    var dataOfBarChartFailure = new Array();
+	    <% 
+	    	List<BuildStatus> buildStatus =  project.getLastTenBuilds();
+	        if(buildStatus!=null){
+	    	  for(int i=0;i<buildStatus.size();i++){
+	    		%>
+	    		labelsOfBarChart[<%=i%>]='<%=buildStatus.get(i).getTime()%>';
+	    		dataOfBarChartTotal[<%=i%>]='<%=buildStatus.get(i).getTotalBuild()%>';
+	    		dataOfBarChartSuccess[<%=i%>]='<%=buildStatus.get(i).getSuccessBuild()%>';
+	    		dataOfBarChartFailure[<%=i%>]=dataOfBarChartTotal[<%=i%>]-dataOfBarChartSuccess[<%=i%>];
+ 			   <%
+	    	  }
+	        }
+	    %>
+	    var barChartData = {
+	    	      labels: labelsOfBarChart,
+	    	      datasets: [
+	    	        {
+	    	          label: "Total",
+	    	          fillColor: "rgba(210, 214, 222, 1)",
+	    	          strokeColor: "rgba(210, 214, 222, 1)",
+	    	          pointColor: "rgba(210, 214, 222, 1)",
+	    	          pointStrokeColor: "#c1c7d1",
+	    	          pointHighlightFill: "#fff",
+	    	          pointHighlightStroke: "rgba(220,220,220,1)",
+	    	          data: dataOfBarChartTotal
+	    	        },
+	    	        {
+	    	          label: "Success",
+	    	          fillColor: "rgba(60,141,188,0.9)",
+	    	          strokeColor: "rgba(60,141,188,0.8)",
+	    	          pointColor: "#3b8bba",
+	    	          pointStrokeColor: "rgba(60,141,188,1)",
+	    	          pointHighlightFill: "#fff",
+	    	          pointHighlightStroke: "rgba(60,141,188,1)",
+	    	          data: dataOfBarChartSuccess
+	    	        },
+	    	        {
+		    	      label: "Failure",
+		    	      fillColor: "rgba(60,141,188,0.9)",
+		    	      strokeColor: "rgba(60,141,188,0.8)",
+		    	      pointColor: "#3b8bba",
+		    	      pointStrokeColor: "rgba(60,141,188,1)",
+		    	      pointHighlightFill: "#fff",
+		    	      pointHighlightStroke: "rgba(60,141,188,1)",
+		    	      data: dataOfBarChartFailure
+		    	    }
+	    	      ]
+	    	    };
+	    barChartData.datasets[1].fillColor = "#00a65a";
+	    barChartData.datasets[1].strokeColor = "#00a65a";
+	    barChartData.datasets[1].pointColor = "#00a65a";
+	    barChartData.datasets[2].fillColor = "#f56954";
+	    barChartData.datasets[2].strokeColor = "#f56954";
+	    barChartData.datasets[2].pointColor = "#f56954";
+	    var barChartOptions = {
+	      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+	      scaleBeginAtZero: true,
+	      //Boolean - Whether grid lines are shown across the chart
+	      scaleShowGridLines: true,
+	      //String - Colour of the grid lines
+	      scaleGridLineColor: "rgba(0,0,0,.05)",
+	      //Number - Width of the grid lines
+	      scaleGridLineWidth: 1,
+	      //Boolean - Whether to show horizontal lines (except X axis)
+	      scaleShowHorizontalLines: true,
+	      //Boolean - Whether to show vertical lines (except Y axis)
+	      scaleShowVerticalLines: true,
+	      //Boolean - If there is a stroke on each bar
+	      barShowStroke: true,
+	      //Number - Pixel width of the bar stroke
+	      barStrokeWidth: 2,
+	      //Number - Spacing between each of the X value sets
+	      barValueSpacing: 5,
+	      //Number - Spacing between data sets within X values
+	      barDatasetSpacing: 1,
+	      //Boolean - whether to make the chart responsive
+	      responsive: true,
+	      maintainAspectRatio: true
+	    };
+	    barChartOptions.datasetFill = false;
+	    barChart.Bar(barChartData, barChartOptions);
+	    
+	  //-------------
+	    //- BAR CHART -
+	    //-------------
+	    var barChartCanvas2 = $("#barChartOfSonar").get(0).getContext("2d");
+	    var barChart2 = new Chart(barChartCanvas2);
+	    //get data
+	    var labelsOfBarChart2 = new Array(); 
+	    var dataOfBarChartTotal2 = new Array();
+	    var dataOfBarChartChange = new Array();
+	    <% 
+	    	String[] labelsOfViolations = project.getViolations_label();
+	    	for(int i=0;i<labelsOfViolations.length;i++){
+	    		%>
+	    		labelsOfBarChart2[<%=i%>]='<%=labelsOfViolations[i]%>';
+	    		<%
+	    	}
+	    %>
+	    dataOfBarChartTotal2[0] = '<%=project.getViolations()[0]%>';
+	    dataOfBarChartChange[0] = '<%=project.getViolations()[1]%>';
+	    dataOfBarChartTotal2[1] = '<%=project.getBlocker()[0]%>';
+	    dataOfBarChartChange[1] = '<%=project.getBlocker()[1]%>';
+	    dataOfBarChartTotal2[2] = '<%=project.getCritical()[0]%>';
+	    dataOfBarChartChange[2] = '<%=project.getCritical()[1]%>';
+	    dataOfBarChartTotal2[3] = '<%=project.getMajor()[0]%>';
+	    dataOfBarChartChange[3] = '<%=project.getMajor()[1]%>';
+	    dataOfBarChartTotal2[4] = '<%=project.getMinor()[0]%>';
+	    dataOfBarChartChange[4] = '<%=project.getMinor()[1]%>';
+	    dataOfBarChartTotal2[5] = '<%=project.getInfo()[0]%>';
+	    dataOfBarChartChange[5] = '<%=project.getInfo()[1]%>';
+	    var barChartData2 = {
+	    	      labels: labelsOfBarChart2,
+	    	      datasets: [
+	    	        {
+	    	          label: "Total",
+	    	          fillColor: "rgba(210, 214, 222, 1)",
+	    	          strokeColor: "rgba(210, 214, 222, 1)",
+	    	          pointColor: "rgba(210, 214, 222, 1)",
+	    	          pointStrokeColor: "#c1c7d1",
+	    	          pointHighlightFill: "#fff",
+	    	          pointHighlightStroke: "rgba(220,220,220,1)",
+	    	          data: dataOfBarChartTotal2
+	    	        },
+	    	        {
+	    	          label: "Success",
+	    	          fillColor: "rgba(60,141,188,0.9)",
+	    	          strokeColor: "rgba(60,141,188,0.8)",
+	    	          pointColor: "#3b8bba",
+	    	          pointStrokeColor: "rgba(60,141,188,1)",
+	    	          pointHighlightFill: "#fff",
+	    	          pointHighlightStroke: "rgba(60,141,188,1)",
+	    	          data: dataOfBarChartChange
+	    	        }
+	    	      ]
+	    	    };
+	    barChartData2.datasets[1].fillColor = "#00a65a";
+	    barChartData2.datasets[1].strokeColor = "#00a65a";
+	    barChartData2.datasets[1].pointColor = "#00a65a";
+	    var barChartOptions2 = {
+	      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+	      scaleBeginAtZero: true,
+	      //Boolean - Whether grid lines are shown across the chart
+	      scaleShowGridLines: true,
+	      //String - Colour of the grid lines
+	      scaleGridLineColor: "rgba(0,0,0,.05)",
+	      //Number - Width of the grid lines
+	      scaleGridLineWidth: 1,
+	      //Boolean - Whether to show horizontal lines (except X axis)
+	      scaleShowHorizontalLines: true,
+	      //Boolean - Whether to show vertical lines (except Y axis)
+	      scaleShowVerticalLines: true,
+	      //Boolean - If there is a stroke on each bar
+	      barShowStroke: true,
+	      //Number - Pixel width of the bar stroke
+	      barStrokeWidth: 2,
+	      //Number - Spacing between each of the X value sets
+	      barValueSpacing: 5,
+	      //Number - Spacing between data sets within X values
+	      barDatasetSpacing: 1,
+	      //Boolean - whether to make the chart responsive
+	      responsive: true,
+	      maintainAspectRatio: true
+	    };
+	    barChartOptions2.datasetFill = false;
+	    barChart2.Bar(barChartData2, barChartOptions2);
+
+  });
   function projectChange(){
 	  var myselect = document.getElementById("projectSelection");
 	  var index = myselect.selectedIndex;
