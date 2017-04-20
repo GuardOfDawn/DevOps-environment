@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+    <%@page import="model.ProjectListBean"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>DevOps | Create Project</title>
-<!-- Tell the browser to be responsive to screen width -->
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>DevOps | No Project</title>
+  <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <%String path = request.getContextPath(); %>
   <!-- Bootstrap 3.3.6 -->
@@ -89,8 +90,8 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<%=path %>/AllProjectsServlet"><i class="fa fa-circle-o"></i> All projects</a></li>
-            <li class="active"><a href="<%=path %>/createProject"><i class="fa fa-circle-o"></i> Create a project</a></li>
+            <li class="active"><a href="<%=path %>/AllProjectsServlet"><i class="fa fa-circle-o"></i> All projects</a></li>
+            <li><a href="<%=path %>/createProject"><i class="fa fa-circle-o"></i> Create a project</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -115,42 +116,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header text-center">
       <h1>
-        	Create a project
-        <small></small>
+        Sorry, you have never joined a project!
       </h1>
     </section>
 
     <!-- Main content -->
     <section class="content">
-	  <div class="row">
-	    <div class="col-md-8 col-md-push-2">
-	      <div class="box box-primary">
-          <!-- form start -->
-	        <form action="<%=path %>/CreateProjectServlet" method="post" role="form">
-	          <p class="text-danger">
-			    <%if(request.getAttribute("createProjectRes")!=null){ %>
-			    	<%=request.getAttribute("createProjectRes") %>
-			    <%} %>
-			  </p>
-	          <div class="box-body">
-	            <div class="form-group">
-	              <label for="exampleInputEmail1">Project name</label>
-	              <input type="text" class="form-control" name="projectname" placeholder="Enter project name">
-	            </div>
-	            <div class="form-group">
-	              <label for="exampleInputPassword1">Project key (for SonarQube)</label>
-	              <input type="text" class="form-control" name="projectkey" placeholder="Enter project key">
-	            </div>
-	          </div>
-	          <!-- /.box-body -->
-	
-	          <div class="box-footer">
-	            <button type="submit" class="btn btn-primary">Create Project</button>
-	          </div>
-	        </form>
-          </div>
-	    </div>
-	  </div>
+      
     </section>
     <!-- /.content -->
   </div>
@@ -164,11 +136,11 @@
 <script src="<%=path %>/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="<%=path %>/bootstrap/js/bootstrap.min.js"></script>
-<!-- AdminLTE App -->
-<script src="<%=path %>/dist/js/app.min.js"></script>
-<!-- Slimscroll -->
+<!-- SlimScroll -->
 <script src="<%=path %>/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<%=path %>/plugins/fastclick/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="<%=path %>/dist/js/app.min.js"></script>
 </body>
 </html>

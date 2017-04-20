@@ -14,6 +14,7 @@ import dao.ProjectJoinDaoImpl;
 import interfaces.JenkinsProj;
 import interfaces.JenkinsProjStat;
 import interfaces.SonarProj;
+import interfaces.SonarProjStat;
 import model.BuildStatus;
 import model.Join;
 import model.Project;
@@ -21,6 +22,7 @@ import model.ProjectDetailListBean;
 import model.ProjectListBean;
 import model.SimpleProject;
 import status.JenkinsProjStatImpl;
+import status.SonarProjStatImpl;
 import user.JenkinsProjImpl;
 import user.SonarProjImpl;
 
@@ -29,16 +31,31 @@ public class ProjectServiceImpl implements ProjectService{
 	private SonarProj sonarProject;
 	private JenkinsProj jenkinsProject;
 	private JenkinsProjStat jenkinsProjStat;
+	private SonarProjStat sonarProjStat;
 	private ProjectJoinDao projectJoinDao;
 	private ProjectDao projectDao;
+	
+	private String[] metrics = new String[]{
+            "ncloc",
+            "complexity",
+            "duplicated_lines_density",
+            "comment_lines_density",
+            "sqale_index",
+            "violations",
+            "blocker_violations",
+            "critical_violations",
+            "major_violations",
+            "minor_violations",
+            "info_violations",
+    };
 	
 	public ProjectServiceImpl(){
 		sonarProject = new SonarProjImpl();
 		jenkinsProject = new JenkinsProjImpl();
 		jenkinsProjStat = new JenkinsProjStatImpl();
+		sonarProjStat = new SonarProjStatImpl();
 		projectJoinDao = new ProjectJoinDaoImpl();
 		projectDao = new ProjectDaoImpl();
-		
 	}
 
 	@Override
@@ -132,13 +149,32 @@ public class ProjectServiceImpl implements ProjectService{
 		double successRate = jenkinsProjStat.getSuccessRate(projectName);
 		Project p = new Project();
 		p.setProjectName(projectName);
+		//jenkins status
 		p.setResult(map.get("result"));
 		p.setTimeStamp(map.get("timestamp"));
 		p.setDuration(map.get("duration"));
 		p.setFrequency(frequency);
 		p.setSuccessRate(successRate);
 		ArrayList<BuildStatus> lastTenBuilds = new ArrayList<BuildStatus>();
+		//TODO
 		p.setLastTenBuilds(lastTenBuilds);
+		//sonar status
+		String projectKey = getProjectKey(projectName);
+		p.setAnalysisTime(sonarProjStat.getAnalysisTime(projectKey));
+		p.setQualityGates(sonarProjStat.getQualityGates(projectKey));
+		Map<String,String[]> statusMap = sonarProjStat.getStatus(projectKey);
+		p.setLines(statusMap.get(metrics[0]));
+		p.setComplexity(statusMap.get(metrics[1]));
+		p.setDuplicatedDensity(statusMap.get(metrics[2]));
+		p.setCommentDensity(statusMap.get(metrics[3]));
+		p.setSqaleIndex(statusMap.get(metrics[4]));
+		p.setViolations(statusMap.get(metrics[5]));
+		p.setBlocker(statusMap.get(metrics[6]));
+		p.setCritical(statusMap.get(metrics[7]));
+		p.setMajor(statusMap.get(metrics[8]));
+		p.setMinor(statusMap.get(metrics[9]));
+		p.setInfo(statusMap.get(metrics[10]));
+		
 		
 //		Project p = new Project();
 //		p.setProjectName(projectName);
@@ -153,6 +189,7 @@ public class ProjectServiceImpl implements ProjectService{
 //		p.setComplexity(new String[]{"1288","+43"});
 //		p.setDuplicatedDensity(new String[]{"4.6","+0.4"});
 //		p.setCommentDensity(new String[]{"23","-4"});
+//		p.setSqaleIndex(new String[]{"24","-2"});
 //		p.setViolations(new String[]{"66","-15"});
 //		p.setBlocker(new String[]{"2","-1"});
 //		p.setCritical(new String[]{"10","+2"});

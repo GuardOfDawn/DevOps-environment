@@ -23,6 +23,7 @@ public class Project implements Serializable {
 	private String[] complexity;
 	private String[] duplicatedDensity;
 	private String[] commentDensity;
+	private String[] sqaleIndex;
 	private final String[] violations_label = {"violations","blocker","critical","major","minor","info"};
 	private String[] violations;
 	private String[] blocker;
@@ -35,6 +36,13 @@ public class Project implements Serializable {
 		return violations_label;
 	}
 
+	public String[] getSqaleIndex() {
+		return sqaleIndex;
+	}
+
+	public void setSqaleIndex(String[] sqaleIndex) {
+		this.sqaleIndex = sqaleIndex;
+	}
 	public String[] getComplexity() {
 		return complexity;
 	}

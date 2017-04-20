@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProjectDao {
 	
@@ -9,5 +10,7 @@ public interface ProjectDao {
 	public boolean deleteProject(String projectName);
 	
 	public List<String> getList(String column,String value,String retColumn);
+	
+	public Map<String,String> getNameKeyMapping();
 
 }

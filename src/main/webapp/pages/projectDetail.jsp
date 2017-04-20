@@ -105,7 +105,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="#"><i class="fa fa-circle-o"></i> Team</a></li>
+            <li><a href="<%=path %>/ProjectDetailServlet"><i class="fa fa-circle-o"></i> Team</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i> Individual</a></li>
           </ul>
         </li>
@@ -218,6 +218,8 @@
 				            </div>
 				            <!-- /.box-header -->
 				            <div class="box-body">
+				              <br>
+				              <br>
 				              <canvas id="pieChartOfJenkins" style="height:250px"></canvas>
 				            </div>
 				            <!-- /.box-body -->
@@ -258,10 +260,34 @@
 					              <b>Analysis time</b> <a class="pull-right"><%=project.getAnalysisTime() %></a>
 					            </li>
 					            <li class="list-group-item">
-					              <b>Lines</b> <a class="pull-right text-danger"><%=project.getLines()[1]%></a><a class="pull-right"><%=project.getLines()[0]%></a>
+					              <b>Lines</b> 
+					                <%if(Double.parseDouble(project.getLines()[1])>=0){ %>
+					              <a class="pull-right text-success"><%=project.getLines()[1]%></a>
+					                <%}
+					                  else{%>
+					              <a class="pull-right text-danger"><%=project.getLines()[1]%></a>
+					                <%} %>
+					              <a class="pull-right"><%=project.getLines()[0]%></a>
 					            </li>
 					            <li class="list-group-item">
-					              <b>Complexity</b> <a class="pull-right text-danger"><%=project.getComplexity()[1]%></a><a class="pull-right"><%=project.getComplexity()[0]%></a>
+					              <b>Complexity</b> 
+					                <%if(Double.parseDouble(project.getComplexity()[1])>=0){ %>
+					              <a class="pull-right text-success"><%=project.getComplexity()[1]%></a>
+					                <%}
+					                  else{%>
+					              <a class="pull-right text-danger"><%=project.getComplexity()[1]%></a>
+					                <%} %>
+					              <a class="pull-right"><%=project.getComplexity()[0]%></a>
+					            </li>
+					            <li class="list-group-item">
+					              <b>Sqale index</b> 
+					                <%if(Double.parseDouble(project.getSqaleIndex()[1])>=0){ %>
+					              <a class="pull-right text-success"><%=project.getSqaleIndex()[1]%></a>
+					                <%}
+					                  else{%>
+					              <a class="pull-right text-danger"><%=project.getSqaleIndex()[1]%></a>
+					                <%} %>
+					              <a class="pull-right"><%=project.getSqaleIndex()[0]%></a>
 					            </li>
 				              </ul>
 				            </div>
@@ -279,10 +305,24 @@
 				          <div class="box-body">
 				            <ul class="list-group list-group-unbordered">
 				              <li class="list-group-item">
-					            <b>Duplicated lines</b> <a class="pull-right"><%=project.getDuplicatedDensity()[1] %>%</a><a class="pull-right"><%=project.getDuplicatedDensity()[0] %>%</a>
+					            <b>Duplicated lines</b> 
+					              <%if(Double.parseDouble(project.getDuplicatedDensity()[1])>=0){ %>
+					            <a class="pull-right text-success"><%=project.getDuplicatedDensity()[1] %>%</a>
+					              <%}
+					                else{%>
+					            <a class="pull-right text-danger"><%=project.getDuplicatedDensity()[1] %>%</a>
+					              <%} %>
+					            <a class="pull-right"><%=project.getDuplicatedDensity()[0] %>%</a>
 					          </li>
 					          <li class="list-group-item">
-					            <b>Comment lines</b> <a class="pull-right"><%=project.getCommentDensity()[1] %>%</a><a class="pull-right"><%=project.getCommentDensity()[0] %>%</a>
+					            <b>Comment lines</b> 
+					              <%if(Double.parseDouble(project.getCommentDensity()[1])>=0){ %>
+					            <a class="pull-right text-success"><%=project.getCommentDensity()[1] %>%</a>
+					              <%}
+					                else{%>
+					            <a class="pull-right text-danger"><%=project.getCommentDensity()[1] %>%</a>
+					              <%} %>
+					            <a class="pull-right"><%=project.getCommentDensity()[0] %>%</a>
 					          </li>
 				            </ul>
 				          </div>
@@ -294,17 +334,38 @@
 	                </div>
 	                <!-- /.row -->
 	                <div class="row">
-	                  <div class="box box-warning">
-			            <div class="box-header with-border">
-			              <h3 class="box-title">Issues</h3>
+	                  <div class="col-md-5">
+	                    <div class="box box-warning">
+			              <div class="box-header with-border">
+			                <h3 class="box-title">Issues</h3>
+			              </div>
+			              <!-- /.box-header -->
+			              <div class="box-body">
+			                <br>
+			                <canvas id="doughnutChartOfSonar" style="height:250px"></canvas>
+			              </div>
+			              <div class="box-body text-center">
+			                <b>Violations : <%=project.getViolations()[0] %></b>
+			              </div>
+			              <!-- /.box-body -->
 			            </div>
-			            <!-- /.box-header -->
-			            <div class="box-body">
-			              <canvas id="barChartOfSonar" style="height:230px"></canvas>
+	                  </div>
+			          <!-- /.col -->
+	                  <div class="col-md-7">
+	                    <div class="box box-warning">
+			              <div class="box-header with-border">
+			                <h3 class="box-title">Changes of Issues</h3>
+			              </div>
+			              <!-- /.box-header -->
+			              <div class="box-body">
+			                <canvas id="barChartOfSonar" style="height:230px"></canvas>
+			              </div>
+			              <!-- /.box-body -->
 			            </div>
-			            <!-- /.box-body -->
-			            </div>
+	                  </div>
+			          <!-- /.col -->
 	                </div>
+	                <!-- /.row -->
 	              </div>
 	              <!-- /.tab-pane -->
 	            </div>
@@ -367,6 +428,20 @@
 <!-- page script -->
 <script>
   $(function () {
+	    initJenkinsChart();
+  });
+  $(function(){
+	  $('a[data-toggle="tab"]').on("shown.bs.tab",function(e){
+		  var activeTab = $(e.target).text();
+		  if(activeTab==="Sonar Status"){
+			  initSonarChart();
+		  }
+		  else if(activeTab==="Jenkins Status"){
+			  initJenkinsChart();
+		  }
+	  });
+  });
+  function initJenkinsChart(){
 	    //-------------
 	    //- PIE CHART -
 	    //-------------
@@ -398,7 +473,7 @@
 	      //Number - The width of each segment stroke
 	      segmentStrokeWidth: 2,
 	      //Number - The percentage of the chart that we cut out of the middle
-	      percentageInnerCutout: 50, // This is 0 for Pie charts
+	      percentageInnerCutout: 0, // This is 0 for Pie charts
 	      //Number - Amount of animation steps
 	      animationSteps: 100,
 	      //String - Animation easing effect
@@ -435,7 +510,7 @@
 	    		dataOfBarChartTotal[<%=i%>]='<%=buildStatus.get(i).getTotalBuild()%>';
 	    		dataOfBarChartSuccess[<%=i%>]='<%=buildStatus.get(i).getSuccessBuild()%>';
 	    		dataOfBarChartFailure[<%=i%>]=dataOfBarChartTotal[<%=i%>]-dataOfBarChartSuccess[<%=i%>];
- 			   <%
+			   <%
 	    	  }
 	        }
 	    %>
@@ -507,14 +582,10 @@
 	    };
 	    barChartOptions.datasetFill = false;
 	    barChart.Bar(barChartData, barChartOptions);
-	    
-	  //-------------
-	    //- BAR CHART -
-	    //-------------
-	    var barChartCanvas2 = $("#barChartOfSonar").get(0).getContext("2d");
-	    var barChart2 = new Chart(barChartCanvas2);
+  }
+  function initSonarChart(){
 	    //get data
-	    var labelsOfBarChart2 = new Array(); 
+	    var labelsOfBarChart2 = new Array();
 	    var dataOfBarChartTotal2 = new Array();
 	    var dataOfBarChartChange = new Array();
 	    <% 
@@ -537,6 +608,85 @@
 	    dataOfBarChartChange[4] = '<%=project.getMinor()[1]%>';
 	    dataOfBarChartTotal2[5] = '<%=project.getInfo()[0]%>';
 	    dataOfBarChartChange[5] = '<%=project.getInfo()[1]%>';
+	    //-------------
+	    //- DOUGHNUT CHART -
+	    //-------------
+	    // Get context with jQuery - using jQuery's .get() method.
+	    var doughnutChartCanvas = $("#doughnutChartOfSonar").get(0).getContext("2d");
+	    var doughnutChart = new Chart(doughnutChartCanvas);
+	    var doughnutData = [
+	      {
+	        value: dataOfBarChartTotal2[1],
+	        color: "#f56954",
+	        highlight: "#f56954",
+	        label: labelsOfBarChart2[1]
+	      },
+	      {
+            value: dataOfBarChartTotal2[2],
+            color: "#f39c12",
+            highlight: "#f39c12",
+            label: labelsOfBarChart2[2]
+          },
+          {
+            value: dataOfBarChartTotal2[3],
+            color: "#3c8dbc",
+            highlight: "#3c8dbc",
+            label: labelsOfBarChart2[3]
+          },
+          {
+            value: dataOfBarChartTotal2[4],
+            color: "#00c0ef",
+            highlight: "#00c0ef",
+            label: labelsOfBarChart2[4]
+          },
+          {
+	        value: dataOfBarChartTotal2[5],
+	        color: "#00a65a",
+	        highlight: "#00a65a",
+	        label: labelsOfBarChart2[5]
+	      }
+	    ];
+	    var doughnutOptions = {
+	      //Boolean - Whether we should show a stroke on each segment
+	      segmentShowStroke: true,
+	      //String - The colour of each segment stroke
+	      segmentStrokeColor: "#fff",
+	      //Number - The width of each segment stroke
+	      segmentStrokeWidth: 2,
+	      //Number - The percentage of the chart that we cut out of the middle
+	      percentageInnerCutout: 50, // This is 0 for Pie charts
+	      //Number - Amount of animation steps
+	      animationSteps: 100,
+	      //String - Animation easing effect
+	      animationEasing: "easeOutBounce",
+	      //Boolean - Whether we animate the rotation of the Doughnut
+	      animateRotate: true,
+	      //Boolean - Whether we animate scaling the Doughnut from the centre
+	      animateScale: false,
+	      //Boolean - whether to make the chart responsive to window resizing
+	      responsive: true,
+	      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+	      maintainAspectRatio: true,
+	    };
+	    //Create pie or douhnut chart
+	    // You can switch between pie and douhnut using the method below.
+	    doughnutChart.Doughnut(doughnutData, doughnutOptions);
+	    
+	    //-------------
+	    //- BAR CHART -
+	    //-------------
+	    var colorsOfBarChart = new Array();
+	    for(i=0;i<dataOfBarChartChange.length;i++){
+	    	if(dataOfBarChartChange[i]>=0){
+	    		colorsOfBarChart[i] = "#00a65a";
+	    	}
+	    	else{
+	    		colorsOfBarChart[i] = "#f56954";
+	    	}
+	    }
+	    
+	    var barChartCanvas2 = $("#barChartOfSonar").get(0).getContext("2d");
+	    var barChart2 = new Chart(barChartCanvas2);
 	    var barChartData2 = {
 	    	      labels: labelsOfBarChart2,
 	    	      datasets: [
@@ -551,7 +701,7 @@
 	    	          data: dataOfBarChartTotal2
 	    	        },
 	    	        {
-	    	          label: "Success",
+	    	          label: "Change",
 	    	          fillColor: "rgba(60,141,188,0.9)",
 	    	          strokeColor: "rgba(60,141,188,0.8)",
 	    	          pointColor: "#3b8bba",
@@ -562,12 +712,12 @@
 	    	        }
 	    	      ]
 	    	    };
-	    barChartData2.datasets[1].fillColor = "#00a65a";
-	    barChartData2.datasets[1].strokeColor = "#00a65a";
-	    barChartData2.datasets[1].pointColor = "#00a65a";
+	    barChartData2.datasets[1].fillColor = colorsOfBarChart;
+	    barChartData2.datasets[1].strokeColor = colorsOfBarChart;
+	    barChartData2.datasets[1].pointColor = colorsOfBarChart;
 	    var barChartOptions2 = {
 	      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-	      scaleBeginAtZero: true,
+	      scaleBeginAtZero: false,
 	      //Boolean - Whether grid lines are shown across the chart
 	      scaleShowGridLines: true,
 	      //String - Colour of the grid lines
@@ -592,8 +742,7 @@
 	    };
 	    barChartOptions2.datasetFill = false;
 	    barChart2.Bar(barChartData2, barChartOptions2);
-
-  });
+  }
   function projectChange(){
 	  var myselect = document.getElementById("projectSelection");
 	  var index = myselect.selectedIndex;

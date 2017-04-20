@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProjectDaoImpl implements ProjectDao{
 
@@ -77,6 +79,27 @@ public class ProjectDaoImpl implements ProjectDao{
             ResultSet rs = preState.executeQuery();
             while (rs.next()) {  
             	res.add(rs.getString(retColumn));
+            }
+            rs.close(); 
+			daoHelper.closeConnection(conn);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+
+	@Override
+	public Map<String, String> getNameKeyMapping() {
+		Map<String, String> res = new HashMap<String,String>();
+		try{
+			Connection conn = daoHelper.getConnection();
+			
+			String sql = "select projectname,projectkey from project;";
+            PreparedStatement preState = conn.prepareStatement(sql);
+            ResultSet rs = preState.executeQuery();
+            while (rs.next()) {  
+            	res.put(rs.getString("projectname"), rs.getString("projectkey"));
             }
             rs.close(); 
 			daoHelper.closeConnection(conn);

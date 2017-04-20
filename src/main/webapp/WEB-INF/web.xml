@@ -75,6 +75,10 @@
     <jsp-file>/pages/projectDetail.jsp</jsp-file>
   </servlet>
   <servlet>
+    <servlet-name>noProjectJSP</servlet-name>
+    <jsp-file>/pages/noProject.jsp</jsp-file>
+  </servlet>
+  <servlet>
     <servlet-name>ChartjsDemoJSP</servlet-name>
     <jsp-file>/pages/chartjsDemo.jsp</jsp-file>
   </servlet>
@@ -163,6 +167,10 @@
   <servlet-mapping>
     <servlet-name>projectDetailJSP</servlet-name>
     <url-pattern>/projectDetail</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>noProjectJSP</servlet-name>
+    <url-pattern>/noProject</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>ChartjsDemoJSP</servlet-name>
