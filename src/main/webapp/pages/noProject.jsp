@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
-    <%@page import="model.ProjectListBean"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -83,7 +82,7 @@
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active treeview">
+        <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Project</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -94,15 +93,15 @@
             <li><a href="<%=path %>/createProject"><i class="fa fa-circle-o"></i> Create a project</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li class="active treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Statistics</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<%=path %>/ProjectDetailServlet"><i class="fa fa-circle-o"></i> Team</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Individual</a></li>
+            <li class="active"><a href="<%=path %>/ProjectDetailServlet"><i class="fa fa-circle-o"></i> Team</a></li>
+            <li><a href="<%=path %>/UserStatisticsServlet"><i class="fa fa-circle-o"></i> Individual</a></li>
           </ul>
         </li>
       </ul>

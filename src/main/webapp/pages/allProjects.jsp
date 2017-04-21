@@ -104,7 +104,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="<%=path %>/ProjectDetailServlet"><i class="fa fa-circle-o"></i> Team</a></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i> Individual</a></li>
+            <li><a href="<%=path %>/UserStatisticsServlet"><i class="fa fa-circle-o"></i> Individual</a></li>
           </ul>
         </li>
         <li><a href="<%=path %>/ChartjsDemoServlet"><i class="fa fa-link"></i> Chart.js Demo</a></li>

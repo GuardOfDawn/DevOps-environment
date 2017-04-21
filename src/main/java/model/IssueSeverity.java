@@ -4,6 +4,6 @@ import java.io.Serializable;
 
 public enum IssueSeverity implements Serializable{
 	
-	INFO, MINOR, MAJOR, CRITICAL, BLOCKER
+	BLOCKER, CRITICAL, MAJOR, MINOR, INFO
 
 }
