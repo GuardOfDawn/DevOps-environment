@@ -8,21 +8,25 @@ import dao.ProjectDao;
 import dao.ProjectDaoImpl;
 import dao.ProjectJoinDao;
 import dao.ProjectJoinDaoImpl;
+import interfaces.SonarProjStat;
 import interfaces.SonarUserStat;
 import model.IssueSeverity;
 import model.IssueType;
 import model.Join;
 import model.UserStat;
+import status.SonarProjStatImpl;
 import status.SonarUserStatImpl;
 
 public class UserStatServiceImpl implements UserStatService{
 	
 	private SonarUserStat sonarUserStat;
+	private SonarProjStat sonarProjStat;
 	private ProjectJoinDao projectJoinDao;
 	private ProjectDao projectDao;
 	
 	public UserStatServiceImpl(){
 		sonarUserStat = new SonarUserStatImpl();
+		sonarProjStat = new SonarProjStatImpl();
 		projectJoinDao = new ProjectJoinDaoImpl();
 		projectDao = new ProjectDaoImpl();
 	}
@@ -47,11 +51,20 @@ public class UserStatServiceImpl implements UserStatService{
 		String column = "username";
 		List<Join> userJoins = projectJoinDao.getList(column, userName);
 		Map<String,String> nameKeyPair = projectDao.getNameKeyMapping();
-		Map<String,Integer> projectIssues = new HashMap<String,Integer>();
+		Map<String,Integer[]> projectIssues = new HashMap<String,Integer[]>();
 		for(int i=0;i<userJoins.size();i++){
 			String projectName = userJoins.get(i).getProjectName();
 			String projectKey = nameKeyPair.get(projectName);
-			projectIssues.put(projectName, sonarUserStat.getByProject(userName, projectKey));
+			Integer[] data = new Integer[2];
+			Map<String,String[]> temp = sonarProjStat.getStatus(projectKey);
+			if(temp!=null){
+				data[0] = Integer.parseInt(temp.get("violations")[0]);
+			}
+			else{
+				data[0] = -1;
+			}
+			data[1] = sonarUserStat.getByProject(userName, projectKey);
+			projectIssues.put(projectName, data);
 		}
 		userStat.setProjectIssues(projectIssues);
 		userStat.setUnresolved(sonarUserStat.getUnresolved(userName));

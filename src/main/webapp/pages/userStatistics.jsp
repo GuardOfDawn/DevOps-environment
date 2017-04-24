@@ -408,15 +408,17 @@
 	  
 	  
 	  var labelsOfChartProject = new Array();
-	  var dataOfChartProject = new Array();
+	  var dataOfChartProjectTotal = new Array();
+	  var dataOfChartProjectMine = new Array();
 	  
 	  <%
-	    Map<String,Integer> projectIssueMap = userStat.getProjectIssues();
+	    Map<String,Integer[]> projectIssueMap = userStat.getProjectIssues();
 	    int index = 0;
-	    for(Map.Entry<String,Integer> entry:projectIssueMap.entrySet()){
+	    for(Map.Entry<String,Integer[]> entry:projectIssueMap.entrySet()){
 	    	%>
 	    	labelsOfChartProject[<%=index%>]='<%=entry.getKey()%>';
-	    	dataOfChartProject[<%=index%>]='<%=entry.getValue()%>';
+	    	dataOfChartProjectTotal[<%=index%>]='<%=entry.getValue()[0]%>';
+	    	dataOfChartProjectMine[<%=index%>]='<%=entry.getValue()[1]%>';
 			<%
 			index++;
 	    }
@@ -437,7 +439,17 @@
 	    	          pointStrokeColor: "#c1c7d1",
 	    	          pointHighlightFill: "#fff",
 	    	          pointHighlightStroke: "rgba(220,220,220,1)",
-	    	          data: dataOfChartProject
+	    	          data: dataOfChartProjectTotal
+	    	        },
+	    	        {
+	    	          label: "Mine",
+	    	          fillColor: "#3c8dbc",
+	    	          strokeColor: "#3c8dbc",
+	    	          pointColor: "#3c8dbc",
+	    	          pointStrokeColor: "#c1c7d1",
+	    	          pointHighlightFill: "#fff",
+	    	          pointHighlightStroke: "rgba(220,220,220,1)",
+	    	          data: dataOfChartProjectMine
 	    	        }
 	    	      ]
 	    	    };

@@ -11,7 +11,7 @@ public class UserStat implements Serializable{
 	private int totalIssues;
 	private int[] severityIssues;
 	private int[] typeIssues;
-	private Map<String,Integer> projectIssues;
+	private Map<String,Integer[]> projectIssues;
 	private int unresolved;
 	
 	public String getUserName() {
@@ -38,10 +38,10 @@ public class UserStat implements Serializable{
 	public void setTypeIssues(int[] typeIssues) {
 		this.typeIssues = typeIssues;
 	}
-	public Map<String, Integer> getProjectIssues() {
+	public Map<String, Integer[]> getProjectIssues() {
 		return projectIssues;
 	}
-	public void setProjectIssues(Map<String, Integer> projectIssues) {
+	public void setProjectIssues(Map<String, Integer[]> projectIssues) {
 		this.projectIssues = projectIssues;
 	}
 	public int getUnresolved() {
