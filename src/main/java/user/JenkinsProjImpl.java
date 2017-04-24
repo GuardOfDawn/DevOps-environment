@@ -11,7 +11,10 @@ import tool.HttpUtils;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Author: stk
@@ -63,6 +66,8 @@ public class JenkinsProjImpl implements JenkinsProj {
      * @return Success or failure
      */
     public boolean createProject(String name) {
+        List<String> allProjects = getAllProject();
+        if (allProjects.contains(name)) return false;
         String url = Host.getJenkins() + "createItem?name=" + name;
         Map<String, String> props = new HashMap<>();
         props.put("Authorization", Authentication.getBasicAuth("jenkins"));
