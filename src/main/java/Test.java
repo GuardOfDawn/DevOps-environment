@@ -1,5 +1,5 @@
-import interfaces.JenkinsProjStat;
-import status.JenkinsProjStatImpl;
+import interfaces.SonarUserStat;
+import status.SonarUserStatImpl;
 
 import java.util.Map;
 
@@ -11,10 +11,9 @@ import java.util.Map;
 public class Test {
     public static void main(String[] args) {
         System.setProperty("WORK_DIR", "/home/stk/Projects/DevOps-environment/");
-        JenkinsProjStat jenkinsProjStat = new JenkinsProjStatImpl();
-        Map<String, String> result = jenkinsProjStat.getBuildResult("DevOpsSystem");
-        for (Map.Entry<String, String> entry : result.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
-        }
+        SonarUserStat sonarUserStat = new SonarUserStatImpl();
+        Map<String, Integer> result = sonarUserStat.getAll("admin");
+        for (Map.Entry<String, Integer> entry : result.entrySet())
+            System.out.println(entry.getKey() + ": " + entry.getValue());
     }
 }

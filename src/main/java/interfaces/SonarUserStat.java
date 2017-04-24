@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.util.Map;
+
 /**
  * Author: stk
  * Date: 4/11/17
@@ -53,4 +55,17 @@ public interface SonarUserStat {
      * If error then return -1.
      */
     int getUnresolved(String name);
+
+    /**
+     * Get all issues by user name.
+     *
+     * @param name User name
+     * @return Map of issue numbers
+     * key: total,
+     * info, minor, major, critical, blocker,
+     * code_smell, bug, vulnerability,
+     * unresolved,
+     * and project keys, e.g. stk:test.
+     */
+    Map<String, Integer> getAll(String name);
 }
