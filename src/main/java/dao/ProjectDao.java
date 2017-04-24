@@ -12,5 +12,7 @@ public interface ProjectDao {
 	public List<String> getList(String column,String value,String retColumn);
 	
 	public Map<String,String> getNameKeyMapping();
+	
+	public boolean update(String projectName,String projectKey);
 
 }

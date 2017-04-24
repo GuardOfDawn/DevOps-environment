@@ -35,42 +35,48 @@
 
     <form action="<%=path %>/AllProjectsServlet" method="post" class="form-horizontal">
       <div class="box-body">
-        <div class="form-group">
-          <label for="textUsername" class="col-sm-4 control-label">User name</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="textUsername" placeholder='<%=request.getAttribute("username") %>' disabled>
-          </div>
+        <div class="input-group">
+          <span class="input-group-addon">User name</span>
+          <input type="text" class="form-control" id="textUsername1" value='<%=request.getAttribute("username") %>' disabled>
         </div>
-        <div class="form-group">
-          <label for="textPassword" class="col-sm-4 control-label">Password</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="textPassword" placeholder='<%=request.getAttribute("password") %>' disabled>
-          </div>
+        <br>
+        
+        <div class="input-group">
+          <input type="hidden" id="Password1" value="hide">
+          <span class="input-group-addon">Password</span>
+          <input type="password" class="form-control" id="textPassword1" value='<%=request.getAttribute("password") %>' disabled>
+          <span class="glyphicon glyphicon-eye-open input-group-addon" onclick="passwordShow('Password1')"></span>
         </div>
-        <div class="form-group">
-          <label for="textUsername2" class="col-sm-4 control-label">Jenkins</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="textUsername2" placeholder='<%=request.getAttribute("username") %>' disabled>
-          </div>
+        <br>
+        
+        <div class="input-group">
+          <span class="input-group-addon">Jenkins</span>
+          <input type="text" class="form-control" id="textUsername2" value='<%=request.getAttribute("username") %>' disabled>
         </div>
-        <div class="form-group">
-          <label for="textPassword2" class="col-sm-4 control-label">Password</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="textPassword2" placeholder='<%=request.getAttribute("password") %>' disabled>
-          </div>
+        <br>
+        
+        <div class="input-group">
+          <input type="hidden" id="Password2" value="hide">
+          <span class="input-group-addon">Password</span>
+          <input type="password" class="form-control" id="textPassword2" value='<%=request.getAttribute("password") %>' disabled>
+          <span class="glyphicon glyphicon-eye-open input-group-addon" onclick="passwordShow('Password2')"></span>
         </div>
-        <div class="form-group">
-          <label for="textUsername3" class="col-sm-4 control-label">SonarQube</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="textUsername3" placeholder='<%=request.getAttribute("username") %>' disabled>
-          </div>
+        <br>
+        
+        <div class="input-group">
+          <span class="input-group-addon">SonarQube</span>
+          <input type="text" class="form-control" id="textUsername3" value='<%=request.getAttribute("username") %>' disabled>
         </div>
-        <div class="form-group">
-          <label for="textPassword3" class="col-sm-4 control-label">Password</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="textPassword3" placeholder='<%=request.getAttribute("password") %>' disabled>
-          </div>
+        <br>
+        
+        <div class="input-group">
+          <input type="hidden" id="Password3" value="hide">
+          <span class="input-group-addon">Password</span>
+          <input type="password" class="form-control" id="textPassword3" value='<%=request.getAttribute("password") %>' disabled>
+          <span class="glyphicon glyphicon-eye-open input-group-addon" onclick="passwordShow('Password3')"></span>
         </div>
+        <br>
+        
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
@@ -88,5 +94,18 @@
 <script src="<%=path %>/plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="<%=path %>/bootstrap/js/bootstrap.min.js"></script>
+<script>
+function passwordShow(elementId){
+	var condition = document.getElementById(elementId).value;
+	if(condition==="hide"){
+		document.getElementById("text"+elementId).type = 'text';
+		document.getElementById(elementId).value = "show";
+	}
+	else if(condition==="show"){
+		document.getElementById("text"+elementId).type = 'password';
+		document.getElementById(elementId).value = "hide";
+	}
+}
+</script>
 </body>
 </html>

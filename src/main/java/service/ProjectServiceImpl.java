@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import dao.ProjectDao;
 import dao.ProjectDaoImpl;
 import dao.ProjectJoinDao;
@@ -15,7 +17,6 @@ import interfaces.JenkinsProj;
 import interfaces.JenkinsProjStat;
 import interfaces.SonarProj;
 import interfaces.SonarProjStat;
-import model.BuildStatus;
 import model.Join;
 import model.Project;
 import model.ProjectDetailListBean;
@@ -31,9 +32,12 @@ public class ProjectServiceImpl implements ProjectService{
 	private SonarProj sonarProject;
 	private JenkinsProj jenkinsProject;
 	private JenkinsProjStat jenkinsProjStat;
+	private ProjectStatService projectStat;
 	private SonarProjStat sonarProjStat;
 	private ProjectJoinDao projectJoinDao;
 	private ProjectDao projectDao;
+	
+    private static Logger logger = Logger.getLogger(ProjectServiceImpl.class);
 	
 	private String[] metrics = new String[]{
             "ncloc",
@@ -53,6 +57,7 @@ public class ProjectServiceImpl implements ProjectService{
 		sonarProject = new SonarProjImpl();
 		jenkinsProject = new JenkinsProjImpl();
 		jenkinsProjStat = new JenkinsProjStatImpl();
+		projectStat = new ProjectStatServiceImpl();
 		sonarProjStat = new SonarProjStatImpl();
 		projectJoinDao = new ProjectJoinDaoImpl();
 		projectDao = new ProjectDaoImpl();
@@ -155,9 +160,7 @@ public class ProjectServiceImpl implements ProjectService{
 		p.setDuration(map.get("duration"));
 		p.setFrequency(frequency);
 		p.setSuccessRate(successRate);
-		ArrayList<BuildStatus> lastTenBuilds = new ArrayList<BuildStatus>();
-		//TODO
-		p.setLastTenBuilds(lastTenBuilds);
+		p.setLastTenBuilds(projectStat.getBuildStatistics(jenkinsProjStat.getBuildResult(projectName)));
 		//sonar status
 		String projectKey = getProjectKey(projectName);
 		p.setAnalysisTime(sonarProjStat.getAnalysisTime(projectKey));
@@ -198,7 +201,7 @@ public class ProjectServiceImpl implements ProjectService{
 //		p.setInfo(new String[]{"13","+3"});
 //		ArrayList<BuildStatus> lastTenBuilds = new ArrayList<BuildStatus>();
 //		BuildStatus s1 = new BuildStatus();
-//		s1.setTime("2016-11-11");
+//		s1.setTime("2016/11/11-2016/11/13");
 //		s1.setTotalBuild(2);
 //		s1.setSuccessBuild(2);
 //		BuildStatus s2 = new BuildStatus();
@@ -228,6 +231,9 @@ public class ProjectServiceImpl implements ProjectService{
 		boolean sonarRes = sonarProject.createProject(projectName, projectKey);
 		boolean jenkinsRes = jenkinsProject.createProject(projectName);
 		boolean res = sonarRes&&jenkinsRes;
+		logger.info("create sonar project "+projectName+" : "+sonarRes);
+		logger.info("create jenkins project "+projectName+" : "+jenkinsRes);
+		
 //		boolean res = true;
 		if(res){
 			projectDao.addProject(projectName, projectKey, getCurrentTimeString());
@@ -274,7 +280,27 @@ public class ProjectServiceImpl implements ProjectService{
 		String retColumn = "projectkey";
 		List<String> projectKeys = projectDao.getList(column, projectName, retColumn);
 		if(projectKeys==null||projectKeys.size()==0){
-			return null;
+			List<String[]> sonarProjectList = sonarProject.getAllProject();
+			String projectKey = null;
+			for(int i=0;i<sonarProjectList.size();i++){
+				if(sonarProjectList.get(i)[0].equals(projectName)){
+					projectKey = sonarProjectList.get(i)[1];
+					break;
+				}
+			}
+			Map<String,String> nameKey = projectDao.getNameKeyMapping();
+			for(int i=0;i<sonarProjectList.size();i++){
+				String[] project = sonarProjectList.get(i);
+				if(nameKey.containsKey(project[0])){
+					if(!nameKey.get(project[0]).equals(project[1])){
+						projectDao.update(project[0], project[1]);
+					}
+				}
+				else{
+					projectDao.addProject(project[0], project[1], getCurrentTimeString());
+				}
+			}
+			return projectKey;
 		}
 		else{
 			return projectKeys.get(0);

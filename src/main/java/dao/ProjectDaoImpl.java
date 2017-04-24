@@ -110,4 +110,27 @@ public class ProjectDaoImpl implements ProjectDao{
 		return res;
 	}
 
+	@Override
+	public boolean update(String projectName, String projectKey) {
+		boolean res = false;
+		try{
+			Connection conn = daoHelper.getConnection();
+        	PreparedStatement prep = conn.prepareStatement("update project set projectkey=? where projectname=?;");
+			prep.setString(1, projectKey);
+			prep.setString(2, projectName);
+			int ret = prep.executeUpdate();
+			if(ret>0){
+            	res = true;
+			}
+			else{
+				res = false;
+			}
+			daoHelper.closeConnection(conn);
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		return res;
+	}
+
 }

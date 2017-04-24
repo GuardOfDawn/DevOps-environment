@@ -54,7 +54,7 @@ public class CreateProjectServlet extends HttpServlet {
 					rd.forward(request, response);
 				}
 				else{
-					String createRes = "create project '"+projectName+"' failed"; 
+					String createRes = "Project \""+projectName+"\" is already existed"; 
 					request.setAttribute("createProjectRes", createRes);
 					RequestDispatcher rd = request.getRequestDispatcher("/createProject");
 					rd.forward(request, response);
