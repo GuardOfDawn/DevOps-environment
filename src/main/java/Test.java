@@ -1,7 +1,5 @@
-import interfaces.SonarUserStat;
-import status.SonarUserStatImpl;
-
-import java.util.Map;
+import interfaces.JenkinsProj;
+import user.JenkinsProjImpl;
 
 /**
  * Author: stk
@@ -11,9 +9,7 @@ import java.util.Map;
 public class Test {
     public static void main(String[] args) {
         System.setProperty("WORK_DIR", "/home/stk/Projects/DevOps-environment/");
-        SonarUserStat sonarUserStat = new SonarUserStatImpl();
-        Map<String, Integer> result = sonarUserStat.getAll("admin");
-        for (Map.Entry<String, Integer> entry : result.entrySet())
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+        JenkinsProj jenkinsProj = new JenkinsProjImpl();
+        System.out.println(jenkinsProj.createProject("justfortest"));
     }
 }
