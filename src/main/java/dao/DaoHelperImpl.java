@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import tool.GetPath;
+
 public class DaoHelperImpl implements DaoHelper{
 	
 	private static DaoHelperImpl baseDao = new DaoHelperImpl();
@@ -29,8 +31,8 @@ public class DaoHelperImpl implements DaoHelper{
 	
 	private DaoHelperImpl(){
 //		this.path = System.getProperty("user.dir").replace("\\", "/").concat("/");
-		String str = System.getProperty("user.dir").replace("\\", "/");
-		this.path = str.substring(0, str.length()-4).concat("/webapps/devops-system/");
+		String str = GetPath.getResourcesPath().replace("\\", "/");
+        this.path = str.substring(0, str.length() - 15);
 		this.initDataBase();
 	}
 	
