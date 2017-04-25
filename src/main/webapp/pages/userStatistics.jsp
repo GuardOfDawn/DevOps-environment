@@ -175,8 +175,8 @@
 			              <h3 class="box-title">Issues group by severity</h3>
 			            </div>
 			            <!-- /.box-header -->
-			            <div class="box-body">
-			              <br>
+			            <div class="box-body" style="position: relative;">
+			              <span style="display: inline-block; position: absolute; width: 100px; height: 100px; top: 50%; left: 50%; margin-top: -50px; margin-left: -50px; line-height: 100px;">50%</span>
 			              <canvas id="chartOfSeverity" style="height:250px"></canvas>
 			            </div>
 			            <div class="box-body text-center">
