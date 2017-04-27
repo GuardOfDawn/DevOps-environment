@@ -32,7 +32,7 @@ public class CheckVisitorFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpReq = (HttpServletRequest)request;
 		HttpServletResponse httpRes = (HttpServletResponse)response;
-		httpRes.sendRedirect(httpReq.getContextPath() + "/login");
+		httpRes.sendRedirect(httpReq.getContextPath() + "/LoginServlet");
 	}
 
 	/**

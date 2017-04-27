@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class Project implements Serializable {
 	
@@ -24,16 +25,15 @@ public class Project implements Serializable {
 	private String[] duplicatedDensity;
 	private String[] commentDensity;
 	private String[] sqaleIndex;
-	private final String[] violations_label = {"violations","blocker","critical","major","minor","info"};
-	private String[] violations;
-	private String[] blocker;
-	private String[] critical;
-	private String[] major;
-	private String[] minor;
-	private String[] info;
 	
-	public String[] getViolations_label() {
-		return violations_label;
+	private Map<String,String[]> violationsData;
+	
+	public Map<String, String[]> getViolationsData() {
+		return violationsData;
+	}
+
+	public void setViolationsData(Map<String, String[]> violationsData) {
+		this.violationsData = violationsData;
 	}
 
 	public String[] getSqaleIndex() {
@@ -60,42 +60,6 @@ public class Project implements Serializable {
 	}
 	public void setCommentDensity(String[] commentDensity) {
 		this.commentDensity = commentDensity;
-	}
-	public String[] getViolations() {
-		return violations;
-	}
-	public void setViolations(String[] violations) {
-		this.violations = violations;
-	}
-	public String[] getBlocker() {
-		return blocker;
-	}
-	public void setBlocker(String[] blocker) {
-		this.blocker = blocker;
-	}
-	public String[] getCritical() {
-		return critical;
-	}
-	public void setCritical(String[] critical) {
-		this.critical = critical;
-	}
-	public String[] getMajor() {
-		return major;
-	}
-	public void setMajor(String[] major) {
-		this.major = major;
-	}
-	public String[] getMinor() {
-		return minor;
-	}
-	public void setMinor(String[] minor) {
-		this.minor = minor;
-	}
-	public String[] getInfo() {
-		return info;
-	}
-	public void setInfo(String[] info) {
-		this.info = info;
 	}
 	public String getAnalysisTime() {
 		return analysisTime;

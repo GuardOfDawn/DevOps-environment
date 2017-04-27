@@ -135,17 +135,18 @@
 	          <div class="box-body">
 	            <div class="form-group">
 	              <label for="exampleInputEmail1">Project name</label>
-	              <input type="text" class="form-control" name="projectname" placeholder="Enter project name">
+	              <input type="text" class="form-control" id="projectname" name="projectname" placeholder="Enter project name" onkeyup="createProjectCheck()">
 	            </div>
 	            <div class="form-group">
 	              <label for="exampleInputPassword1">Project key (for SonarQube)</label>
-	              <input type="text" class="form-control" name="projectkey" placeholder="Enter project key">
+	              <input type="text" class="form-control" id="projectkey" name="projectkey" placeholder="Enter project key" onkeyup="createProjectCheck()">
 	            </div>
+	            <p id="input_info" class="text-danger"></p>
 	          </div>
 	          <!-- /.box-body -->
 	
 	          <div class="box-footer">
-	            <button type="submit" class="btn btn-primary">Create Project</button>
+	            <button type="submit" id="createProjectButton" class="btn btn-primary" disabled>Create Project</button>
 	          </div>
 	        </form>
           </div>
@@ -170,5 +171,24 @@
 <script src="<%=path %>/plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
 <script src="<%=path %>/plugins/fastclick/fastclick.js"></script>
+<script type="text/javascript">
+function createProjectCheck(){
+	var projectName = document.getElementById('projectname').value;
+	var projectKey = document.getElementById('projectkey').value;
+	if(projectName===''||projectKey===''){
+		if(projectName===''){
+			document.getElementById('input_info').innerHTML = "project name should not be empty";
+		}
+		else{
+			document.getElementById('input_info').innerHTML = "project key should not be empty";
+		}
+		document.getElementById('createProjectButton').disabled = true;
+	}
+	else{
+		document.getElementById('input_info').innerHTML = "";
+		document.getElementById('createProjectButton').disabled = false;
+	}
+}
+</script>
 </body>
 </html>

@@ -154,10 +154,24 @@
 			            <div class="box-body">
 			              <ul class="list-group list-group-unbordered">
 			                <li class="list-group-item">
-				              <b>Total</b> <a class="pull-right"><%=userStat.getTotalIssues() %></a>
+				              <b>Total</b> <a class="pull-right">
+				              <%if(userStat.getTotalIssues()!=-1){ %>
+				                <%=userStat.getTotalIssues() %>
+				              <%}
+				                else{%>
+				                No data
+				              <%} %>
+				              </a>
 				            </li>
 				            <li class="list-group-item">
-				              <b>Unresolved</b> <a class="pull-right"><%=userStat.getUnresolved() %></a>
+				              <b>Unresolved</b> <a class="pull-right">
+				              <%if(userStat.getUnresolved()!=-1){ %>
+				                <%=userStat.getUnresolved() %>
+				              <%}
+				                else{%>
+				                No data
+				              <%} %>
+				              </a>
 				            </li>
 			              </ul>
 			            </div>
@@ -175,12 +189,18 @@
 			              <h3 class="box-title">Issues group by severity</h3>
 			            </div>
 			            <!-- /.box-header -->
-			            <div class="box-body" style="position: relative;">
-			              <span style="display: inline-block; position: absolute; width: 100px; height: 100px; top: 50%; left: 50%; margin-top: -50px; margin-left: -50px; line-height: 100px;">50%</span>
+			            <div class="box-body">
 			              <canvas id="chartOfSeverity" style="height:250px"></canvas>
 			            </div>
 			            <div class="box-body text-center">
-			              <b>Total Issues : <%=userStat.getTotalIssues() %></b>
+			              <b>Total Issues : 
+			              <%if(userStat.getTotalIssues()!=-1){ %>
+			                <%=userStat.getTotalIssues() %>
+			              <%}
+			                else{%>
+			                No data
+			              <%} %>
+			              </b>
 			            </div>
 			            <!-- /.box-body -->
 			          </div>
@@ -197,7 +217,14 @@
 			              <canvas id="chartOfType" style="height:250px"></canvas>
 			            </div>
 			            <div class="box-body text-center">
-			              <b>Total Issues : <%=userStat.getTotalIssues() %></b>
+			              <b>Total Issues : 
+			              <%if(userStat.getTotalIssues()!=-1){ %>
+			                <%=userStat.getTotalIssues() %>
+			              <%}
+			                else{%>
+			                No data
+			              <%} %>
+			              </b>
 			            </div>
 			            <!-- /.box-body -->
 			          </div>
@@ -267,14 +294,21 @@
   function initSonarChart(){
 	  var labelsOfChartSeverity = new Array();
 	  var dataOfChartSeverity = new Array();
+	  var colorOfChartSeverity = new Array();
 	  <% 
   		IssueSeverity[] severities = IssueSeverity.values();
 	    int[] severityData = userStat.getSeverityIssues();
+	    String[] colors = new String[]{"#f56954","#f39c12","#3c8dbc","#00c0ef","#00a65a"};
+	    int index = 0;
   		for(int i=0;i<severities.length;i++){
+  			if(severityData[i]!=-1){
   			%>
-  			labelsOfChartSeverity[<%=i%>]='<%=String.valueOf(severities[i])%>';
-  			dataOfChartSeverity[<%=i%>]='<%=severityData[i]%>';
+  				labelsOfChartSeverity[<%=index%>]='<%=String.valueOf(severities[i])%>';
+  				dataOfChartSeverity[<%=index%>]='<%=severityData[i]%>';
+  				colorOfChartSeverity[<%=index%>]='<%=colors[i]%>';
   			<%
+  			index++;
+  			}
   		}
   	  %>
   	  //-------------
@@ -283,39 +317,16 @@
 	  // Get context with jQuery - using jQuery's .get() method.
 	  var chartOfSeverityCanvas = $("#chartOfSeverity").get(0).getContext("2d");
 	  var chartOfSeverity = new Chart(chartOfSeverityCanvas);
-	  var chartOfSeverityData = [
-	    {
-	      value: dataOfChartSeverity[0],
-	      color: "#f56954",
-	      highlight: "#f56954",
-	      label: labelsOfChartSeverity[0]
-	    },
-	    {
-          value: dataOfChartSeverity[1],
-          color: "#f39c12",
-          highlight: "#f39c12",
-          label: labelsOfChartSeverity[1]
-        },
-        {
-          value: dataOfChartSeverity[2],
-          color: "#3c8dbc",
-          highlight: "#3c8dbc",
-          label: labelsOfChartSeverity[2]
-        },
-        {
-          value: dataOfChartSeverity[3],
-          color: "#00c0ef",
-          highlight: "#00c0ef",
-          label: labelsOfChartSeverity[3]
-        },
-        {
-	        value: dataOfChartSeverity[4],
-	        color: "#00a65a",
-	        highlight: "#00a65a",
-	        label: labelsOfChartSeverity[4]
-	      }
-	    ];
-	    var chartOfSeverityOptions = {
+	  var chartOfSeverityData = new Array();
+	  for(var i=0;i<labelsOfChartSeverity.length;i++){
+		  chartOfSeverityData[i] = {
+			      value: dataOfChartSeverity[i],
+			      color: colorOfChartSeverity[i],
+			      highlight: colorOfChartSeverity[i],
+			      label: labelsOfChartSeverity[i]
+			    };
+	  }
+	  var chartOfSeverityOptions = {
 	      //Boolean - Whether we should show a stroke on each segment
 	      segmentShowStroke: true,
 	      //String - The colour of each segment stroke
@@ -343,15 +354,21 @@
 	  
 	  var labelsOfChartType = new Array();
 	  var dataOfChartType = new Array();
-	  
+	  var colorOfChartType = new Array();
 	  <% 
 		IssueType[] types = IssueType.values();
 	    int[] typeData = userStat.getTypeIssues();
+	    String[] colors2 = new String[]{"#f56954","#f39c12","#3c8dbc"};
+	    index=0;
 		for(int i=0;i<types.length;i++){
+			if(typeData[i]!=-1){
 			%>
-			labelsOfChartType[<%=i%>]='<%=String.valueOf(types[i])%>';
-			dataOfChartType[<%=i%>]='<%=typeData[i]%>';
+				labelsOfChartType[<%=index%>]='<%=String.valueOf(types[i])%>';
+				dataOfChartType[<%=index%>]='<%=typeData[i]%>';
+				colorOfChartType[<%=index%>]='<%=colors2[i]%>';
 			<%
+			index++;
+			}
 		}
 	  %>
 	  //-------------
@@ -360,26 +377,15 @@
 	  // Get context with jQuery - using jQuery's .get() method.
 	  var chartOfTypeCanvas = $("#chartOfType").get(0).getContext("2d");
 	  var chartOfType = new Chart(chartOfTypeCanvas);
-	  var chartOfTypeData = [
-	  {
-	    value: dataOfChartType[0],
-	    color: "#f56954",
-	    highlight: "#f56954",
-	    label: labelsOfChartType[0]
-	  },
-	  {
-        value: dataOfChartType[1],
-        color: "#f39c12",
-        highlight: "#f39c12",
-        label: labelsOfChartType[1]
-      },
-      {
-        value: dataOfChartType[2],
-        color: "#3c8dbc",
-        highlight: "#3c8dbc",
-        label: labelsOfChartType[2]
-      }
-	  ];
+	  var chartOfTypeData = new Array();
+	  for(var i=0;i<labelsOfChartType.length;i++){
+		  chartOfTypeData[i] = {
+				    value: dataOfChartType[i],
+				    color: colorOfChartType[i],
+				    highlight: colorOfChartType[i],
+				    label: labelsOfChartType[i]
+				};
+	  }
 	  var chartOfTypeOptions = {
 	      //Boolean - Whether we should show a stroke on each segment
 	      segmentShowStroke: true,
@@ -413,7 +419,7 @@
 	  
 	  <%
 	    Map<String,Integer[]> projectIssueMap = userStat.getProjectIssues();
-	    int index = 0;
+	    index = 0;
 	    for(Map.Entry<String,Integer[]> entry:projectIssueMap.entrySet()){
 	    	%>
 	    	labelsOfChartProject[<%=index%>]='<%=entry.getKey()%>';
@@ -432,7 +438,7 @@
 	    	      labels: labelsOfChartProject,
 	    	      datasets: [
 	    	        {
-	    	          label: "Total",
+	    	          label: "Total issues",
 	    	          fillColor: "#3c8dbc",
 	    	          strokeColor: "#3c8dbc",
 	    	          pointColor: "#3c8dbc",
@@ -442,10 +448,10 @@
 	    	          data: dataOfChartProjectTotal
 	    	        },
 	    	        {
-	    	          label: "Mine",
-	    	          fillColor: "#3c8dbc",
-	    	          strokeColor: "#3c8dbc",
-	    	          pointColor: "#3c8dbc",
+	    	          label: "My issues",
+	    	          fillColor: "#f56954",
+	    	          strokeColor: "#f56954",
+	    	          pointColor: "#f56954",
 	    	          pointStrokeColor: "#c1c7d1",
 	    	          pointHighlightFill: "#fff",
 	    	          pointHighlightStroke: "rgba(220,220,220,1)",

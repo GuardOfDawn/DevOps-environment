@@ -24,6 +24,10 @@
   	<filter-name>CheckVisitorFilter</filter-name>
   	<url-pattern>/pages/*</url-pattern>
   </filter-mapping>
+  <filter-mapping>
+  	<filter-name>CheckVisitorFilter</filter-name>
+  	<url-pattern>/</url-pattern>
+  </filter-mapping>
   <servlet>
     <servlet-name>Log4JInitServlet</servlet-name>
     <servlet-class>servlet.Log4JInitServlet</servlet-class>

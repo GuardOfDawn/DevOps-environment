@@ -44,7 +44,7 @@ public class UserStatisticsServlet extends HttpServlet {
 			}
 			else{
 				String userName = String.valueOf(session.getAttribute("username"));
-				UserStat userStat = userStatService.getUserStatistics(userName);
+				UserStat userStat = userStatService.getUserStatisticsQuick(userName);
 				request.setAttribute("userStat", userStat);
 				RequestDispatcher rd = request.getRequestDispatcher("/userStatistics");
 				rd.forward(request, response);

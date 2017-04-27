@@ -3,6 +3,7 @@
     <%@page import="model.Project"%>
     <%@page import="model.BuildStatus"%>
     <%@page import="java.util.List" %>
+    <%@page import="java.util.Map" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -26,6 +27,8 @@
         apply the skin class to the body tag so the changes take effect.
   -->
   <link rel="stylesheet" href="<%=path %>/dist/css/skins/skin-blue.min.css">
+  <!-- chartjs tooltip -->
+  <link rel="stylesheet" href="<%=path %>/plugins/chartjs/chartjs-tooltip.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -217,10 +220,20 @@
 				              <h3 class="box-title">Build success rate</h3>
 				            </div>
 				            <!-- /.box-header -->
-				            <div class="box-body">
-				              <br>
-				              <br>
+				            <div class="box-body" style="position: relative;">
+					          <%if(project.getSuccessRate()==-1){ %>
+						      <div class="box-body text-center">
+			                    <b>No data</b>
+			              	  </div>
+						      <%}
+					            else{%>
+			              	  <span style="display: inline-block; position: absolute; width: 100px; height: 100px; top: 50%; left: 50%; margin-top: -50px; margin-left: -50px; line-height: 100px;"><%=project.getSuccessRate()*100%>%</span>
 				              <canvas id="pieChartOfJenkins" style="height:250px"></canvas>
+				              <div id="chartjs-tooltip"></div>
+				              <div class="box-body text-center">
+			                    <b>Successful build rate : <%=project.getSuccessRate()*100%>%</b>
+			              	  </div>
+			          		  <%} %>
 				            </div>
 				            <!-- /.box-body -->
 			            </div>
@@ -229,11 +242,18 @@
 			          <div class="col-md-7">
 			            <div class="box box-warning">
 				            <div class="box-header with-border">
-				              <h3 class="box-title">Build condition</h3>
+				              <h3 class="box-title">Build condition of last ten builds</h3>
 				            </div>
 				            <!-- /.box-header -->
 				            <div class="box-body">
+				              <%if(project.getLastTenBuilds().size()==0){ %>
+				              <div class="box-body text-center">
+			                    <b>No data</b>
+			              	  </div>
+				              <%}
+				                else{%>
 				              <canvas id="barChartOfJenkins" style="height:230px"></canvas>
+				              <%} %>
 				            </div>
 				            <!-- /.box-body -->
 			            </div>
@@ -340,13 +360,20 @@
 			                <h3 class="box-title">Issues</h3>
 			              </div>
 			              <!-- /.box-header -->
+			              <%if(project.getViolationsData().size()>1){ %>
 			              <div class="box-body">
 			                <br>
 			                <canvas id="doughnutChartOfSonar" style="height:250px"></canvas>
 			              </div>
 			              <div class="box-body text-center">
-			                <b>Violations : <%=project.getViolations()[0] %></b>
+			                <b>Violations : <%=project.getViolationsData().get("violations")[0] %></b>
 			              </div>
+			              <%}
+			                else{%>
+			              <div class="box-body text-center">
+			                  <b>No data</b>
+			              </div>
+			              <%} %>
 			              <!-- /.box-body -->
 			            </div>
 	                  </div>
@@ -357,9 +384,16 @@
 			                <h3 class="box-title">Changes of Issues</h3>
 			              </div>
 			              <!-- /.box-header -->
+			              <%if(project.getViolationsData().size()>0){ %>
 			              <div class="box-body">
 			                <canvas id="barChartOfSonar" style="height:230px"></canvas>
 			              </div>
+			              <%}
+			                else{%>
+			              <div class="box-body text-center">
+			                  <b>No data</b>
+			              </div>
+			              <%} %>
 			              <!-- /.box-body -->
 			            </div>
 	                  </div>
@@ -442,306 +476,343 @@
 	  });
   });
   function initJenkinsChart(){
-	    //-------------
-	    //- PIE CHART -
-	    //-------------
-	    // Get context with jQuery - using jQuery's .get() method.
-	    var pieChartCanvas = $("#pieChartOfJenkins").get(0).getContext("2d");
-	    var pieChart = new Chart(pieChartCanvas);
 	    //get data
 	    var successRate = <%=project.getSuccessRate()%>;
-	    var failureRate = 1-successRate;
-	    var PieData = [
-	      {
-	        value: successRate.toFixed(2),
-	        color: "#00a65a",
-	        highlight: "#00a65a",
-	        label: "SUCCESS"
-	      },
-	      {
-	        value: failureRate.toFixed(2),
-	        color: "#f56954",
-	        highlight: "#f56954",
-	        label: "FAILURE"
-	      }
-	    ];
-	    var pieOptions = {
-	      //Boolean - Whether we should show a stroke on each segment
-	      segmentShowStroke: true,
-	      //String - The colour of each segment stroke
-	      segmentStrokeColor: "#fff",
-	      //Number - The width of each segment stroke
-	      segmentStrokeWidth: 2,
-	      //Number - The percentage of the chart that we cut out of the middle
-	      percentageInnerCutout: 0, // This is 0 for Pie charts
-	      //Number - Amount of animation steps
-	      animationSteps: 100,
-	      //String - Animation easing effect
-	      animationEasing: "easeOutBounce",
-	      //Boolean - Whether we animate the rotation of the Doughnut
-	      animateRotate: true,
-	      //Boolean - Whether we animate scaling the Doughnut from the centre
-	      animateScale: false,
-	      //Boolean - whether to make the chart responsive to window resizing
-	      responsive: true,
-	      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-	      maintainAspectRatio: true,
-	    };
-	    //Create pie or douhnut chart
-	    // You can switch between pie and douhnut using the method below.
-	    pieChart.Doughnut(PieData, pieOptions);
-	    
-	    //-------------
-	    //- BAR CHART -
-	    //-------------
-	    var barChartCanvas = $("#barChartOfJenkins").get(0).getContext("2d");
-	    var barChart = new Chart(barChartCanvas);
-	    //get data
-	    var labelsOfBarChart = new Array(); 
-	    var dataOfBarChartTotal = new Array();
-	    var dataOfBarChartSuccess = new Array();
-	    var dataOfBarChartFailure = new Array();
-	    <% 
-	    	List<BuildStatus> buildStatus =  project.getLastTenBuilds();
-	        if(buildStatus!=null){
-	    	  for(int i=0;i<buildStatus.size();i++){
-	    		%>
-	    		labelsOfBarChart[<%=i%>]='<%=buildStatus.get(i).getTime()%>';
-	    		dataOfBarChartTotal[<%=i%>]='<%=buildStatus.get(i).getTotalBuild()%>';
-	    		dataOfBarChartSuccess[<%=i%>]='<%=buildStatus.get(i).getSuccessBuild()%>';
-	    		dataOfBarChartFailure[<%=i%>]=dataOfBarChartTotal[<%=i%>]-dataOfBarChartSuccess[<%=i%>];
-			   <%
-	    	  }
-	        }
-	    %>
-	    var barChartData = {
-	    	      labels: labelsOfBarChart,
-	    	      datasets: [
-	    	        {
-	    	          label: "Total",
-	    	          fillColor: "rgba(210, 214, 222, 1)",
-	    	          strokeColor: "rgba(210, 214, 222, 1)",
-	    	          pointColor: "rgba(210, 214, 222, 1)",
-	    	          pointStrokeColor: "#c1c7d1",
-	    	          pointHighlightFill: "#fff",
-	    	          pointHighlightStroke: "rgba(220,220,220,1)",
-	    	          data: dataOfBarChartTotal
-	    	        },
-	    	        {
-	    	          label: "Success",
-	    	          fillColor: "rgba(60,141,188,0.9)",
-	    	          strokeColor: "rgba(60,141,188,0.8)",
-	    	          pointColor: "#3b8bba",
-	    	          pointStrokeColor: "rgba(60,141,188,1)",
-	    	          pointHighlightFill: "#fff",
-	    	          pointHighlightStroke: "rgba(60,141,188,1)",
-	    	          data: dataOfBarChartSuccess
-	    	        },
-	    	        {
-		    	      label: "Failure",
-		    	      fillColor: "rgba(60,141,188,0.9)",
-		    	      strokeColor: "rgba(60,141,188,0.8)",
-		    	      pointColor: "#3b8bba",
-		    	      pointStrokeColor: "rgba(60,141,188,1)",
-		    	      pointHighlightFill: "#fff",
-		    	      pointHighlightStroke: "rgba(60,141,188,1)",
-		    	      data: dataOfBarChartFailure
-		    	    }
-	    	      ]
-	    	    };
-	    barChartData.datasets[1].fillColor = "#00a65a";
-	    barChartData.datasets[1].strokeColor = "#00a65a";
-	    barChartData.datasets[1].pointColor = "#00a65a";
-	    barChartData.datasets[2].fillColor = "#f56954";
-	    barChartData.datasets[2].strokeColor = "#f56954";
-	    barChartData.datasets[2].pointColor = "#f56954";
-	    var barChartOptions = {
-	      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-	      scaleBeginAtZero: true,
-	      //Boolean - Whether grid lines are shown across the chart
-	      scaleShowGridLines: true,
-	      //String - Colour of the grid lines
-	      scaleGridLineColor: "rgba(0,0,0,.05)",
-	      //Number - Width of the grid lines
-	      scaleGridLineWidth: 1,
-	      //Boolean - Whether to show horizontal lines (except X axis)
-	      scaleShowHorizontalLines: true,
-	      //Boolean - Whether to show vertical lines (except Y axis)
-	      scaleShowVerticalLines: true,
-	      //Boolean - If there is a stroke on each bar
-	      barShowStroke: true,
-	      //Number - Pixel width of the bar stroke
-	      barStrokeWidth: 2,
-	      //Number - Spacing between each of the X value sets
-	      barValueSpacing: 5,
-	      //Number - Spacing between data sets within X values
-	      barDatasetSpacing: 1,
-	      //Boolean - whether to make the chart responsive
-	      responsive: true,
-	      maintainAspectRatio: true
-	    };
-	    barChartOptions.datasetFill = false;
-	    barChart.Bar(barChartData, barChartOptions);
-  }
-  function initSonarChart(){
-	    //get data
-	    var labelsOfBarChart2 = new Array();
-	    var dataOfBarChartTotal2 = new Array();
-	    var dataOfBarChartChange = new Array();
-	    <% 
-	    	String[] labelsOfViolations = project.getViolations_label();
-	    	for(int i=0;i<labelsOfViolations.length;i++){
-	    		%>
-	    		labelsOfBarChart2[<%=i%>]='<%=labelsOfViolations[i]%>';
-	    		<%
-	    	}
-	    %>
-	    dataOfBarChartTotal2[0] = '<%=project.getViolations()[0]%>';
-	    dataOfBarChartChange[0] = '<%=project.getViolations()[1]%>';
-	    dataOfBarChartTotal2[1] = '<%=project.getBlocker()[0]%>';
-	    dataOfBarChartChange[1] = '<%=project.getBlocker()[1]%>';
-	    dataOfBarChartTotal2[2] = '<%=project.getCritical()[0]%>';
-	    dataOfBarChartChange[2] = '<%=project.getCritical()[1]%>';
-	    dataOfBarChartTotal2[3] = '<%=project.getMajor()[0]%>';
-	    dataOfBarChartChange[3] = '<%=project.getMajor()[1]%>';
-	    dataOfBarChartTotal2[4] = '<%=project.getMinor()[0]%>';
-	    dataOfBarChartChange[4] = '<%=project.getMinor()[1]%>';
-	    dataOfBarChartTotal2[5] = '<%=project.getInfo()[0]%>';
-	    dataOfBarChartChange[5] = '<%=project.getInfo()[1]%>';
-	    //-------------
-	    //- DOUGHNUT CHART -
-	    //-------------
-	    // Get context with jQuery - using jQuery's .get() method.
-	    var doughnutChartCanvas = $("#doughnutChartOfSonar").get(0).getContext("2d");
-	    var doughnutChart = new Chart(doughnutChartCanvas);
-	    var doughnutData = [
-	      {
-	        value: dataOfBarChartTotal2[1],
-	        color: "#f56954",
-	        highlight: "#f56954",
-	        label: labelsOfBarChart2[1]
-	      },
-	      {
-            value: dataOfBarChartTotal2[2],
-            color: "#f39c12",
-            highlight: "#f39c12",
-            label: labelsOfBarChart2[2]
-          },
-          {
-            value: dataOfBarChartTotal2[3],
-            color: "#3c8dbc",
-            highlight: "#3c8dbc",
-            label: labelsOfBarChart2[3]
-          },
-          {
-            value: dataOfBarChartTotal2[4],
-            color: "#00c0ef",
-            highlight: "#00c0ef",
-            label: labelsOfBarChart2[4]
-          },
-          {
-	        value: dataOfBarChartTotal2[5],
-	        color: "#00a65a",
-	        highlight: "#00a65a",
-	        label: labelsOfBarChart2[5]
-	      }
-	    ];
-	    var doughnutOptions = {
-	      //Boolean - Whether we should show a stroke on each segment
-	      segmentShowStroke: true,
-	      //String - The colour of each segment stroke
-	      segmentStrokeColor: "#fff",
-	      //Number - The width of each segment stroke
-	      segmentStrokeWidth: 2,
-	      //Number - The percentage of the chart that we cut out of the middle
-	      percentageInnerCutout: 50, // This is 0 for Pie charts
-	      //Number - Amount of animation steps
-	      animationSteps: 100,
-	      //String - Animation easing effect
-	      animationEasing: "easeOutBounce",
-	      //Boolean - Whether we animate the rotation of the Doughnut
-	      animateRotate: true,
-	      //Boolean - Whether we animate scaling the Doughnut from the centre
-	      animateScale: false,
-	      //Boolean - whether to make the chart responsive to window resizing
-	      responsive: true,
-	      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-	      maintainAspectRatio: true,
-	    };
-	    //Create pie or douhnut chart
-	    // You can switch between pie and douhnut using the method below.
-	    doughnutChart.Doughnut(doughnutData, doughnutOptions);
-	    
-	    //-------------
-	    //- BAR CHART -
-	    //-------------
-	    var colorsOfBarChart = new Array();
-	    for(i=0;i<dataOfBarChartChange.length;i++){
-	    	if(dataOfBarChartChange[i]>=0){
-	    		colorsOfBarChart[i] = "#00a65a";
-	    	}
-	    	else{
-	    		colorsOfBarChart[i] = "#f56954";
-	    	}
+	    if(successRate!==-1){//if successRate is -1, the data is not valid.
+	    	var failureRate = 1-successRate;
+		    //-------------
+		    //- PIE CHART -
+		    //-------------
+		    // Get context with jQuery - using jQuery's .get() method.
+		    var pieChartCanvas = $("#pieChartOfJenkins").get(0).getContext("2d");
+		    var pieChart = new Chart(pieChartCanvas);
+		    var PieData = [
+		      {
+		        value: successRate.toFixed(2),
+		        color: "#00a65a",
+		        highlight: "#00a65a",
+		        label: "SUCCESS"
+		      },
+		      {
+		        value: failureRate.toFixed(2),
+		        color: "#f56954",
+		        highlight: "#f56954",
+		        label: "FAILURE"
+		      }
+		    ];
+		    var pieOptions = {
+		      //Boolean - Whether we should show a stroke on each segment
+		      segmentShowStroke: true,
+		      //String - The colour of each segment stroke
+		      segmentStrokeColor: "#fff",
+		      //Number - The width of each segment stroke
+		      segmentStrokeWidth: 2,
+		      //Number - The percentage of the chart that we cut out of the middle
+		      percentageInnerCutout: 50, // This is 0 for Pie charts
+		      //Number - Amount of animation steps
+		      animationSteps: 100,
+		      //String - Animation easing effect
+		      animationEasing: "easeOutBounce",
+		      //Boolean - Whether we animate the rotation of the Doughnut
+		      animateRotate: true,
+		      //Boolean - Whether we animate scaling the Doughnut from the centre
+		      animateScale: false,
+		      //Boolean - whether to make the chart responsive to window resizing
+		      responsive: true,
+		      //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+		      maintainAspectRatio: true,
+		      //tooltip
+		      customTooltips: function (tooltip) {
+			        var tooltipEl = $('#chartjs-tooltip');
+			
+			        if (!tooltip) {
+			            tooltipEl.css({
+			                opacity: 0
+			            });
+			            return;
+			        }
+			
+			        //tooltipEl.removeClass('above below');
+			        //tooltipEl.addClass(tooltip.yAlign);
+			
+			        // split out the label and value and make your own tooltip here
+			        var parts = tooltip.text.split(":");
+			        var innerHtml = '<span>' + parts[0].trim() + '</span> : <span><b>' + (parts[1].trim())*100 + '%' + '</b></span>';
+			        tooltipEl.html(innerHtml);
+			
+			        tooltipEl.css({
+			            opacity: 1,
+			            left: tooltip.chart.canvas.offsetLeft + tooltip.x + 'px',
+			            top: tooltip.chart.canvas.offsetTop + tooltip.y + 'px',
+			            fontFamily: tooltip.fontFamily,
+			            fontSize: tooltip.fontSize,
+			            fontStyle: tooltip.fontStyle,
+			        });
+			   }
+		    };
+		    //Create pie or douhnut chart
+		    // You can switch between pie and douhnut using the method below.
+		    var mychart = pieChart.Doughnut(PieData, pieOptions);
 	    }
 	    
-	    var barChartCanvas2 = $("#barChartOfSonar").get(0).getContext("2d");
-	    var barChart2 = new Chart(barChartCanvas2);
-	    var barChartData2 = {
-	    	      labels: labelsOfBarChart2,
-	    	      datasets: [
-	    	        {
-	    	          label: "Total",
-	    	          fillColor: "rgba(210, 214, 222, 1)",
-	    	          strokeColor: "rgba(210, 214, 222, 1)",
-	    	          pointColor: "rgba(210, 214, 222, 1)",
-	    	          pointStrokeColor: "#c1c7d1",
-	    	          pointHighlightFill: "#fff",
-	    	          pointHighlightStroke: "rgba(220,220,220,1)",
-	    	          data: dataOfBarChartTotal2
-	    	        },
-	    	        {
-	    	          label: "Change",
-	    	          fillColor: "rgba(60,141,188,0.9)",
-	    	          strokeColor: "rgba(60,141,188,0.8)",
-	    	          pointColor: "#3b8bba",
-	    	          pointStrokeColor: "rgba(60,141,188,1)",
-	    	          pointHighlightFill: "#fff",
-	    	          pointHighlightStroke: "rgba(60,141,188,1)",
-	    	          data: dataOfBarChartChange
-	    	        }
-	    	      ]
+	    //-------------
+	    //- BAR CHART -
+	    //-------------
+	    var size = '<%=project.getLastTenBuilds().size()%>';
+	    if(size!=='0'){//If size is 0, there is no data available.
+	    	var barChartCanvas = $("#barChartOfJenkins").get(0).getContext("2d");
+		    var barChart = new Chart(barChartCanvas);
+		    //get data
+		    var labelsOfBarChart = new Array(); 
+		    var dataOfBarChartTotal = new Array();
+		    var dataOfBarChartSuccess = new Array();
+		    var dataOfBarChartFailure = new Array();
+		    <% 
+		    	List<BuildStatus> buildStatus =  project.getLastTenBuilds();
+		        if(buildStatus!=null){
+		    	  for(int i=0;i<buildStatus.size();i++){
+		    		  if(buildStatus.get(i).getTimePrefix().equals("")){
+		    			%>
+		  	    		  labelsOfBarChart[<%=i%>]='<%=buildStatus.get(i).getTime()%>';
+		  	    		<%
+		    		  }
+		    		  else{
+		    			%>
+			  	    	  labelsOfBarChart[<%=i%>]='<%="("+buildStatus.get(i).getTimePrefix()+")"+buildStatus.get(i).getTime()%>';
+			  	    	<% 
+		    		  }
+		    		%>
+		    		dataOfBarChartTotal[<%=i%>]='<%=buildStatus.get(i).getTotalBuild()%>';
+		    		dataOfBarChartSuccess[<%=i%>]='<%=buildStatus.get(i).getSuccessBuild()%>';
+		    		dataOfBarChartFailure[<%=i%>]=dataOfBarChartTotal[<%=i%>]-dataOfBarChartSuccess[<%=i%>];
+				   <%
+		    	  }
+		        }
+		    %>
+		    var barChartData = {
+		    	      labels: labelsOfBarChart,
+		    	      datasets: [
+		    	        {
+		    	          label: "Total builds",
+		    	          fillColor: "rgba(210, 214, 222, 1)",
+		    	          strokeColor: "rgba(210, 214, 222, 1)",
+		    	          pointColor: "rgba(210, 214, 222, 1)",
+		    	          pointStrokeColor: "#c1c7d1",
+		    	          pointHighlightFill: "#fff",
+		    	          pointHighlightStroke: "rgba(220,220,220,1)",
+		    	          data: dataOfBarChartTotal
+		    	        },
+		    	        {
+		    	          label: "Success builds",
+		    	          fillColor: "rgba(60,141,188,0.9)",
+		    	          strokeColor: "rgba(60,141,188,0.8)",
+		    	          pointColor: "#3b8bba",
+		    	          pointStrokeColor: "rgba(60,141,188,1)",
+		    	          pointHighlightFill: "#fff",
+		    	          pointHighlightStroke: "rgba(60,141,188,1)",
+		    	          data: dataOfBarChartSuccess
+		    	        },
+		    	        {
+			    	      label: "Failure builds",
+			    	      fillColor: "rgba(60,141,188,0.9)",
+			    	      strokeColor: "rgba(60,141,188,0.8)",
+			    	      pointColor: "#3b8bba",
+			    	      pointStrokeColor: "rgba(60,141,188,1)",
+			    	      pointHighlightFill: "#fff",
+			    	      pointHighlightStroke: "rgba(60,141,188,1)",
+			    	      data: dataOfBarChartFailure
+			    	    }
+		    	      ]
+		    	    };
+		    barChartData.datasets[1].fillColor = "#00a65a";
+		    barChartData.datasets[1].strokeColor = "#00a65a";
+		    barChartData.datasets[1].pointColor = "#00a65a";
+		    barChartData.datasets[2].fillColor = "#f56954";
+		    barChartData.datasets[2].strokeColor = "#f56954";
+		    barChartData.datasets[2].pointColor = "#f56954";
+		    var barChartOptions = {
+		      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+		      scaleBeginAtZero: true,
+		      //Boolean - Whether grid lines are shown across the chart
+		      scaleShowGridLines: true,
+		      //String - Colour of the grid lines
+		      scaleGridLineColor: "rgba(0,0,0,.05)",
+		      //Number - Width of the grid lines
+		      scaleGridLineWidth: 1,
+		      //Boolean - Whether to show horizontal lines (except X axis)
+		      scaleShowHorizontalLines: true,
+		      //Boolean - Whether to show vertical lines (except Y axis)
+		      scaleShowVerticalLines: true,
+		      //Boolean - If there is a stroke on each bar
+		      barShowStroke: true,
+		      //Number - Pixel width of the bar stroke
+		      barStrokeWidth: 2,
+		      //Number - Spacing between each of the X value sets
+		      barValueSpacing: 5,
+		      //Number - Spacing between data sets within X values
+		      barDatasetSpacing: 1,
+		      //scales
+		      showScale: false,
+		      //Boolean - whether to make the chart responsive
+		      responsive: true,
+		      maintainAspectRatio: true
+		    };
+		    barChartOptions.datasetFill = false;
+		    barChart.Bar(barChartData, barChartOptions);
+	    }
+  }
+  function initSonarChart(){
+	    var size = '<%=project.getViolationsData().size()%>';
+	    if(size!=='0'){
+	    	//get data
+		    var labelsOfBarChart2 = new Array();
+		    var dataOfBarChartTotal2 = new Array();
+		    var dataOfBarChartChange = new Array();
+		    var colorOfPieChart = new Array();
+		    <% 
+		    	String[] labels = new String[]{"violations","blocker","critical","major","minor","info"};
+		        Map<String,String[]> dataOfViolations = project.getViolationsData();
+		        int index = 0;
+		    	for(int i=0;i<labels.length;i++){
+		    		if(dataOfViolations.containsKey(labels[i])){
+		    		%>
+			    		labelsOfBarChart2[<%=index%>]='<%=labels[i]%>';
+			    		dataOfBarChartTotal2[<%=index%>]='<%=dataOfViolations.get(labels[i])[0]%>';
+			    		dataOfBarChartChange[<%=index%>]='<%=dataOfViolations.get(labels[i])[1]%>';
+			    		if(labelsOfBarChart2[<%=index%>]==='blocker'){
+			    			colorOfPieChart[<%=index%>]="#f56954";
+			    		}
+			    		else if(labelsOfBarChart2[<%=index%>]==='critical'){
+			    			colorOfPieChart[<%=index%>]="#f39c12";
+			    		}
+			    		else if(labelsOfBarChart2[<%=index%>]==='major'){
+			    			colorOfPieChart[<%=index%>]="#3c8dbc";
+			    		}
+			    		else if(labelsOfBarChart2[<%=index%>]==='minor'){
+			    			colorOfPieChart[<%=index%>]="#00c0ef";
+			    		}
+			    		else if(labelsOfBarChart2[<%=index%>]==='info'){
+			    			colorOfPieChart[<%=index%>]="#00a65a";
+			    		}
+			    	<%
+			    		index++;
+		    		}
+		    	}
+		    %>
+	    	if(size!=='1'){//generate doughtchart of violations
+	    		//-------------
+	    	    //- DOUGHNUT CHART -
+	    	    //-------------
+	    	    // Get context with jQuery - using jQuery's .get() method.
+	    	    var doughnutChartCanvas = $("#doughnutChartOfSonar").get(0).getContext("2d");
+	    	    var doughnutChart = new Chart(doughnutChartCanvas);
+	    	    var doughnutData = new Array();
+	    	    for(var i=1;i<labelsOfBarChart2.length;i++){
+	    	    	doughnutData[i-1] = {
+	    	    	        value: dataOfBarChartTotal2[i],
+	    	    	        color: colorOfPieChart[i],
+	    	    	        highlight: colorOfPieChart[i],
+	    	    	        label: labelsOfBarChart2[i]
+	    	    	      };
+	    	    }
+	    	    var doughnutOptions = {
+	    	      //Boolean - Whether we should show a stroke on each segment
+	    	      segmentShowStroke: true,
+	    	      //String - The colour of each segment stroke
+	    	      segmentStrokeColor: "#fff",
+	    	      //Number - The width of each segment stroke
+	    	      segmentStrokeWidth: 2,
+	    	      //Number - The percentage of the chart that we cut out of the middle
+	    	      percentageInnerCutout: 50, // This is 0 for Pie charts
+	    	      //Number - Amount of animation steps
+	    	      animationSteps: 100,
+	    	      //String - Animation easing effect
+	    	      animationEasing: "easeOutBounce",
+	    	      //Boolean - Whether we animate the rotation of the Doughnut
+	    	      animateRotate: true,
+	    	      //Boolean - Whether we animate scaling the Doughnut from the centre
+	    	      animateScale: false,
+	    	      //Boolean - whether to make the chart responsive to window resizing
+	    	      responsive: true,
+	    	      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+	    	      maintainAspectRatio: true,
 	    	    };
-	    barChartData2.datasets[1].fillColor = colorsOfBarChart;
-	    barChartData2.datasets[1].strokeColor = colorsOfBarChart;
-	    barChartData2.datasets[1].pointColor = colorsOfBarChart;
-	    var barChartOptions2 = {
-	      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-	      scaleBeginAtZero: false,
-	      //Boolean - Whether grid lines are shown across the chart
-	      scaleShowGridLines: true,
-	      //String - Colour of the grid lines
-	      scaleGridLineColor: "rgba(0,0,0,.05)",
-	      //Number - Width of the grid lines
-	      scaleGridLineWidth: 1,
-	      //Boolean - Whether to show horizontal lines (except X axis)
-	      scaleShowHorizontalLines: true,
-	      //Boolean - Whether to show vertical lines (except Y axis)
-	      scaleShowVerticalLines: true,
-	      //Boolean - If there is a stroke on each bar
-	      barShowStroke: true,
-	      //Number - Pixel width of the bar stroke
-	      barStrokeWidth: 2,
-	      //Number - Spacing between each of the X value sets
-	      barValueSpacing: 5,
-	      //Number - Spacing between data sets within X values
-	      barDatasetSpacing: 1,
-	      //Boolean - whether to make the chart responsive
-	      responsive: true,
-	      maintainAspectRatio: true
-	    };
-	    barChartOptions2.datasetFill = false;
-	    barChart2.Bar(barChartData2, barChartOptions2);
+	    	    //Create pie or douhnut chart
+	    	    // You can switch between pie and douhnut using the method below.
+	    	    doughnutChart.Doughnut(doughnutData, doughnutOptions);
+	    	}
+	    	//generate bar chart of violations change
+	    	//-------------
+		    //- BAR CHART -
+		    //-------------
+		    var colorsOfBarChart = new Array();
+		    for(i=0;i<dataOfBarChartChange.length;i++){
+		    	if(dataOfBarChartChange[i]>=0){
+		    		colorsOfBarChart[i] = "#00a65a";
+		    	}
+		    	else{
+		    		colorsOfBarChart[i] = "#f56954";
+		    	}
+		    }
+		    
+		    var barChartCanvas2 = $("#barChartOfSonar").get(0).getContext("2d");
+		    var barChart2 = new Chart(barChartCanvas2);
+		    var barChartData2 = {
+		    	      labels: labelsOfBarChart2,
+		    	      datasets: [
+		    	        {
+		    	          label: "Total",
+		    	          fillColor: "rgba(210, 214, 222, 1)",
+		    	          strokeColor: "rgba(210, 214, 222, 1)",
+		    	          pointColor: "rgba(210, 214, 222, 1)",
+		    	          pointStrokeColor: "#c1c7d1",
+		    	          pointHighlightFill: "#fff",
+		    	          pointHighlightStroke: "rgba(220,220,220,1)",
+		    	          data: dataOfBarChartTotal2
+		    	        },
+		    	        {
+		    	          label: "Change",
+		    	          fillColor: "rgba(60,141,188,0.9)",
+		    	          strokeColor: "rgba(60,141,188,0.8)",
+		    	          pointColor: "#3b8bba",
+		    	          pointStrokeColor: "rgba(60,141,188,1)",
+		    	          pointHighlightFill: "#fff",
+		    	          pointHighlightStroke: "rgba(60,141,188,1)",
+		    	          data: dataOfBarChartChange
+		    	        }
+		    	      ]
+		    	    };
+		    barChartData2.datasets[1].fillColor = colorsOfBarChart;
+		    barChartData2.datasets[1].strokeColor = colorsOfBarChart;
+		    barChartData2.datasets[1].pointColor = colorsOfBarChart;
+		    var barChartOptions2 = {
+		      //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+		      scaleBeginAtZero: false,
+		      //Boolean - Whether grid lines are shown across the chart
+		      scaleShowGridLines: true,
+		      //String - Colour of the grid lines
+		      scaleGridLineColor: "rgba(0,0,0,.05)",
+		      //Number - Width of the grid lines
+		      scaleGridLineWidth: 1,
+		      //Boolean - Whether to show horizontal lines (except X axis)
+		      scaleShowHorizontalLines: true,
+		      //Boolean - Whether to show vertical lines (except Y axis)
+		      scaleShowVerticalLines: true,
+		      //Boolean - If there is a stroke on each bar
+		      barShowStroke: true,
+		      //Number - Pixel width of the bar stroke
+		      barStrokeWidth: 2,
+		      //Number - Spacing between each of the X value sets
+		      barValueSpacing: 5,
+		      //Number - Spacing between data sets within X values
+		      barDatasetSpacing: 1,
+		      //Boolean - whether to make the chart responsive
+		      responsive: true,
+		      maintainAspectRatio: true,
+		    };
+		    barChartOptions2.datasetFill = false;
+		    barChart2.Bar(barChartData2, barChartOptions2);
+	    }
   }
   function projectChange(){
 	  var myselect = document.getElementById("projectSelection");

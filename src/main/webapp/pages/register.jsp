@@ -40,18 +40,18 @@
     <form action="<%=path %>/RegisterServlet" method="post">
       <div class="form-group has-feedback">
       <%if(request.getAttribute("username")!=null){ %>
-        <input id="username" name="username" type="text" class="form-control" placeholder="<%=request.getAttribute("username") %>">
+        <input id="username" name="username" type="text" class="form-control" value="<%=request.getAttribute("username") %>" placeholder="User name" onkeyup="limitUserInput('username')">
       <%}else{ %>
-        <input id="username" name="username" type="text" class="form-control" placeholder="User name" onkeyup="limitUserInput('username')" onblur="registerCheck()">
+        <input id="username" name="username" type="text" class="form-control" placeholder="User name" onkeyup="limitUserInput('username')">
       <%} %>
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input id="password" name="password" type="password" class="form-control" placeholder="Password" onkeyup="limitUserInput('password')" onblur="registerCheck()">
+        <input id="password" name="password" type="password" class="form-control" placeholder="Password" onkeyup="limitUserInput('password')">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input id="password_check" type="password" class="form-control" placeholder="Retype password" onkeyup="limitUserInput('password_check')" onblur="registerCheck()">
+        <input id="password_check" type="password" class="form-control" placeholder="Retype password" onkeyup="limitUserInput('password_check')">
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
       </div>
       <div class="row">
@@ -84,6 +84,7 @@ function limitUserInput(elementId){
 	if(element_value.length>40){
 		document.getElementById(elementId).value = element_value.substr(0,39);
 	}
+	registerCheck();
 }
 function registerCheck(){
 	var user_name = document.getElementById('username').value;

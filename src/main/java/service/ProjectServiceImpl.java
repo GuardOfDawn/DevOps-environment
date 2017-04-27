@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,6 +69,7 @@ public class ProjectServiceImpl implements ProjectService{
 		List<String[]> sonarProjectList = sonarProject.getAllProject();
 		List<String> jenkinsProjectList = jenkinsProject.getAllProject();
 		ArrayList<SimpleProject> projectList = new ArrayList<SimpleProject>();
+		Map<String,String> nameKey = projectDao.getNameKeyMapping();
 		if(sonarProjectList!=null&&jenkinsProjectList!=null){
 			for(int i=0;i<sonarProjectList.size();i++){
 				for(int j=0;j<jenkinsProjectList.size();j++){
@@ -84,6 +86,16 @@ public class ProjectServiceImpl implements ProjectService{
 							}
 						}
 						projectList.add(project);
+						//add project which is not created in this web into database
+						//or update project key
+						if(!nameKey.containsKey(project.getProjectName())){
+							projectDao.addProject(project.getProjectName(), sonarProjectList.get(i)[1], getCurrentTimeString());
+						}
+						else{
+							if(!nameKey.get(project.getProjectName()).equals(sonarProjectList.get(i)[1])){
+								projectDao.update(project.getProjectName(), sonarProjectList.get(i)[1]);
+							}
+						}
 						break;
 					}
 				}
@@ -155,28 +167,56 @@ public class ProjectServiceImpl implements ProjectService{
 		Project p = new Project();
 		p.setProjectName(projectName);
 		//jenkins status
-		p.setResult(map.get("result"));
-		p.setTimeStamp(map.get("timestamp"));
-		p.setDuration(map.get("duration"));
-		p.setFrequency(frequency);
+		if(map!=null){
+			p.setResult(map.get("result"));
+			p.setTimeStamp(map.get("timestamp"));
+			p.setDuration(map.get("duration"));
+		}
+		if(frequency!=null){
+			p.setFrequency(frequency);
+		}
+		else{
+			p.setFrequency("No data");
+		}
 		p.setSuccessRate(successRate);
 		p.setLastTenBuilds(projectStat.getBuildStatistics(jenkinsProjStat.getBuildResult(projectName)));
 		//sonar status
 		String projectKey = getProjectKey(projectName);
-		p.setAnalysisTime(sonarProjStat.getAnalysisTime(projectKey));
-		p.setQualityGates(sonarProjStat.getQualityGates(projectKey));
+		String analysisTime = sonarProjStat.getAnalysisTime(projectKey);
+		String qualityGates = sonarProjStat.getQualityGates(projectKey);
+		if(analysisTime!=null){
+			p.setAnalysisTime(analysisTime);
+		}
+		else{
+			p.setAnalysisTime("No data");
+		}
+		if(qualityGates!=null){
+			p.setQualityGates(qualityGates);
+		}
+		else{
+			p.setQualityGates("No data");
+		}
 		Map<String,String[]> statusMap = sonarProjStat.getStatus(projectKey);
-		p.setLines(statusMap.get(metrics[0]));
-		p.setComplexity(statusMap.get(metrics[1]));
-		p.setDuplicatedDensity(statusMap.get(metrics[2]));
-		p.setCommentDensity(statusMap.get(metrics[3]));
-		p.setSqaleIndex(statusMap.get(metrics[4]));
-		p.setViolations(statusMap.get(metrics[5]));
-		p.setBlocker(statusMap.get(metrics[6]));
-		p.setCritical(statusMap.get(metrics[7]));
-		p.setMajor(statusMap.get(metrics[8]));
-		p.setMinor(statusMap.get(metrics[9]));
-		p.setInfo(statusMap.get(metrics[10]));
+		if(statusMap!=null){
+			p.setLines(statusMap.get(metrics[0]));
+			p.setComplexity(statusMap.get(metrics[1]));
+			p.setDuplicatedDensity(statusMap.get(metrics[2]));
+			p.setCommentDensity(statusMap.get(metrics[3]));
+			p.setSqaleIndex(statusMap.get(metrics[4]));
+			Map<String,String[]> violationsData = new HashMap<>();
+			String[] labels = new String[]{"violations","blocker","critical","major","minor","info"};
+			for(int i=5;i<11;i++){
+				if(statusMap.containsKey(metrics[i])){
+					String label = labels[i-5];
+					violationsData.put(label, statusMap.get(metrics[i]));
+				}
+			}
+			p.setViolationsData(violationsData);
+		}
+		else{
+			Map<String,String[]> violationsData = new HashMap<>();
+			p.setViolationsData(violationsData);
+		}
 		
 		
 //		Project p = new Project();
@@ -185,7 +225,7 @@ public class ProjectServiceImpl implements ProjectService{
 //		p.setTimeStamp("2017-04-12 22:33:33");
 //		p.setDuration("1min 34second");
 //		p.setFrequency("day HH:mm:ss");
-//		p.setSuccessRate(0.8);
+//		p.setSuccessRate(-1);
 //		p.setAnalysisTime("2017-4-19");
 //		p.setQualityGates("secure");
 //		p.setLines(new String[]{"1300","+100"});
@@ -193,27 +233,42 @@ public class ProjectServiceImpl implements ProjectService{
 //		p.setDuplicatedDensity(new String[]{"4.6","+0.4"});
 //		p.setCommentDensity(new String[]{"23","-4"});
 //		p.setSqaleIndex(new String[]{"24","-2"});
-//		p.setViolations(new String[]{"66","-15"});
-//		p.setBlocker(new String[]{"2","-1"});
-//		p.setCritical(new String[]{"10","+2"});
-//		p.setMajor(new String[]{"15","-10"});
-//		p.setMinor(new String[]{"26","+6"});
-//		p.setInfo(new String[]{"13","+3"});
+//		Map<String,String[]> statusMap = new HashMap<>();
+//		statusMap.put(metrics[5], new String[]{"66","-15"});
+////		statusMap.put(metrics[6], new String[]{"2","-1"});
+////		statusMap.put(metrics[7], new String[]{"10","+2"});
+////		statusMap.put(metrics[8], new String[]{"15","-10"});
+////		statusMap.put(metrics[9], new String[]{"26","+6"});
+////		statusMap.put(metrics[10], new String[]{"13","+3"});
+//		Map<String,String[]> violationsData = new HashMap<>();
+//		String[] labels = new String[]{"violations","blocker","critical","major","minor","info"};
+//		for(int i=5;i<11;i++){
+//			if(statusMap.containsKey(metrics[i])){
+//				String label = labels[i-5];
+//				violationsData.put(label, statusMap.get(metrics[i]));
+//			}
+//		}
+//		p.setViolationsData(violationsData);
+//		p.setViolationsData(violationsData);
 //		ArrayList<BuildStatus> lastTenBuilds = new ArrayList<BuildStatus>();
 //		BuildStatus s1 = new BuildStatus();
-//		s1.setTime("2016/11/11-2016/11/13");
+//		s1.setTimePrefix("");
+//		s1.setTime("2016-11-11to2016-11-13");
 //		s1.setTotalBuild(2);
 //		s1.setSuccessBuild(2);
 //		BuildStatus s2 = new BuildStatus();
-//		s2.setTime("2016-11-13");
+//		s2.setTimePrefix("");
+//		s2.setTime("2016-11-13to2016-11-15");
 //		s2.setTotalBuild(3);
 //		s2.setSuccessBuild(2);
 //		BuildStatus s3 = new BuildStatus();
-//		s3.setTime("2016-11-15");
+//		s3.setTimePrefix("");
+//		s3.setTime("2016-11-15to2016-11-17");
 //		s3.setTotalBuild(4);
 //		s3.setSuccessBuild(3);
 //		BuildStatus s4 = new BuildStatus();
-//		s4.setTime("2016-11-17");
+//		s4.setTimePrefix("");
+//		s4.setTime("2016-11-17to2016-11-19");
 //		s4.setTotalBuild(1);
 //		s4.setSuccessBuild(1);
 //		lastTenBuilds.add(s1);
@@ -244,6 +299,18 @@ public class ProjectServiceImpl implements ProjectService{
 
 	@Override
 	public boolean joinProject(String userName, String projectName) {
+		Map<String,String> nameKey = projectDao.getNameKeyMapping();
+		if(!nameKey.containsKey(projectName)){
+			List<String[]> sonarProjectList = sonarProject.getAllProject();
+			if(sonarProjectList!=null){
+				for(int i=0;i<sonarProjectList.size();i++){
+					if(sonarProjectList.get(i)[0].equals(projectName)){
+						projectDao.addProject(projectName, sonarProjectList.get(i)[1], getCurrentTimeString());
+						break;
+					}
+				}
+			}
+		}
 		return projectJoinDao.addJoin(userName, projectName, getCurrentTimeString());
 	}
 
