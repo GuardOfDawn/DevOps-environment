@@ -107,7 +107,7 @@
             <li><a href="<%=path %>/UserStatisticsServlet"><i class="fa fa-circle-o"></i> Individual</a></li>
           </ul>
         </li>
-        <li><a href="<%=path %>/ChartjsDemoServlet"><i class="fa fa-link"></i> Chart.js Demo</a></li>
+        <%--<li><a href="<%=path %>/ChartjsDemoServlet"><i class="fa fa-link"></i> Chart.js Demo</a></li>--%>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
