@@ -34,7 +34,11 @@ public class TimeTransformer {
             second /= divider[i];
         }
         t[0] = second;
-        return String.format("%d %02d:%02d:%02d", t[0], t[1], t[2], t[3]);
+        if (t[0] > 0) {
+            return String.format("%d days %02d:%02d:%02d", t[0], t[1], t[2], t[3]);
+        } else {
+            return String.format("%d day %02d:%02d:%02d", t[0], t[1], t[2], t[3]);
+        }
     }
 
     /**
