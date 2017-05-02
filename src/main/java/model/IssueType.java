@@ -4,6 +4,6 @@ import java.io.Serializable;
 
 public enum IssueType implements Serializable {
 
-	BUG, CODE_SMELL, VULNERABILITY
-	
+    BUG, VULNERABILITY, CODE_SMELL
+
 }

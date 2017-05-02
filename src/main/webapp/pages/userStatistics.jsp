@@ -358,7 +358,7 @@
 	  <% 
 		IssueType[] types = IssueType.values();
 	    int[] typeData = userStat.getTypeIssues();
-	    String[] colors2 = new String[]{"#f56954","#f39c12","#3c8dbc"};
+	    String[] colors2 = new String[]{"#f56954","#f39c12","#00a65a"};
 	    index=0;
 		for(int i=0;i<types.length;i++){
 			if(typeData[i]!=-1){
@@ -477,9 +477,9 @@
 	      //Number - Pixel width of the bar stroke
 	      barStrokeWidth: 2,
 	      //Number - Spacing between each of the X value sets
-	      barValueSpacing: 5,
+	      barValueSpacing: 200,
 	      //Number - Spacing between data sets within X values
-	      barDatasetSpacing: 1,
+	      barDatasetSpacing: 10,
 	      //Boolean - whether to make the chart responsive
 	      responsive: true,
 	      maintainAspectRatio: true
