@@ -168,13 +168,13 @@
 	              <%if(project.isMember()){ %>
 	                <td>
 	                  <abbr title="You are a member">
-	                    <button type="button" class="btn btn-block btn-success btn-sm" onclick="quitProject('<jsp:getProperty name="project" property="projectName" />')">Quit</button>
+	                    <button type="button" class="btn btn-success btn-sm" onclick="quitProject('<jsp:getProperty name="project" property="projectName" />')">Quit</button>
 	                  </abbr>
 	                </td>
 	              <%}else{ %>
 	                <td>
 	                  <abbr title="You are not a member">
-	                    <button type="button" class="btn btn-block btn-primary btn-sm" onclick="joinProject('<jsp:getProperty name="project" property="projectName" />')">Join</button>
+	                    <button type="button" class="btn btn-primary btn-sm" onclick="joinProject('<jsp:getProperty name="project" property="projectName" />')">Join</button>
 	                  </abbr>
 	                </td>
 	              <%} %>

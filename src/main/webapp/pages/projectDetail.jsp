@@ -220,14 +220,13 @@
 				              <h3 class="box-title">Build success rate</h3>
 				            </div>
 				            <!-- /.box-header -->
-				            <div class="box-body" style="position: relative;">
+				            <div class="box-body">
 					          <%if(project.getSuccessRate()==-1){ %>
 						      <div class="box-body text-center">
 			                    <b>No data</b>
 			              	  </div>
 						      <%}
 					            else{%>
-			              	  <span style="display: inline-block; position: absolute; width: 100px; height: 100px; top: 50%; left: 50%; margin-top: -50px; margin-left: -50px; line-height: 100px;"><%=project.getSuccessRate()*100%>%</span>
 				              <canvas id="pieChartOfJenkins" style="height:250px"></canvas>
 				              <div id="chartjs-tooltip"></div>
 				              <div class="box-body text-center">
