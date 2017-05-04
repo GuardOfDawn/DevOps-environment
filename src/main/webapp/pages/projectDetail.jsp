@@ -291,22 +291,22 @@
 					            <li class="list-group-item">
 					              <b>Complexity</b> 
 					                <%if(Double.parseDouble(project.getComplexity()[1])>=0){ %>
-					              <a class="pull-right text-success">&nbsp;+<%=project.getComplexity()[1]%></a>
+					              <a class="pull-right text-danger">&nbsp;+<%=project.getComplexity()[1]%></a>
 					                <%}
 					                  else{%>
-					              <a class="pull-right text-danger"><%=project.getComplexity()[1]%></a>
+					              <a class="pull-right text-success"><%=project.getComplexity()[1]%></a>
 					                <%} %>
 					              <a class="pull-right"><%=project.getComplexity()[0]%></a>
 					            </li>
 					            <li class="list-group-item">
 					              <b>Technical debt</b>
 					                <%if(Double.parseDouble(project.getSqaleIndex()[1])>=0){ %>
-					              <a class="pull-right text-success">&nbsp;+<%=project.getSqaleIndex()[1]%></a>
+					              <a class="pull-right text-danger">&nbsp;+<%=project.getSqaleIndex()[1]%></a>
 					                <%}
 					                  else{%>
-					              <a class="pull-right text-danger"><%=project.getSqaleIndex()[1]%></a>
+					              <a class="pull-right text-success"><%=project.getSqaleIndex()[1]%></a>
 					                <%} %>
-					              <a class="pull-right"><%=project.getSqaleIndex()[0]%>h</a>
+					              <a class="pull-right"><%=project.getSqaleIndex()[0]%>min</a>
 					            </li>
 				              </ul>
 				            </div>
@@ -326,22 +326,22 @@
 				              <li class="list-group-item">
 					            <b>Duplicated lines</b> 
 					              <%if(Double.parseDouble(project.getDuplicatedDensity()[1])>=0){ %>
-					            <a class="pull-right text-success">&nbsp;+<%=project.getDuplicatedDensity()[1] %>%</a>
+					            <a class="pull-right text-danger">&nbsp;+<%=String.format("%.2f", Double.parseDouble(project.getDuplicatedDensity()[1])) %></a>
 					              <%}
 					                else{%>
-					            <a class="pull-right text-danger"><%=project.getDuplicatedDensity()[1] %>%</a>
+					            <a class="pull-right text-success"><%=String.format("%.2f", Double.parseDouble(project.getDuplicatedDensity()[1])) %></a>
 					              <%} %>
-					            <a class="pull-right"><%=project.getDuplicatedDensity()[0] %>%</a>
+					            <a class="pull-right"><%=String.format("%.2f", Double.parseDouble(project.getDuplicatedDensity()[0])) %>%</a>
 					          </li>
 					          <li class="list-group-item">
 					            <b>Comment lines</b> 
 					              <%if(Double.parseDouble(project.getCommentDensity()[1])>=0){ %>
-					            <a class="pull-right text-success">&nbsp;+<%=project.getCommentDensity()[1] %>%</a>
+					            <a class="pull-right text-success">&nbsp;+<%=String.format("%.2f", Double.parseDouble(project.getCommentDensity()[1])) %></a>
 					              <%}
 					                else{%>
-					            <a class="pull-right text-danger"><%=project.getCommentDensity()[1] %>%</a>
+					            <a class="pull-right text-danger"><%=String.format("%.2f", Double.parseDouble(project.getCommentDensity()[1])) %></a>
 					              <%} %>
-					            <a class="pull-right"><%=project.getCommentDensity()[0] %>%</a>
+					            <a class="pull-right"><%=String.format("%.2f", Double.parseDouble(project.getCommentDensity()[0])) %>%</a>
 					          </li>
 				            </ul>
 				          </div>

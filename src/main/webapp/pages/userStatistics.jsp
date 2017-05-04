@@ -477,9 +477,9 @@
 	      //Number - Pixel width of the bar stroke
 	      barStrokeWidth: 2,
 	      //Number - Spacing between each of the X value sets
-	      barValueSpacing: 200,
+	      barValueSpacing: 50,
 	      //Number - Spacing between data sets within X values
-	      barDatasetSpacing: 10,
+	      barDatasetSpacing: 20,
 	      //Boolean - whether to make the chart responsive
 	      responsive: true,
 	      maintainAspectRatio: true
