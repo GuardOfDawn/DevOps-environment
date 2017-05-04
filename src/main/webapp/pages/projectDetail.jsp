@@ -281,7 +281,7 @@
 					            <li class="list-group-item">
 					              <b>Lines</b> 
 					                <%if(Double.parseDouble(project.getLines()[1])>=0){ %>
-					              <a class="pull-right text-success"><%=project.getLines()[1]%></a>
+					              <a class="pull-right text-success">&nbsp;+<%=project.getLines()[1]%></a>
 					                <%}
 					                  else{%>
 					              <a class="pull-right text-danger"><%=project.getLines()[1]%></a>
@@ -291,7 +291,7 @@
 					            <li class="list-group-item">
 					              <b>Complexity</b> 
 					                <%if(Double.parseDouble(project.getComplexity()[1])>=0){ %>
-					              <a class="pull-right text-success"><%=project.getComplexity()[1]%></a>
+					              <a class="pull-right text-success">&nbsp;+<%=project.getComplexity()[1]%></a>
 					                <%}
 					                  else{%>
 					              <a class="pull-right text-danger"><%=project.getComplexity()[1]%></a>
@@ -299,14 +299,14 @@
 					              <a class="pull-right"><%=project.getComplexity()[0]%></a>
 					            </li>
 					            <li class="list-group-item">
-					              <b>Sqale index</b> 
+					              <b>Technical debt</b>
 					                <%if(Double.parseDouble(project.getSqaleIndex()[1])>=0){ %>
-					              <a class="pull-right text-success"><%=project.getSqaleIndex()[1]%></a>
+					              <a class="pull-right text-success">&nbsp;+<%=project.getSqaleIndex()[1]%></a>
 					                <%}
 					                  else{%>
 					              <a class="pull-right text-danger"><%=project.getSqaleIndex()[1]%></a>
 					                <%} %>
-					              <a class="pull-right"><%=project.getSqaleIndex()[0]%></a>
+					              <a class="pull-right"><%=project.getSqaleIndex()[0]%>h</a>
 					            </li>
 				              </ul>
 				            </div>
@@ -326,7 +326,7 @@
 				              <li class="list-group-item">
 					            <b>Duplicated lines</b> 
 					              <%if(Double.parseDouble(project.getDuplicatedDensity()[1])>=0){ %>
-					            <a class="pull-right text-success"><%=project.getDuplicatedDensity()[1] %>%</a>
+					            <a class="pull-right text-success">&nbsp;+<%=project.getDuplicatedDensity()[1] %>%</a>
 					              <%}
 					                else{%>
 					            <a class="pull-right text-danger"><%=project.getDuplicatedDensity()[1] %>%</a>
@@ -336,7 +336,7 @@
 					          <li class="list-group-item">
 					            <b>Comment lines</b> 
 					              <%if(Double.parseDouble(project.getCommentDensity()[1])>=0){ %>
-					            <a class="pull-right text-success"><%=project.getCommentDensity()[1] %>%</a>
+					            <a class="pull-right text-success">&nbsp;+<%=project.getCommentDensity()[1] %>%</a>
 					              <%}
 					                else{%>
 					            <a class="pull-right text-danger"><%=project.getCommentDensity()[1] %>%</a>
