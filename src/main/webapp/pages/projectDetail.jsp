@@ -230,7 +230,7 @@
 				              <canvas id="pieChartOfJenkins" style="height:250px"></canvas>
 				              <div id="chartjs-tooltip"></div>
 				              <div class="box-body text-center">
-			                    <b>Successful build rate : <%=project.getSuccessRate()*100%>%</b>
+			                    <b>Successful build rate : <%=String.format("%.2f", project.getSuccessRate()*100)%>%</b>
 			              	  </div>
 			          		  <%} %>
 				            </div>
@@ -487,13 +487,13 @@
 		    var pieChart = new Chart(pieChartCanvas);
 		    var PieData = [
 		      {
-		        value: successRate.toFixed(2),
+		        value: successRate.toFixed(4),
 		        color: "#00a65a",
 		        highlight: "#00a65a",
 		        label: "SUCCESS"
 		      },
 		      {
-		        value: failureRate.toFixed(2),
+		        value: failureRate.toFixed(4),
 		        color: "#f56954",
 		        highlight: "#f56954",
 		        label: "FAILURE"
@@ -536,7 +536,7 @@
 			
 			        // split out the label and value and make your own tooltip here
 			        var parts = tooltip.text.split(":");
-			        var innerHtml = '<span>' + parts[0].trim() + '</span> : <span><b>' + (parts[1].trim())*100 + '%' + '</b></span>';
+			        var innerHtml = '<span>' + parts[0].trim() + '</span> : <span><b>' + 100 * parseFloat(parts[1]) + '%' + '</b></span>';
 			        tooltipEl.html(innerHtml);
 			
 			        tooltipEl.css({
@@ -647,9 +647,9 @@
 		      //Number - Pixel width of the bar stroke
 		      barStrokeWidth: 2,
 		      //Number - Spacing between each of the X value sets
-		      barValueSpacing: 5,
+		      barValueSpacing: 15,
 		      //Number - Spacing between data sets within X values
-		      barDatasetSpacing: 1,
+		      barDatasetSpacing: 5,
 		      //scales
 		      showScale: false,
 		      //Boolean - whether to make the chart responsive
@@ -802,9 +802,9 @@
 		      //Number - Pixel width of the bar stroke
 		      barStrokeWidth: 2,
 		      //Number - Spacing between each of the X value sets
-		      barValueSpacing: 5,
+		      barValueSpacing: 10,
 		      //Number - Spacing between data sets within X values
-		      barDatasetSpacing: 1,
+		      barDatasetSpacing: 5,
 		      //Boolean - whether to make the chart responsive
 		      responsive: true,
 		      maintainAspectRatio: true,

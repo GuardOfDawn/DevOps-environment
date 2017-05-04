@@ -21,7 +21,7 @@ public class JenkinsUserImpl implements JenkinsUser {
     public boolean createJenkinsUser(String name, String password) {
         String path = GetPath.getResourcesPath();
         String realCmd = "java -jar " + path + "jenkins-cli.jar -s " + Host.getJenkins() +
-                " groovy " + path + "createJenkinsUser.groovy" + " " + name + " " + password;
+                " -remoting groovy " + path + "createJenkinsUser.groovy" + " " + name + " " + password;
         String[] cmd = new String[]{"/bin/sh", "-c", realCmd};
         String result = RunShell.runShell(cmd);
         return result.equals("1");
