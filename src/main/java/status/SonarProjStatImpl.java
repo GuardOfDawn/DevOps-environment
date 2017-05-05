@@ -79,7 +79,7 @@ public class SonarProjStatImpl implements SonarProjStat {
                 List<Map<String, Object>> periods = JSONArray.fromObject(metric.get("periods"));
                 values[1] = periods.get(1).get("value").toString();
             } else {
-                values[1] = "";
+                values[1] = "0";
             }
             result.put(metric.get("metric").toString(), values);
         }
