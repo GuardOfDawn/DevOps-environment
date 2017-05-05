@@ -137,6 +137,7 @@
         <!-- /.box-header -->
         <div class="box-body">
           <div class="row">
+           <div class="col-md-12">
 	        <!-- Custom Tabs -->
 	        <div class="nav-tabs-custom">
 	          <ul class="nav nav-tabs">
@@ -189,6 +190,7 @@
 			              <h3 class="box-title">Issues group by severity</h3>
 			            </div>
 			            <!-- /.box-header -->
+			            <%if(userStat.getSeveritySize()>0){ %>
 			            <div class="box-body">
 			              <canvas id="chartOfSeverity" style="height:250px"></canvas>
 			            </div>
@@ -202,6 +204,10 @@
 			              <%} %>
 			              </b>
 			            </div>
+			            <%}
+			              else{%>
+			            <div class="box-body text-center"><b>No data</b></div>
+			            <%} %>
 			            <!-- /.box-body -->
 			          </div>
 	                </div>
@@ -212,8 +218,8 @@
 			              <h3 class="box-title">Issues group by type</h3>
 			            </div>
 			            <!-- /.box-header -->
+			            <%if(userStat.getTypeSize()>0){ %>
 			            <div class="box-body">
-			              <br>
 			              <canvas id="chartOfType" style="height:250px"></canvas>
 			            </div>
 			            <div class="box-body text-center">
@@ -226,6 +232,10 @@
 			              <%} %>
 			              </b>
 			            </div>
+			            <%}
+			              else{%>
+			            <div class="box-body text-center"><b>No data</b></div>
+			            <%} %>
 			            <!-- /.box-body -->
 			          </div>
 	                </div>
@@ -239,9 +249,14 @@
 		                  <h3 class="box-title">Issues group by project</h3>
 		                </div>
 		                <!-- /.box-header -->
+		                <%if(userStat.getProjectIssues().size()>0){ %>
 		                <div class="box-body">
 		                  <canvas id="chartOfProject" style="height:230px"></canvas>
 		                </div>
+		                <%}
+		                  else{%>
+		                <div class="box-body text-center"><b>No data</b></div>
+		                <%} %>
 		                <!-- /.box-body -->
 		              </div>
 	                </div>
@@ -254,6 +269,7 @@
 	          <!-- /.tab-content -->
 		    </div>
 		    <!-- nav-tabs-custom -->
+		   </div>
 	      </div>
         </div>
       </div>
@@ -292,126 +308,137 @@
 	  });
   });
   function initSonarChart(){
-	  var labelsOfChartSeverity = new Array();
-	  var dataOfChartSeverity = new Array();
-	  var colorOfChartSeverity = new Array();
-	  <% 
-  		IssueSeverity[] severities = IssueSeverity.values();
-	    int[] severityData = userStat.getSeverityIssues();
-	    String[] colors = new String[]{"#f56954","#f39c12","#3c8dbc","#00c0ef","#00a65a"};
-	    int index = 0;
-  		for(int i=0;i<severities.length;i++){
-  			if(severityData[i]!=-1){
-  			%>
-  				labelsOfChartSeverity[<%=index%>]='<%=String.valueOf(severities[i])%>';
-  				dataOfChartSeverity[<%=index%>]='<%=severityData[i]%>';
-  				colorOfChartSeverity[<%=index%>]='<%=colors[i]%>';
-  			<%
-  			index++;
-  			}
-  		}
-  	  %>
-  	  //-------------
-	  //- DOUGHNUT CHART -
-	  //-------------
-	  // Get context with jQuery - using jQuery's .get() method.
-	  var chartOfSeverityCanvas = $("#chartOfSeverity").get(0).getContext("2d");
-	  var chartOfSeverity = new Chart(chartOfSeverityCanvas);
-	  var chartOfSeverityData = new Array();
-	  for(var i=0;i<labelsOfChartSeverity.length;i++){
-		  chartOfSeverityData[i] = {
-			      value: dataOfChartSeverity[i],
-			      color: colorOfChartSeverity[i],
-			      highlight: colorOfChartSeverity[i],
-			      label: labelsOfChartSeverity[i]
-			    };
+	  var severitySize = <%=userStat.getSeveritySize()%>;
+	  if(severitySize!==0){
+		  var labelsOfChartSeverity = new Array();
+		  var dataOfChartSeverity = new Array();
+		  var colorOfChartSeverity = new Array();
+		  <% 
+	  		IssueSeverity[] severities = IssueSeverity.values();
+		    int[] severityData = userStat.getSeverityIssues();
+		    String[] colors = new String[]{"#f56954","#f39c12","#3c8dbc","#00c0ef","#00a65a"};
+		    int index = 0;
+		    if(severityData.length>0){
+		  		for(int i=0;i<severities.length;i++){
+		  			if(severityData[i]!=-1){
+		  			%>
+		  				labelsOfChartSeverity[<%=index%>]='<%=String.valueOf(severities[i])%>';
+		  				dataOfChartSeverity[<%=index%>]='<%=severityData[i]%>';
+		  				colorOfChartSeverity[<%=index%>]='<%=colors[i]%>';
+		  			<%
+		  			index++;
+		  			}
+		  		}
+		    }
+	  	  %>
+	  	  //-------------
+		  //- DOUGHNUT CHART -
+		  //-------------
+		  // Get context with jQuery - using jQuery's .get() method.
+		  var chartOfSeverityCanvas = $("#chartOfSeverity").get(0).getContext("2d");
+		  var chartOfSeverity = new Chart(chartOfSeverityCanvas);
+		  var chartOfSeverityData = new Array();
+		  for(var i=0;i<labelsOfChartSeverity.length;i++){
+			  chartOfSeverityData[i] = {
+				      value: dataOfChartSeverity[i],
+				      color: colorOfChartSeverity[i],
+				      highlight: colorOfChartSeverity[i],
+				      label: labelsOfChartSeverity[i]
+				    };
+		  }
+		  var chartOfSeverityOptions = {
+		      //Boolean - Whether we should show a stroke on each segment
+		      segmentShowStroke: true,
+		      //String - The colour of each segment stroke
+		      segmentStrokeColor: "#fff",
+		      //Number - The width of each segment stroke
+		      segmentStrokeWidth: 2,
+		      //Number - The percentage of the chart that we cut out of the middle
+		      percentageInnerCutout: 50, // This is 0 for Pie charts
+		      //Number - Amount of animation steps
+		      animationSteps: 100,
+		      //String - Animation easing effect
+		      animationEasing: "easeOutBounce",
+		      //Boolean - Whether we animate the rotation of the Doughnut
+		      animateRotate: true,
+		      //Boolean - Whether we animate scaling the Doughnut from the centre
+		      animateScale: false,
+		      //Boolean - whether to make the chart responsive to window resizing
+		      responsive: true,
+		      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+		      maintainAspectRatio: true,
+		  };
+		  //Create pie or douhnut chart
+		  // You can switch between pie and douhnut using the method below.
+		  chartOfSeverity.Doughnut(chartOfSeverityData, chartOfSeverityOptions);
 	  }
-	  var chartOfSeverityOptions = {
-	      //Boolean - Whether we should show a stroke on each segment
-	      segmentShowStroke: true,
-	      //String - The colour of each segment stroke
-	      segmentStrokeColor: "#fff",
-	      //Number - The width of each segment stroke
-	      segmentStrokeWidth: 2,
-	      //Number - The percentage of the chart that we cut out of the middle
-	      percentageInnerCutout: 50, // This is 0 for Pie charts
-	      //Number - Amount of animation steps
-	      animationSteps: 100,
-	      //String - Animation easing effect
-	      animationEasing: "easeOutBounce",
-	      //Boolean - Whether we animate the rotation of the Doughnut
-	      animateRotate: true,
-	      //Boolean - Whether we animate scaling the Doughnut from the centre
-	      animateScale: false,
-	      //Boolean - whether to make the chart responsive to window resizing
-	      responsive: true,
-	      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-	      maintainAspectRatio: true,
-	  };
-	  //Create pie or douhnut chart
-	  // You can switch between pie and douhnut using the method below.
-	  chartOfSeverity.Doughnut(chartOfSeverityData, chartOfSeverityOptions);
 	  
-	  var labelsOfChartType = new Array();
-	  var dataOfChartType = new Array();
-	  var colorOfChartType = new Array();
-	  <% 
-		IssueType[] types = IssueType.values();
-	    int[] typeData = userStat.getTypeIssues();
-	    String[] colors2 = new String[]{"#f56954","#f39c12","#00a65a"};
-	    index=0;
-		for(int i=0;i<types.length;i++){
-			if(typeData[i]!=-1){
-			%>
-				labelsOfChartType[<%=index%>]='<%=String.valueOf(types[i])%>';
-				dataOfChartType[<%=index%>]='<%=typeData[i]%>';
-				colorOfChartType[<%=index%>]='<%=colors2[i]%>';
-			<%
-			index++;
-			}
-		}
-	  %>
-	  //-------------
-	  //- DOUGHNUT CHART -
-	  //-------------
-	  // Get context with jQuery - using jQuery's .get() method.
-	  var chartOfTypeCanvas = $("#chartOfType").get(0).getContext("2d");
-	  var chartOfType = new Chart(chartOfTypeCanvas);
-	  var chartOfTypeData = new Array();
-	  for(var i=0;i<labelsOfChartType.length;i++){
-		  chartOfTypeData[i] = {
-				    value: dataOfChartType[i],
-				    color: colorOfChartType[i],
-				    highlight: colorOfChartType[i],
-				    label: labelsOfChartType[i]
-				};
+	  //judge
+	  var typeSize = <%=userStat.getTypeSize()%>;
+	  if(typeSize!==0){
+		  var labelsOfChartType = new Array();
+		  var dataOfChartType = new Array();
+		  var colorOfChartType = new Array();
+		  <% 
+			IssueType[] types = IssueType.values();
+		    int[] typeData = userStat.getTypeIssues();
+		    String[] colors2 = new String[]{"#f56954","#f39c12","#00a65a"};
+		    int index2=0;
+		    if(typeData.length>0){
+				for(int i=0;i<types.length;i++){
+					if(typeData[i]!=-1){
+					%>
+						labelsOfChartType[<%=index2%>]='<%=String.valueOf(types[i])%>';
+						dataOfChartType[<%=index2%>]='<%=typeData[i]%>';
+						colorOfChartType[<%=index2%>]='<%=colors2[i]%>';
+					<%
+					index2++;
+					}
+				}
+		    }
+		  %>
+		  //-------------
+		  //- DOUGHNUT CHART -
+		  //-------------
+		  // Get context with jQuery - using jQuery's .get() method.
+		  var chartOfTypeCanvas = $("#chartOfType").get(0).getContext("2d");
+		  var chartOfType = new Chart(chartOfTypeCanvas);
+		  var chartOfTypeData = new Array();
+		  for(var i=0;i<labelsOfChartType.length;i++){
+			  chartOfTypeData[i] = {
+					    value: dataOfChartType[i],
+					    color: colorOfChartType[i],
+					    highlight: colorOfChartType[i],
+					    label: labelsOfChartType[i]
+					};
+		  }
+		  var chartOfTypeOptions = {
+		      //Boolean - Whether we should show a stroke on each segment
+		      segmentShowStroke: true,
+		      //String - The colour of each segment stroke
+		      segmentStrokeColor: "#fff",
+		      //Number - The width of each segment stroke
+		      segmentStrokeWidth: 2,
+		      //Number - The percentage of the chart that we cut out of the middle
+		      percentageInnerCutout: 50, // This is 0 for Pie charts
+		      //Number - Amount of animation steps
+		      animationSteps: 100,
+		      //String - Animation easing effect
+		      animationEasing: "easeOutBounce",
+		      //Boolean - Whether we animate the rotation of the Doughnut
+		      animateRotate: true,
+		      //Boolean - Whether we animate scaling the Doughnut from the centre
+		      animateScale: false,
+		      //Boolean - whether to make the chart responsive to window resizing
+		      responsive: true,
+		      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+		      maintainAspectRatio: true,
+		  };
+		  //Create pie or douhnut chart
+		  // You can switch between pie and douhnut using the method below.
+		  chartOfType.Doughnut(chartOfTypeData, chartOfTypeOptions);
 	  }
-	  var chartOfTypeOptions = {
-	      //Boolean - Whether we should show a stroke on each segment
-	      segmentShowStroke: true,
-	      //String - The colour of each segment stroke
-	      segmentStrokeColor: "#fff",
-	      //Number - The width of each segment stroke
-	      segmentStrokeWidth: 2,
-	      //Number - The percentage of the chart that we cut out of the middle
-	      percentageInnerCutout: 50, // This is 0 for Pie charts
-	      //Number - Amount of animation steps
-	      animationSteps: 100,
-	      //String - Animation easing effect
-	      animationEasing: "easeOutBounce",
-	      //Boolean - Whether we animate the rotation of the Doughnut
-	      animateRotate: true,
-	      //Boolean - Whether we animate scaling the Doughnut from the centre
-	      animateScale: false,
-	      //Boolean - whether to make the chart responsive to window resizing
-	      responsive: true,
-	      // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-	      maintainAspectRatio: true,
-	  };
-	  //Create pie or douhnut chart
-	  // You can switch between pie and douhnut using the method below.
-	  chartOfType.Doughnut(chartOfTypeData, chartOfTypeOptions);
-	  
+
 	  
 	  var labelsOfChartProject = new Array();
 	  var dataOfChartProjectTotal = new Array();

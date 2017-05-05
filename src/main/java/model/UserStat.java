@@ -10,7 +10,9 @@ public class UserStat implements Serializable{
 	private String userName;
 	private int totalIssues;
 	private int[] severityIssues;
+	private int severitySize;
 	private int[] typeIssues;
+	private int typeSize;
 	private Map<String,Integer[]> projectIssues;
 	private int unresolved;
 	
@@ -49,6 +51,19 @@ public class UserStat implements Serializable{
 	}
 	public void setUnresolved(int unresolved) {
 		this.unresolved = unresolved;
+	}
+
+	public int getSeveritySize() {
+		return severitySize;
+	}
+	public void setSeveritySize(int severitySize) {
+		this.severitySize = severitySize;
+	}
+	public int getTypeSize() {
+		return typeSize;
+	}
+	public void setTypeSize(int typeSize) {
+		this.typeSize = typeSize;
 	}
 	
 }
