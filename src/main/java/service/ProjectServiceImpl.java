@@ -205,11 +205,23 @@ public class ProjectServiceImpl implements ProjectService{
 			p.setSqaleIndex(statusMap.get(metrics[4]));
 			Map<String,String[]> violationsData = new HashMap<>();
 			String[] labels = new String[]{"violations","blocker","critical","major","minor","info"};
+			int total = 0;
+			int change = 0;
 			for(int i=5;i<11;i++){
 				if(statusMap.containsKey(metrics[i])){
-					String label = labels[i-5];
-					violationsData.put(label, statusMap.get(metrics[i]));
+					String[] data = statusMap.get(metrics[i]);
+					if(data!=null&&data.length==2){
+						String label = labels[i-5];
+						violationsData.put(label, data);
+						if(!label.equals("violations")){
+							total += Integer.parseInt(data[0]);
+							change += Integer.parseInt(data[1]);
+						}
+					}
 				}
+			}
+			if(!violationsData.containsKey("violations")){
+				violationsData.put("violations", new String[]{String.valueOf(total),String.valueOf(change)});
 			}
 			p.setViolationsData(violationsData);
 		}

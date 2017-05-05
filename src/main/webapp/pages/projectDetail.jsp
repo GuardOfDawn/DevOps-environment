@@ -278,6 +278,7 @@
 					            <li class="list-group-item">
 					              <b>Analysis time</b> <a class="pull-right"><%=project.getAnalysisTime() %></a>
 					            </li>
+					            <%if(project.getLines()!=null){ %>
 					            <li class="list-group-item">
 					              <b>Lines</b> 
 					                <%if(Double.parseDouble(project.getLines()[1])>=0){ %>
@@ -288,6 +289,8 @@
 					                <%} %>
 					              <a class="pull-right"><%=project.getLines()[0]%></a>
 					            </li>
+					            <%} %>
+					            <%if(project.getComplexity()!=null){ %>
 					            <li class="list-group-item">
 					              <b>Complexity</b> 
 					                <%if(Double.parseDouble(project.getComplexity()[1])>=0){ %>
@@ -298,6 +301,8 @@
 					                <%} %>
 					              <a class="pull-right"><%=project.getComplexity()[0]%></a>
 					            </li>
+					            <%} %>
+					            <%if(project.getSqaleIndex()!=null){ %>
 					            <li class="list-group-item">
 					              <b>Technical debt</b>
 					                <%if(Double.parseDouble(project.getSqaleIndex()[1])>=0){ %>
@@ -308,6 +313,7 @@
 					                <%} %>
 					              <a class="pull-right"><%=project.getSqaleIndex()[0]%>min</a>
 					            </li>
+					            <%} %>
 				              </ul>
 				            </div>
 				            <!-- /.box-body -->
@@ -315,6 +321,7 @@
 			            <!-- /.box -->
 			          </div>
 			          <!-- /.col -->
+			          <%if(project.getDuplicatedDensity()!=null&&project.getCommentDensity()!=null){ %>
 			          <div class="col-md-6">
 			            <div class="box box-warning">
 				          <div class="box-header with-border">
@@ -323,6 +330,7 @@
 				          <!-- /.box-header -->
 				          <div class="box-body">
 				            <ul class="list-group list-group-unbordered">
+				              <%if(project.getDuplicatedDensity()!=null){ %>
 				              <li class="list-group-item">
 					            <b>Duplicated lines</b> 
 					              <%if(Double.parseDouble(project.getDuplicatedDensity()[1])>=0){ %>
@@ -333,6 +341,8 @@
 					              <%} %>
 					            <a class="pull-right"><%=String.format("%.2f", Double.parseDouble(project.getDuplicatedDensity()[0])) %>%</a>
 					          </li>
+					          <%} %>
+					          <%if(project.getCommentDensity()!=null){ %>
 					          <li class="list-group-item">
 					            <b>Comment lines</b> 
 					              <%if(Double.parseDouble(project.getCommentDensity()[1])>=0){ %>
@@ -343,6 +353,7 @@
 					              <%} %>
 					            <a class="pull-right"><%=String.format("%.2f", Double.parseDouble(project.getCommentDensity()[0])) %>%</a>
 					          </li>
+					          <%} %>
 				            </ul>
 				          </div>
 				          <!-- /.box-body -->
@@ -350,6 +361,7 @@
 			            <!-- /.box -->
 			          </div>
 			          <!-- /.col -->
+			          <%} %>
 	                </div>
 	                <!-- /.row -->
 	                <div class="row">
@@ -359,7 +371,8 @@
 			                <h3 class="box-title">Issues</h3>
 			              </div>
 			              <!-- /.box-header -->
-			              <%if(project.getViolationsData().size()>1){ %>
+			              <%if(project.getViolationsData().size()>0&&(!project.getViolationsData().containsKey("violations"))
+			            		  ||project.getViolationsData().size()>1&&project.getViolationsData().containsKey("violations")){ %>
 			              <div class="box-body">
 			                <br>
 			                <canvas id="doughnutChartOfSonar" style="height:250px"></canvas>
@@ -698,7 +711,8 @@
 		    		}
 		    	}
 		    %>
-	    	if(size!=='1'){//generate doughtchart of violations
+		    var violation = '<%=project.getViolationsData().containsKey("violations")%>';
+	    	if(violation==='false'||violation==='true'&&size!=='1'){//generate doughtchart of violations
 	    		//-------------
 	    	    //- DOUGHNUT CHART -
 	    	    //-------------
@@ -706,13 +720,25 @@
 	    	    var doughnutChartCanvas = $("#doughnutChartOfSonar").get(0).getContext("2d");
 	    	    var doughnutChart = new Chart(doughnutChartCanvas);
 	    	    var doughnutData = new Array();
-	    	    for(var i=1;i<labelsOfBarChart2.length;i++){
-	    	    	doughnutData[i-1] = {
-	    	    	        value: dataOfBarChartTotal2[i],
-	    	    	        color: colorOfPieChart[i],
-	    	    	        highlight: colorOfPieChart[i],
-	    	    	        label: labelsOfBarChart2[i]
-	    	    	      };
+	    	    if(violation==='false'){
+	    	    	for(var i=0;i<labelsOfBarChart2.length;i++){
+		    	    	doughnutData[i] = {
+		    	    	        value: dataOfBarChartTotal2[i],
+		    	    	        color: colorOfPieChart[i],
+		    	    	        highlight: colorOfPieChart[i],
+		    	    	        label: labelsOfBarChart2[i]
+		    	    	      };
+		    	    }
+	    	    }
+	    	    else{
+	    	    	for(var i=1;i<labelsOfBarChart2.length;i++){
+		    	    	doughnutData[i-1] = {
+		    	    	        value: dataOfBarChartTotal2[i],
+		    	    	        color: colorOfPieChart[i],
+		    	    	        highlight: colorOfPieChart[i],
+		    	    	        label: labelsOfBarChart2[i]
+		    	    	      };
+		    	    }
 	    	    }
 	    	    var doughnutOptions = {
 	    	      //Boolean - Whether we should show a stroke on each segment
@@ -747,10 +773,10 @@
 		    var colorsOfBarChart = new Array();
 		    for(i=0;i<dataOfBarChartChange.length;i++){
 		    	if(dataOfBarChartChange[i]>=0){
-		    		colorsOfBarChart[i] = "#00a65a";
+		    		colorsOfBarChart[i] = "#f56954";
 		    	}
 		    	else{
-		    		colorsOfBarChart[i] = "#f56954";
+		    		colorsOfBarChart[i] = "#00a65a";
 		    	}
 		    }
 		    

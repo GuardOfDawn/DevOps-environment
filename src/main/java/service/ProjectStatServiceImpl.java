@@ -132,7 +132,7 @@ public class ProjectStatServiceImpl implements ProjectStatService {
 				lastTenBuilds.add(builds[i]);
 			}
 		}
-		else if(buildConditions.size()==1){
+		else if(buildConditions!=null&&buildConditions.size()==1){
 			String time = null;
 			String res = null;
 			for(Map.Entry<String,String> entry:buildConditions.entrySet()){
