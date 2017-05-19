@@ -62,10 +62,12 @@ public class JenkinsProjImpl implements JenkinsProj {
     /**
      * Create a project in Jenkins.
      *
-     * @param name Project name
+     * @param name   Project name
+     * @param gitUrl GitHub URL
      * @return Success or failure
      */
-    public boolean createProject(String name) {
+    public boolean createProject(String name, String gitUrl) {
+        if (!checkUrl(gitUrl)) return false;
         List<String> allProjects = getAllProject();
         if (allProjects.contains(name)) return false;
         String url = Host.getJenkins() + "createItem?name=" + name;
@@ -73,7 +75,7 @@ public class JenkinsProjImpl implements JenkinsProj {
         props.put("Authorization", Authentication.getBasicAuth("jenkins"));
         props.put("Content-Type", "application/xml");
         try {
-            Object[] response = HttpUtils.sendPostWithString(url, getJobTemplate(), props);
+            Object[] response = HttpUtils.sendPostWithString(url, getJobTemplate(gitUrl), props);
             if (Integer.parseInt(response[0].toString()) == 200) return true;
         } catch (Exception e) {
             logger.error("Create jenkins project: POST request error.", e);
@@ -84,19 +86,38 @@ public class JenkinsProjImpl implements JenkinsProj {
     /**
      * Get job config.xml for creating project.
      *
+     * @param url GitHub URL
      * @return String format of config.xml
      */
-    private String getJobTemplate() {
+    private String getJobTemplate(String url) {
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(GetPath.getResourcesPath() + "config.xml"))) {
             String line;
             while ((line = br.readLine()) != null) {
-                sb.append(line).append("\n");
+                if (line.trim().equals("<url></url>")) {
+                    line = "<url>" + url + "</url>";
+                }
+                sb.append(line);
             }
         } catch (Exception e) {
             logger.error("Create jenkins project: job template not found.", e);
         }
-        sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
+    }
+
+    /**
+     * Check whether the GitHub URL is accessible
+     *
+     * @param url GitHub URL
+     * @return Accessible or not
+     */
+    private boolean checkUrl(String url) {
+        try {
+            Object[] response = HttpUtils.sendGet(url, null);
+            if (Integer.parseInt(response[0].toString()) == 200) return true;
+        } catch (Exception e) {
+            logger.error("Create jenkins project: GitHub URL not found.", e);
+        }
+        return false;
     }
 }

@@ -19,8 +19,9 @@ public interface JenkinsProj {
     /**
      * Create a project in Jenkins.
      *
-     * @param name Project name
+     * @param name   Project name
+     * @param gitUrl GitHub URL
      * @return Success or failure
      */
-    boolean createProject(String name);
+    boolean createProject(String name, String gitUrl);
 }
