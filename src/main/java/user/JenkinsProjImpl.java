@@ -67,7 +67,6 @@ public class JenkinsProjImpl implements JenkinsProj {
      * @return Success or failure
      */
     public boolean createProject(String name, String gitUrl) {
-        if (!checkUrl(gitUrl)) return false;
         List<String> allProjects = getAllProject();
         if (allProjects.contains(name)) return false;
         String url = Host.getJenkins() + "createItem?name=" + name;
@@ -103,21 +102,5 @@ public class JenkinsProjImpl implements JenkinsProj {
             logger.error("Create jenkins project: job template not found.", e);
         }
         return sb.toString();
-    }
-
-    /**
-     * Check whether the GitHub URL is accessible
-     *
-     * @param url GitHub URL
-     * @return Accessible or not
-     */
-    private boolean checkUrl(String url) {
-        try {
-            Object[] response = HttpUtils.sendGet(url, null);
-            if (Integer.parseInt(response[0].toString()) == 200) return true;
-        } catch (Exception e) {
-            logger.error("Create jenkins project: GitHub URL not found.", e);
-        }
-        return false;
     }
 }
