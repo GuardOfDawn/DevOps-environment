@@ -85,4 +85,20 @@ public class HttpUtils {
         httpClient.close();
         return msg;
     }
+    
+    /**
+     * Check whether the given URL is accessible
+     *
+     * @param url URL
+     * @return Accessible or not
+     */
+    public static boolean checkUrl(String url) {
+        try {
+            Object[] response = HttpUtils.sendGet(url, null);
+            if (Integer.parseInt(response[0].toString()) == 200) return true;
+        } catch (Exception e) {
+            logger.error("HttpUtils: URL not found.", e);
+        }
+        return false;
+    }
 }
