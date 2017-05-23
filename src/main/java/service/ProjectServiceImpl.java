@@ -21,6 +21,7 @@ import interfaces.SonarProjStat;
 import model.Join;
 import model.Project;
 import model.ProjectDetailListBean;
+import model.ProjectInfo;
 import model.ProjectListBean;
 import model.SimpleProject;
 import status.JenkinsProjStatImpl;
@@ -101,24 +102,6 @@ public class ProjectServiceImpl implements ProjectService{
 				}
 			}
 		}
-		//code of ZhangYi's PC version
-//		ArrayList<SimpleProject> projectList = new ArrayList<SimpleProject>();
-//		String retColumn = "projectname";
-//		List<String> projectNameList = projectDao.getList(null, null, retColumn);
-//		for(int i=0;i<projectNameList.size();i++){
-//			SimpleProject project = new SimpleProject();
-//			project.setProjectName(projectNameList.get(i));
-//			List<String> members = getProjectMember(projectNameList.get(i));
-//			project.setMembers(members);
-//			project.setMember(false);
-//			for(int j=0;j<members.size();j++){
-//				if(userName.equals(members.get(j))){
-//					project.setMember(true);
-//					break;
-//				}
-//			}
-//			projectList.add(project);
-//		}
 		
 		ProjectListBean res = new ProjectListBean();
 		res.setProjectList(projectList);
@@ -144,15 +127,6 @@ public class ProjectServiceImpl implements ProjectService{
 		for(int i=0;i<projectList.size();i++){
 			projectDetailList.add(getProjectDetail(projectList.get(i)));
 		}
-		//code of ZhangYi's PC version
-//		ArrayList<Project> projectDetailList = new ArrayList<Project>();
-//		String retColumn = "projectname";
-//		List<String> p = projectDao.getList(null, null, retColumn);
-//		for(int i=0;i<p.size();i++){
-//			Project project = new Project();
-//			project.setProjectName(p.get(i));
-//			projectDetailList.add(project);
-//		}
 		
 		ProjectDetailListBean res = new ProjectDetailListBean();
 		res.setProjectDetailList(projectDetailList);
@@ -166,6 +140,13 @@ public class ProjectServiceImpl implements ProjectService{
 		double successRate = jenkinsProjStat.getSuccessRate(projectName);
 		Project p = new Project();
 		p.setProjectName(projectName);
+		ProjectInfo info = projectDao.getProjectInfo(projectName);
+		if(info!=null){
+			p.setProjectKey(info.getProjectKey());
+			p.setCreateTime(info.getCreateTime());
+			p.setRepository(info.getRepository());
+			p.setArtifact(info.getArtifact());
+		}
 		//jenkins status
 		if(map!=null){
 			p.setResult(map.get("result"));
@@ -230,80 +211,25 @@ public class ProjectServiceImpl implements ProjectService{
 			p.setViolationsData(violationsData);
 		}
 		
-		
-//		Project p = new Project();
-//		p.setProjectName(projectName);
-//		p.setResult("SUCCESS");
-//		p.setTimeStamp("2017-04-12 22:33:33");
-//		p.setDuration("1min 34second");
-//		p.setFrequency("day HH:mm:ss");
-//		p.setSuccessRate(-1);
-//		p.setAnalysisTime("2017-4-19");
-//		p.setQualityGates("secure");
-//		p.setLines(new String[]{"1300","+100"});
-//		p.setComplexity(new String[]{"1288","+43"});
-//		p.setDuplicatedDensity(new String[]{"4.6","+0.4"});
-//		p.setCommentDensity(new String[]{"23","-4"});
-//		p.setSqaleIndex(new String[]{"24","-2"});
-//		Map<String,String[]> statusMap = new HashMap<>();
-//		statusMap.put(metrics[5], new String[]{"66","-15"});
-////		statusMap.put(metrics[6], new String[]{"2","-1"});
-////		statusMap.put(metrics[7], new String[]{"10","+2"});
-////		statusMap.put(metrics[8], new String[]{"15","-10"});
-////		statusMap.put(metrics[9], new String[]{"26","+6"});
-////		statusMap.put(metrics[10], new String[]{"13","+3"});
-//		Map<String,String[]> violationsData = new HashMap<>();
-//		String[] labels = new String[]{"violations","blocker","critical","major","minor","info"};
-//		for(int i=5;i<11;i++){
-//			if(statusMap.containsKey(metrics[i])){
-//				String label = labels[i-5];
-//				violationsData.put(label, statusMap.get(metrics[i]));
-//			}
-//		}
-//		p.setViolationsData(violationsData);
-//		p.setViolationsData(violationsData);
-//		ArrayList<BuildStatus> lastTenBuilds = new ArrayList<BuildStatus>();
-//		BuildStatus s1 = new BuildStatus();
-//		s1.setTimePrefix("");
-//		s1.setTime("2016-11-11to2016-11-13");
-//		s1.setTotalBuild(2);
-//		s1.setSuccessBuild(2);
-//		BuildStatus s2 = new BuildStatus();
-//		s2.setTimePrefix("");
-//		s2.setTime("2016-11-13to2016-11-15");
-//		s2.setTotalBuild(3);
-//		s2.setSuccessBuild(2);
-//		BuildStatus s3 = new BuildStatus();
-//		s3.setTimePrefix("");
-//		s3.setTime("2016-11-15to2016-11-17");
-//		s3.setTotalBuild(4);
-//		s3.setSuccessBuild(3);
-//		BuildStatus s4 = new BuildStatus();
-//		s4.setTimePrefix("");
-//		s4.setTime("2016-11-17to2016-11-19");
-//		s4.setTotalBuild(1);
-//		s4.setSuccessBuild(1);
-//		lastTenBuilds.add(s1);
-//		lastTenBuilds.add(s2);
-//		lastTenBuilds.add(s3);
-//		lastTenBuilds.add(s4);
-//		p.setLastTenBuilds(lastTenBuilds);
-		
 		p.setMembers(getProjectMember(projectName));
 		return p;
 	}
 
 	@Override
-	public boolean createProject(String userName, String projectName, String projectKey) {
+	public boolean createProject(String userName, String projectName, String projectKey, String repository,String artifact) {
 		boolean sonarRes = sonarProject.createProject(projectName, projectKey);
-		boolean jenkinsRes = jenkinsProject.createProject(projectName);
+		boolean jenkinsRes = jenkinsProject.createProject(projectName,repository);
 		boolean res = sonarRes&&jenkinsRes;
 		logger.info("create sonar project "+projectName+" : "+sonarRes);
 		logger.info("create jenkins project "+projectName+" : "+jenkinsRes);
-		
-//		boolean res = true;
 		if(res){
-			projectDao.addProject(projectName, projectKey, getCurrentTimeString());
+			ProjectInfo project = new ProjectInfo();
+			project.setProjectName(projectName);
+			project.setProjectKey(projectKey);
+			project.setCreateTime(getCurrentTimeString());
+			project.setRepository(repository);
+			project.setArtifact(artifact);
+			projectDao.addProject(project);
 			projectJoinDao.addJoin(userName, projectName, getCurrentTimeString());
 		}
 		return res;
@@ -391,6 +317,12 @@ public class ProjectServiceImpl implements ProjectService{
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String time=format.format(date);
 		return time;
+	}
+	
+	@Override
+	public boolean updateProjectArtifact(String projectName,String artifact) {
+		String column = "artifact";
+		return projectDao.update(projectName, column, artifact);
 	}
 
 }

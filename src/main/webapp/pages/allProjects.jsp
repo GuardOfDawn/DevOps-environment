@@ -62,8 +62,8 @@
             </a>
             <ul class="dropdown-menu">
               <li class="footer">
-                <a href="/jenkins" class="text-center">Jenkins <small>(link to Jenkins)</small></a>
-                <a href="http://127.0.0.1:9000" class="text-center">SonarQube <small>(link to SonarQube)</small></a>
+                <a href="/jenkins" target="_blank" class="text-center">Jenkins <small>(link to Jenkins)</small></a>
+                <a href="http://127.0.0.1:9000" target="_blank" class="text-center">SonarQube <small>(link to SonarQube)</small></a>
               </li>
             </ul>
           </li>

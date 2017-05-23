@@ -1,5 +1,7 @@
 package service;
 
+import org.apache.log4j.Logger;
+
 import dao.UserDao;
 import dao.UserDaoImpl;
 import interfaces.JenkinsUser;
@@ -12,6 +14,8 @@ public class UserServiceImpl implements UserService{
 	private UserDao userDao;
 	private JenkinsUser jenkinsUser;
 	private SonarUser sonarUser;
+	
+	private static Logger logger = Logger.getLogger(UserServiceImpl.class);
 	
 	public UserServiceImpl(){
 		userDao = new UserDaoImpl();
@@ -26,8 +30,11 @@ public class UserServiceImpl implements UserService{
 		boolean res = userDao.isUserExist(userName);
 		if(!res){
 			//check jenkins and sonarqube for username
-			if(jenkinsUser.createJenkinsUser(userName, password)
-					&&sonarUser.createSonarUser(userName, password)){
+			boolean jenkinsR = jenkinsUser.createJenkinsUser(userName, password);
+			boolean sonarR = sonarUser.createSonarUser(userName, password);
+			logger.warn("create Jenkins user's result:"+jenkinsR);
+			logger.warn("create sonar user's result:"+sonarR);
+			if(jenkinsR&&sonarR){
 				//register user
 				boolean res2 = userDao.register(userName, password);
 				if(res2){

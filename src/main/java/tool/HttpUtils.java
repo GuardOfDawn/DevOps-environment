@@ -1,5 +1,8 @@
 package tool;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -9,9 +12,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-
-import java.util.List;
-import java.util.Map;
+import org.apache.log4j.Logger;
 
 /**
  * Author: stk
@@ -19,6 +20,7 @@ import java.util.Map;
  * Time: 2:10 PM
  */
 public class HttpUtils {
+	private static Logger logger = Logger.getLogger(HttpUtils.class);
     /**
      * Send POST request.
      *

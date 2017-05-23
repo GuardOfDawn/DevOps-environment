@@ -1,29 +1,32 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import service.ProjectService;
 import service.ProjectServiceImpl;
 
 /**
- * Servlet implementation class CreateProjectServlet
+ * Servlet implementation class ProjectInfoChangeServlet
  */
-public class CreateProjectServlet extends HttpServlet {
+public class ProjectInfoChangeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+    private static Logger logger = Logger.getLogger(ProjectInfoChangeServlet.class);
 	
 	private ProjectService projectService;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CreateProjectServlet() {
+    public ProjectInfoChangeServlet() {
         super();
         projectService = new ProjectServiceImpl();
     }
@@ -43,23 +46,16 @@ public class CreateProjectServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/login");
 			}
 			else{
-				String projectName = request.getParameter("projectname");
-				String projectKey = request.getParameter("projectkey");
-				String repository = request.getParameter("projectRepository");
-				String artifact = request.getParameter("projectArtifact");
-				String userName = String.valueOf(session.getAttribute("username"));
-				boolean res = projectService.createProject(userName,projectName,projectKey,repository,artifact);
-				if(res){
-					request.setAttribute("projectName", projectName);
-					request.setAttribute("projectKey", projectKey);
-					RequestDispatcher rd = request.getRequestDispatcher("/createProjectSuccess");
-					rd.forward(request, response);
-				}
-				else{
-					String createRes = "Project \""+projectName+"\" is already existed"; 
-					request.setAttribute("createProjectRes", createRes);
-					RequestDispatcher rd = request.getRequestDispatcher("/createProject");
-					rd.forward(request, response);
+				String changeTarget = request.getParameter("changeTarget");
+				String changeContent = request.getParameter("changeContent");
+				String projectName = request.getParameter("projectName");
+				if("artifact".equals(changeTarget)){
+					boolean res = projectService.updateProjectArtifact(projectName, changeContent);
+					logger.info("change artifact of project("+projectName+"):"+res);
+					response.setContentType("text/html;charset=utf-8");  
+			        PrintWriter out = response.getWriter();
+			        out.println(String.valueOf(res));
+			        out.close();
 				}
 			}
 		}

@@ -59,8 +59,8 @@
             </a>
             <ul class="dropdown-menu">
               <li class="footer">
-                <a href="/jenkins" class="text-center">Jenkins <small>(link to Jenkins)</small></a>
-                <a href="http://127.0.0.1:9000" class="text-center">SonarQube <small>(link to SonarQube)</small></a>
+                <a href="/jenkins" target="_blank" class="text-center">Jenkins <small>(link to Jenkins)</small></a>
+                <a href="http://127.0.0.1:9000" target="_blank" class="text-center">SonarQube <small>(link to SonarQube)</small></a>
               </li>
             </ul>
           </li>
@@ -141,6 +141,23 @@
 	              <label for="exampleInputPassword1">Project key (for SonarQube)</label>
 	              <input type="text" class="form-control" id="projectkey" name="projectkey" placeholder="Enter project key" onkeyup="createProjectCheck()">
 	            </div>
+	            <div class="form-group">
+	              <label>Project repository</label><input type="hidden" id="repositoryChecked" value="unCheck">
+	              <div class="input-group">
+	              	<input type="text" class="form-control" id="projectRepository" name="projectRepository" placeholder="Enter project repository" onblur="repositoryCheck()">
+	              	<span class="input-group-addon" id="repositoryCheckAddon"><i class="fa fa-circle-o"></i></span>
+	              </div>
+	            </div>
+	            <div class="form-group">
+	              <label>Project artifact</label><input type="hidden" id="artifactChecked" value="unCheck">
+	              <div class="input-group">
+	                <span class="input-group-addon">
+                      <abbr title="Select it to enter artifact,or not select to add it later in the project view"><input type="checkbox" id="artifactAddon"></abbr>
+                    </span>
+	                <input type="text" class="form-control" id="projectArtifact" name="projectArtifact" placeholder="Enter project artifact" disabled onblur="artifactCheck()">
+	                <span class="input-group-addon" id="artifactCheckAddon"><i class="fa fa-circle-o"></i></span>
+	              </div>
+	            </div>
 	            <p id="input_info" class="text-danger"></p>
 	          </div>
 	          <!-- /.box-body -->
@@ -175,12 +192,30 @@
 function createProjectCheck(){
 	var projectName = document.getElementById('projectname').value;
 	var projectKey = document.getElementById('projectkey').value;
-	if(projectName===''||projectKey===''){
+	var repositoryChecked = document.getElementById('repositoryChecked').value;
+	var artifactChecked = document.getElementById('artifactChecked').value;
+	if(projectName===''||projectKey===''||repositoryChecked!=='true'||($("#artifactAddon").is(':checked')&&artifactChecked!=='true')){
 		if(projectName===''){
 			document.getElementById('input_info').innerHTML = "project name should not be empty";
 		}
-		else{
+		else if(projectKey===''){
 			document.getElementById('input_info').innerHTML = "project key should not be empty";
+		}
+		else if(repositoryChecked!=='true'){
+			if(repositoryChecked==='unCheck'){
+				document.getElementById('input_info').innerHTML = "project repository should not be empty";
+			}
+			else if(repositoryChecked==='false'){
+				document.getElementById('input_info').innerHTML = "project repository is not valid";
+			}
+		}
+		else{
+			if(artifactChecked==='unCheck'){
+				document.getElementById('input_info').innerHTML = "project artifact should not be empty(or cancel the tick)";
+			}
+			else if(artifactChecked==='false'){
+				document.getElementById('input_info').innerHTML = "project artifact is not valid";
+			}
 		}
 		document.getElementById('createProjectButton').disabled = true;
 	}
@@ -188,6 +223,74 @@ function createProjectCheck(){
 		document.getElementById('input_info').innerHTML = "";
 		document.getElementById('createProjectButton').disabled = false;
 	}
+}
+function repositoryCheck(){
+	var repository = document.getElementById('projectRepository').value;
+	var xmlhttp;
+    if (window.XMLHttpRequest){
+    	// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else{
+    	// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function(){
+    	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+      		var result=xmlhttp.responseText.replace(/(^\s*)|(\s*$)/g,"");
+      		document.getElementById('repositoryChecked').value = result;
+      		if(result==='true'){
+      			document.getElementById('repositoryCheckAddon').innerHTML = '<i class="fa fa-check text-success"></i>';
+      		}
+      		else if(result==='false'){
+      			document.getElementById('repositoryCheckAddon').innerHTML = '<i class="fa fa-remove text-danger"></i>';
+      		}
+      		createProjectCheck();
+      	}
+    }
+    var url = '<%=path %>/UrlCheckServlet?checkUrl='+repository;
+    xmlhttp.open("GET",url,true);
+    xmlhttp.send();
+}
+$("#artifactAddon").change(function() {
+	if($("#artifactAddon").is(':checked')){
+		document.getElementById('projectArtifact').disabled = false;
+	}
+	else{
+		document.getElementById('projectArtifact').value = "";
+		document.getElementById('projectArtifact').disabled = true;
+		document.getElementById('artifactChecked').value = 'unCheck';
+	}
+	createProjectCheck();
+});
+function artifactCheck(){
+	var artifact = document.getElementById('projectArtifact').value;
+	var xmlhttp;
+    if (window.XMLHttpRequest){
+    	// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp=new XMLHttpRequest();
+    }
+    else{
+    	// code for IE6, IE5
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    var url = '<%=path %>/UrlCheckServlet';
+    xmlhttp.open("POST",url,true);
+    xmlhttp.onreadystatechange=function(){
+    	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+      		var result=xmlhttp.responseText.replace(/(^\s*)|(\s*$)/g,"");
+      		document.getElementById('artifactChecked').value = result;
+      		if(result==='true'){
+      			document.getElementById('artifactCheckAddon').innerHTML = '<i class="fa fa-check text-success"></i>';
+      		}
+      		else if(result==='false'){
+      			document.getElementById('artifactCheckAddon').innerHTML = '<i class="fa fa-remove text-danger"></i>';
+      		}
+      		createProjectCheck();
+      	}
+    }
+    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+    xmlhttp.send('checkUrl='+artifact);
 }
 </script>
 </body>

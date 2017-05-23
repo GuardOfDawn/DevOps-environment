@@ -27,10 +27,11 @@ public class DaoHelperImpl implements DaoHelper{
 	private static final String CREATE_TABLE_PROJECT = "CREATE TABLE if not exists `project`("
 			+ "`projectname` varchar(50) NOT NULL,"
 			+ "`projectkey` varchar(100) NOT NULL,"
-			+ "`createtime` varchar(20) NOT NULL);";
+			+ "`createtime` varchar(20) NOT NULL,"
+			+ "`repository` varchar(200) NOT NULL,"
+			+ "`artifact` varchar(200));";
 	
 	private DaoHelperImpl(){
-//		this.path = System.getProperty("user.dir").replace("\\", "/").concat("/");
 		String str = GetPath.getResourcesPath().replace("\\", "/");
         this.path = str.substring(0, str.length() - 15);
 		this.initDataBase();
@@ -70,6 +71,7 @@ public class DaoHelperImpl implements DaoHelper{
 			stat.executeUpdate(CREATE_TABLE_USER);
 			stat.executeUpdate(CREATE_TABLE_JOIN);
 			stat.executeUpdate(CREATE_TABLE_PROJECT);
+			stat.close();
 			closeConnection(connection);
 		}
 		catch(Exception e){

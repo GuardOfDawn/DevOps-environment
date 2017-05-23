@@ -4,6 +4,7 @@ import java.util.List;
 
 import model.Project;
 import model.ProjectDetailListBean;
+import model.ProjectInfo;
 import model.ProjectListBean;
 
 public interface ProjectService {
@@ -12,7 +13,7 @@ public interface ProjectService {
 	
 	public ProjectDetailListBean getProjectDetailList();
 	
-	public boolean createProject(String userName,String projectName,String projectKey);
+	public boolean createProject(String userName,String projectName,String projectKey,String repository,String artifact);
 	
 	public Project getProjectDetail(String projectName);
 	
@@ -25,5 +26,7 @@ public interface ProjectService {
 	public List<String> getUserJoinList(String userName);
 	
 	public String getProjectKey(String projectName);
+	
+	public boolean updateProjectArtifact(String projectName,String artifact);
 	
 }

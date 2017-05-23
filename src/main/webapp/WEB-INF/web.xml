@@ -138,6 +138,18 @@
   	<description></description>
   	<servlet-class>servlet.UserStatisticsServlet</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>ProjectInfoChangeServlet</servlet-name>
+  	<display-name>ProjectInfoChangeServlet</display-name>
+  	<description></description>
+  	<servlet-class>servlet.ProjectInfoChangeServlet</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>UrlCheckServlet</servlet-name>
+  	<display-name>UrlCheckServlet</display-name>
+  	<description></description>
+  	<servlet-class>servlet.UrlCheckServlet</servlet-class>
+  </servlet>
   
   <servlet-mapping>
   	<servlet-name>LoginServlet</servlet-name>
@@ -219,6 +231,14 @@
   <servlet-mapping>
   	<servlet-name>UserStatisticsServlet</servlet-name>
   	<url-pattern>/UserStatisticsServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ProjectInfoChangeServlet</servlet-name>
+  	<url-pattern>/ProjectInfoChangeServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UrlCheckServlet</servlet-name>
+  	<url-pattern>/UrlCheckServlet</url-pattern>
   </servlet-mapping>
 
   <welcome-file-list>

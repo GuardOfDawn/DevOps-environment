@@ -67,8 +67,8 @@
             </a>
             <ul class="dropdown-menu">
               <li class="footer">
-                <a href="/jenkins" class="text-center">Jenkins <small>(link to Jenkins)</small></a>
-                <a href="http://127.0.0.1:9000" class="text-center">SonarQube <small>(link to SonarQube)</small></a>
+                <a href="/jenkins" target="_blank" class="text-center">Jenkins <small>(link to Jenkins)</small></a>
+                <a href="http://127.0.0.1:9000" target="_blank" class="text-center">SonarQube <small>(link to SonarQube)</small></a>
               </li>
             </ul>
           </li>
@@ -282,10 +282,10 @@
 					            <li class="list-group-item">
 					              <b>Lines</b> 
 					                <%if(Double.parseDouble(project.getLines()[1])>=0){ %>
-					              <a class="pull-right text-success">&nbsp;+<%=project.getLines()[1]%></a>
+					              <a class="pull-right text-danger">&nbsp;+<%=project.getLines()[1]%></a>
 					                <%}
 					                  else{%>
-					              <a class="pull-right text-danger"><%=project.getLines()[1]%></a>
+					              <a class="pull-right text-success"><%=project.getLines()[1]%></a>
 					                <%} %>
 					              <a class="pull-right"><%=project.getLines()[0]%></a>
 					            </li>
@@ -334,10 +334,10 @@
 				              <li class="list-group-item">
 					            <b>Duplicated lines</b> 
 					              <%if(Double.parseDouble(project.getDuplicatedDensity()[1])>=0){ %>
-					            <a class="pull-right text-danger">&nbsp;+<%=String.format("%.2f", Double.parseDouble(project.getDuplicatedDensity()[1])) %></a>
+					            <a class="pull-right text-danger">&nbsp;+<%=String.format("%.2f", Double.parseDouble(project.getDuplicatedDensity()[1])) %>%</a>
 					              <%}
 					                else{%>
-					            <a class="pull-right text-success"><%=String.format("%.2f", Double.parseDouble(project.getDuplicatedDensity()[1])) %></a>
+					            <a class="pull-right text-success"><%=String.format("%.2f", Double.parseDouble(project.getDuplicatedDensity()[1])) %>%</a>
 					              <%} %>
 					            <a class="pull-right"><%=String.format("%.2f", Double.parseDouble(project.getDuplicatedDensity()[0])) %>%</a>
 					          </li>
@@ -346,10 +346,10 @@
 					          <li class="list-group-item">
 					            <b>Comment lines</b> 
 					              <%if(Double.parseDouble(project.getCommentDensity()[1])>=0){ %>
-					            <a class="pull-right text-success">&nbsp;+<%=String.format("%.2f", Double.parseDouble(project.getCommentDensity()[1])) %></a>
+					            <a class="pull-right text-danger">&nbsp;+<%=String.format("%.2f", Double.parseDouble(project.getCommentDensity()[1])) %>%</a>
 					              <%}
 					                else{%>
-					            <a class="pull-right text-danger"><%=String.format("%.2f", Double.parseDouble(project.getCommentDensity()[1])) %></a>
+					            <a class="pull-right text-success"><%=String.format("%.2f", Double.parseDouble(project.getCommentDensity()[1])) %>%</a>
 					              <%} %>
 					            <a class="pull-right"><%=String.format("%.2f", Double.parseDouble(project.getCommentDensity()[0])) %>%</a>
 					          </li>
@@ -422,27 +422,65 @@
 	        </div>
 	        
 	        <div class="col-md-3">
-		      <div class="box box-warning box-solid">
-		        <div class="box-header with-border">
-		          <h3 class="box-title">Members</h3>
-		        </div>
-		        <!-- /.box-header -->
-		        <%if(project.getMembers().size()==0){ %>
-		        <div class="box-body">There is no member.</div>
-		        <%}else{
-		          for(int i=0;i<project.getMembers().size();i++){ %>
-		        <div class="box-body">
-		          <%if(session.getAttribute("username").equals(project.getMembers().get(i))){ %>
-		          <%=project.getMembers().get(i) %><a class="pull-right">you</a>
-		          <%}else{ %>
-		          <%=project.getMembers().get(i) %>
-		          <%} %>
-		        </div>
-		        <%}
-		        }%>
-		        <!-- /.box-body -->
-		      </div>
+	          <div class="row">
+	            <div class="box box-warning box-solid">
+			      <div class="box-header with-border">
+			        <h3 class="box-title">Basic Info</h3>
+			      </div>
+			      <div class="box-body">
+			        <strong>Project name</strong>
+			        <p class="text-muted"><%=project.getProjectName() %></p>
+			      
+			        <strong>Project key</strong>
+			        <p class="text-muted"><%=project.getProjectKey() %></p>
+			        
+			        <abbr title="link to project repository">
+			          <strong>Project repository</strong>
+			        </abbr>
+			        <p><a href="<%=project.getRepository() %>" target="_blank" class="text-muted" id="repository" style="max-length:100"><%=project.getRepository() %></a></p>
+			        
+			        
+			        <abbr title="double click to modify the content,click other place to ensure modification">
+			          <strong>Project artifact</strong><span id="artifactModifyAddon"></span>
+			        </abbr>
+			        <a id="changeBackButton" href="javascript:changeBackArtifact()" class="pull-right" style="display:none">change back</a>
+			    	
+			        <%if(project.getArtifact()==null){ %>
+			        <p class="text-muted" id="artifact" ondblclick="modifyElement(this)">Enter artifact!</p>
+			        <%}
+			          else{%>
+			        <p class="text-muted" id="artifact" ondblclick="modifyElement(this)"><%=project.getArtifact() %></p>
+			        <%} %>
+			        <abbr title="link to allocate issues of the project">
+			          <a href="http://127.0.0.1:9000/component_issues?id=<%=project.getProjectKey() %>" target="_blank"><strong>Allocate project issues</strong></a>
+			        </abbr>
+			      </div>
+			    </div>
+	          </div>
+	          <div class="row">
+	              <div class="box box-warning box-solid">
+			        <div class="box-header with-border">
+			          <h3 class="box-title">Members</h3>
+			        </div>
+			        <!-- /.box-header -->
+			        <%if(project.getMembers().size()==0){ %>
+			        <div class="box-body">There is no member.</div>
+			        <%}else{
+			          for(int i=0;i<project.getMembers().size();i++){ %>
+			        <div class="box-body">
+			          <%if(session.getAttribute("username").equals(project.getMembers().get(i))){ %>
+			          <%=project.getMembers().get(i) %><a class="pull-right">you</a>
+			          <%}else{ %>
+			          <%=project.getMembers().get(i) %>
+			          <%} %>
+			        </div>
+			        <%}
+			        }%>
+			        <!-- /.box-body -->
+		          </div>
 		      <!-- /.box -->
+	          </div>
+		      
 	        </div>
 	        
 	      </div>
@@ -844,6 +882,59 @@
 	  var index = myselect.selectedIndex;
 	  var projectSelected = myselect.options[index].text;
 	  window.location.href='<%=path%>/ProjectDetailServlet?projectName='+projectSelected;
+  }
+  function modifyElement(element){
+	  var oldhtml = element.innerHTML;
+	  var newobj = document.createElement('input');
+	  newobj.type = 'text';
+	  if(oldhtml==='Enter artifact!'){
+		  newobj.value = '';
+	  }
+	  else{
+		  newobj.value = oldhtml;
+	  }
+	  newobj.onblur = function(){
+		if(this.value){
+			element.innerHTML = this.value;
+			var xmlhttp;
+		    if (window.XMLHttpRequest){
+		    	// code for IE7+, Firefox, Chrome, Opera, Safari
+		        xmlhttp=new XMLHttpRequest();
+		    }
+		    else{
+		    	// code for IE6, IE5
+		        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		    }
+		    xmlhttp.onreadystatechange=function(){
+		    	if (xmlhttp.readyState==4 && xmlhttp.status==200){
+		    		var result=xmlhttp.responseText.replace(/(^\s*)|(\s*$)/g,"");
+		    		document.getElementById('artifactModifyAddon').style.display = 'block';
+		    		if(result==='true'){
+		      			document.getElementById('artifactModifyAddon').innerHTML = '<i class="fa fa-check text-success"></i>';
+		      			document.getElementById('changeBackButton').style.display='none';
+		      		}
+		      		else if(result==='false'){
+		      			document.getElementById('artifactModifyAddon').innerHTML = '<i class="fa fa-remove text-danger"></i>';
+		      			document.getElementById('changeBackButton').style.display='block';
+		      		}
+		      	}
+		    }
+		    var url = '<%=path %>/ProjectInfoChangeServlet?changeTarget='+element.id+'&changeContent='+element.innerHTML+'&projectName='+'<%=project.getProjectName() %>';
+		    xmlhttp.open("GET",url,true);
+		    xmlhttp.send();
+		}
+		else{
+			element.innerHTML = oldhtml;
+		}
+	  }
+	  element.innerHTML = '';
+	  element.appendChild(newobj);
+	  newobj.focus();
+  }
+  function changeBackArtifact(){
+		document.getElementById('changeBackButton').style.display='none';
+		document.getElementById('artifactModifyAddon').style.display = 'none';
+		document.getElementById('artifact').innerHTML = '<%=project.getArtifact()%>';
   }
 </script>
 </body>
