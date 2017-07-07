@@ -2,7 +2,7 @@ pipeline {
     agent any
     stages {
         stage('Test') {
-            withSonarQubeEnv {
+            withSonarQubeEnv('http://218.94.159.101:9000') {
                 sh 'mvn clean sonar:sonar'
             }
         }
