@@ -3,8 +3,13 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'mvn --version'
+                sh 'mvn package'
             }
+        }
+    }
+    post {
+        always {
+            archive 'target/devops-system.war'
         }
     }
 }
