@@ -1,16 +1,17 @@
 pipeline {
     agent any
+    def mvn = tool 'Maven'
     stages {
         stage('Test') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh 'mvn clean sonar:sonar'
+                    sh '${mvn}/bin/mvn clean sonar:sonar'
                 }
             }
         }
         stage('Build') {
             steps {
-                sh 'mvn package'
+                sh '${mvn}/bin/mvn package'
             }
         }
     }
