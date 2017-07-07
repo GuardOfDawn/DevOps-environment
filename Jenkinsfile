@@ -1,7 +1,12 @@
 pipeline {
-    agent { docker 'maven' }
+    agent any
     stages {
-        stage('build') {
+        stage('Test') {
+            withSonarQubeEnv {
+                sh 'mvn clean sonar:sonar'
+            }
+        }
+        stage('Build') {
             steps {
                 sh 'mvn package'
             }
