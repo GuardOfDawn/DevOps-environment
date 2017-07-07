@@ -14,12 +14,8 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn package'
+                archive 'target/devops-system.war'
             }
-        }
-    }
-    post {
-        always {
-            archive 'target/devops-system.war'
         }
     }
 }
